@@ -1,0 +1,2737 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="英検2級合格のための英単語・熟語・句動詞学習ツール">
+<title>英検2級 Vocabulary &amp; Idiom Master</title>
+<style>
+/* 英検2級 Vocabulary & Idiom Master — シンプルで読みやすいデザイン */
+:root {
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --ink: #1d2330;
+  --ink2: #5b6475;
+  --ink3: #8a92a3;
+  --line: #e3e6eb;
+  --soft: #eef0f4;
+  --accent: #2f5bd3;
+  --accent-soft: #e8eefc;
+  --good: #1f9d63;
+  --good-soft: #e5f5ed;
+  --bad: #d64545;
+  --bad-soft: #fcebeb;
+  --learn: #4b7be5;
+  --new: #cfd4dc;
+  --soft2: var(--soft2);
+  --hover: var(--hover);
+  --focus: var(--focus);
+  --bar-bg: var(--bar-bg);
+  --key-bg: var(--key-bg);
+  --star: var(--star);
+  --star-off: var(--star-off);
+  --bad-line: var(--bad-line);
+  --good-line: var(--good-line);
+  --head-bg: rgba(255,255,255,.92);
+  --on-accent: #ffffff;
+  --accent-dark: var(--accent-dark);
+  --shadow: var(--shadow);
+  --radius: 14px;
+  --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  --en: "Inter", "Segoe UI", "Helvetica Neue", Arial, var(--font);
+  color-scheme: light;
+}
+/* ダークモード（端末の設定に合わせる） */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151b; --card: #1b1f27; --ink: #e8ebf1; --ink2: #aab2c0; --ink3: #7d8697;
+    --line: #2c323d; --soft: #252a34; --accent: #7d9df0; --accent-soft: #232d47;
+    --good: #43c08a; --good-soft: #17322a; --bad: #f07a7a; --bad-soft: #3a1f22;
+    --learn: #6f95ee; --new: #3a404c; --soft2: #20252e; --hover: #222a3a; --focus: #5f7fd6;
+    --bar-bg: #2a3350; --key-bg: #2e2a1c; --star: #f0b72f; --star-off: #3a404c;
+    --bad-line: #6b3236; --good-line: #2a5a45; --head-bg: rgba(27,31,39,.92);
+    --on-accent: #0f1320; --accent-dark: #9bb4f5; --shadow: rgba(0,0,0,.4); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151b; --card: #1b1f27; --ink: #e8ebf1; --ink2: #aab2c0; --ink3: #7d8697;
+  --line: #2c323d; --soft: #252a34; --accent: #7d9df0; --accent-soft: #232d47;
+  --good: #43c08a; --good-soft: #17322a; --bad: #f07a7a; --bad-soft: #3a1f22;
+  --learn: #6f95ee; --new: #3a404c; --soft2: #20252e; --hover: #222a3a; --focus: #5f7fd6;
+  --bar-bg: #2a3350; --key-bg: #2e2a1c; --star: #f0b72f; --star-off: #3a404c;
+  --bad-line: #6b3236; --good-line: #2a5a45; --head-bg: rgba(27,31,39,.92);
+  --on-accent: #0f1320; --accent-dark: #9bb4f5; --shadow: rgba(0,0,0,.4); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font); font-size: 16px; line-height: 1.6;
+  padding-bottom: calc(68px + env(safe-area-inset-bottom));
+}
+a { color: var(--accent); text-decoration: none; }
+h1 { font-size: 1.3rem; margin: 0 0 12px; }
+h2 { font-size: 1.05rem; margin: 0 0 12px; }
+h2 small, h1 small { font-weight: normal; color: var(--ink3); font-size: .8rem; margin-left: 6px; }
+h3 { font-size: .85rem; color: var(--ink2); margin: 18px 0 8px; font-weight: 600; }
+code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .92em; }
+.hidden { display: none !important; }
+
+/* ヘッダー・タブバー */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--head-bg);
+  backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px;
+}
+.brand { color: var(--ink); font-weight: 700; font-size: 1rem; }
+.brand span { color: var(--ink3); font-weight: 500; font-size: .8rem; margin-left: 4px; }
+.gear { color: var(--ink2); display: flex; padding: 4px; }
+main { max-width: 760px; margin: 0 auto; padding: 16px; }
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: flex; background: var(--card); border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tabbar a {
+  flex: 1; text-align: center; padding: 8px 0 7px; color: var(--ink3); font-size: .72rem;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.tabbar a svg { width: 22px; height: 22px; }
+.tabbar a.on { color: var(--accent); font-weight: 600; }
+@media (min-width: 900px) {
+  body { padding-bottom: 0; }
+  .tabbar { position: sticky; top: 49px; bottom: auto; justify-content: center; border-top: 0; border-bottom: 1px solid var(--line); }
+  .tabbar a { flex: 0 0 auto; flex-direction: row; gap: 6px; padding: 10px 18px; font-size: .88rem; }
+  .tabbar a svg { width: 18px; height: 18px; }
+}
+
+/* カード・ボタン */
+.card { background: var(--card); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; border: 1px solid var(--line); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 10px;
+  padding: 10px 16px; font: inherit; font-size: .92rem; cursor: pointer; min-height: 44px;
+}
+.btn:hover { background: var(--soft); }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.sm { padding: 6px 12px; font-size: .84rem; min-height: 36px; }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--ink2); }
+.btn.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn.primary:hover { background: var(--accent-dark); }
+.btn.good { background: var(--good); border-color: var(--good); color: var(--on-accent); }
+.btn.bad { color: var(--bad); border-color: var(--bad-line); }
+.btn.bad.big { background: var(--bad); color: var(--on-accent); border-color: var(--bad); }
+.btn.big { width: 100%; padding: 14px 16px; font-size: 1rem; font-weight: 600; flex-direction: column; gap: 0; }
+.btn.big small { font-weight: normal; opacity: .8; font-size: .75rem; }
+.btn:focus-visible, .opt:focus-visible, .chip:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.ract { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.lead { color: var(--ink2); font-size: .9rem; margin: 0 0 12px; }
+.sub { color: var(--ink3); font-size: .82rem; }
+.empty { color: var(--ink3); text-align: center; padding: 24px 0; }
+
+/* ホーム */
+.hero-head { display: flex; justify-content: space-between; align-items: baseline; }
+.streak { font-size: .85rem; color: var(--ink2); }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 6px 0 16px; }
+.kpis.six { grid-template-columns: repeat(3, 1fr); }
+@media (min-width: 600px) { .kpis.six { grid-template-columns: repeat(6, 1fr); } }
+.kpi { background: var(--soft); border-radius: 10px; padding: 10px 6px; text-align: center; }
+.kpi b { display: block; font-size: 1.3rem; line-height: 1.2; font-family: var(--en); }
+.kpi span { font-size: .7rem; color: var(--ink2); }
+.pbar { display: flex; height: 10px; border-radius: 6px; background: var(--new); overflow: hidden; }
+.pbar .seg.master { background: var(--good); }
+.pbar .seg.learning { background: var(--learn); }
+.pbar .seg.weak { background: var(--bad); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .78rem; color: var(--ink2); margin-top: 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 4px; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--new); flex: 0 0 9px; }
+.dot.master { background: var(--good); } .dot.learning { background: var(--learn); } .dot.weak { background: var(--bad); }
+.chart { display: flex; gap: 6px; height: 110px; align-items: stretch; }
+.chart .col { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.chart .bars { flex: 1; width: 100%; max-width: 34px; display: flex; align-items: flex-end; }
+.chart .b { width: 100%; background: var(--bar-bg); border-radius: 4px 4px 0 0; display: flex; align-items: flex-end; min-height: 2px; }
+.chart .bc { width: 100%; background: var(--accent); border-radius: 4px 4px 0 0; }
+.chart small { font-size: .68rem; color: var(--ink2); height: 16px; }
+.chart em { font-style: normal; font-size: .72rem; color: var(--ink3); }
+.sec { margin: 22px 2px 10px; }
+.modes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+@media (min-width: 600px) { .modes { grid-template-columns: repeat(3, 1fr); } }
+.mode { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; color: var(--ink); display: flex; flex-direction: column; gap: 2px; }
+.mode:hover { border-color: var(--accent); }
+.mode .mn { font-size: .7rem; color: var(--accent); font-weight: 700; }
+.mode small { color: var(--ink3); font-size: .75rem; line-height: 1.4; }
+.catrow { display: grid; grid-template-columns: 8.5em 1fr 4.5em; align-items: center; gap: 10px; padding: 7px 0; color: var(--ink); font-size: .86rem; border-top: 1px solid var(--soft); }
+.catrow:first-of-type { border-top: 0; }
+.catrow .cn { text-align: right; color: var(--ink3); font-size: .78rem; font-family: var(--en); }
+
+/* 単語帳一覧 */
+.toolbar { padding: 12px; position: sticky; top: 49px; z-index: 5; }
+@media (min-width: 900px) { .toolbar { top: 92px; } }
+input[type=search], input[type=text], select {
+  font: inherit; font-size: 16px; border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; background: var(--card); color: var(--ink); width: 100%;
+}
+input:focus, select:focus { outline: 2px solid var(--focus); border-color: transparent; }
+.chips { display: flex; gap: 6px; overflow-x: auto; padding: 10px 0 4px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: 0 0 auto; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: .82rem; color: var(--ink2); cursor: pointer; }
+.chip.on { background: var(--ink); color: var(--on-accent); border-color: var(--ink); }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.filters select { width: auto; flex: 1 1 120px; padding: 6px 8px; font-size: .84rem; }
+.seg-ctl { display: inline-flex; background: var(--soft); border-radius: 10px; padding: 3px; flex: 1 1 200px; }
+.seg-ctl button { flex: 1; border: 0; background: transparent; font: inherit; font-size: .8rem; padding: 6px 8px; border-radius: 8px; color: var(--ink2); cursor: pointer; white-space: nowrap; }
+.seg-ctl button.on { background: var(--card); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px var(--shadow); }
+.seg-ctl.wide { display: flex; margin-bottom: 4px; }
+.listhead { display: flex; justify-content: space-between; align-items: center; margin: 4px 2px 8px; font-size: .85rem; color: var(--ink2); }
+.listhead .acts { display: flex; gap: 6px; }
+.rows { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.card .rows { border: 0; border-radius: 0; }
+.row { display: grid; grid-template-columns: 12px minmax(0, auto) auto 1fr auto; align-items: center; gap: 4px 10px; padding: 11px 14px; border-top: 1px solid var(--soft); color: var(--ink); }
+.row:first-child { border-top: 0; }
+.row:hover { background: var(--soft2); }
+.rw { font-family: var(--en); font-weight: 600; font-size: 1.02rem; }
+.rp { font-size: .7rem; color: var(--ink3); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; white-space: nowrap; }
+.rj { color: var(--ink2); font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.rl { font-size: .7rem; }
+.rpat { grid-column: 2 / -1; font-size: .78rem; color: var(--ink3); font-family: var(--en); }
+@media (max-width: 560px) {
+  .row { grid-template-columns: 12px 1fr auto; }
+  .row .rp { display: none; }
+  .row .rj { grid-column: 2 / 4; white-space: normal; }
+  .row .rl { grid-row: 1; grid-column: 3; }
+}
+.view-en .rj { color: transparent; background: var(--soft); border-radius: 4px; }
+.view-ja .rw { color: transparent; background: var(--soft); border-radius: 4px; }
+.view-ja .rw::selection, .view-en .rj::selection { color: transparent; }
+.more { width: 100%; border: 0; border-top: 1px solid var(--soft); border-radius: 0; color: var(--accent); }
+.stars { color: var(--star); letter-spacing: -1px; font-size: .78rem; white-space: nowrap; }
+.stars i { color: var(--star-off); font-style: normal; }
+
+/* 単語詳細 */
+.wnav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; color: var(--ink3); font-size: .85rem; }
+.wnav .pn { display: flex; gap: 6px; }
+.w-head { display: flex; align-items: center; gap: 10px; }
+.w-word { font-family: var(--en); font-size: 2.2rem; margin: 0; line-height: 1.2; word-break: break-word; }
+.w-pron { color: var(--ink2); margin: 4px 0 10px; display: flex; gap: 12px; flex-wrap: wrap; }
+.ipa { font-family: "Lucida Sans Unicode", "Arial Unicode MS", "Segoe UI", var(--en); color: var(--ink2); }
+.kana { color: var(--ink3); font-size: .9rem; }
+.w-tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.tag { font-size: .72rem; background: var(--soft); color: var(--ink2); border-radius: 6px; padding: 2px 8px; }
+.tag.pos { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.tag.st-weak { background: var(--bad-soft); color: var(--bad); }
+.tag.st-master { background: var(--good-soft); color: var(--good); }
+.w-ja { font-size: 1.25rem; font-weight: 600; margin: 14px 0 8px; }
+.w-key, .w-pat { background: var(--key-bg); border-radius: 10px; padding: 10px 12px; font-size: .9rem; margin: 8px 0; }
+.w-pat { background: var(--accent-soft); }
+.w-key b, .w-pat b { display: block; font-size: .72rem; color: var(--ink2); }
+.w-pat code { font-size: 1rem; color: var(--ink); }
+.sec-b { border-top: 1px solid var(--soft); margin-top: 14px; }
+.sec-b p { margin: 0; font-size: .92rem; }
+.exs { list-style: none; padding: 0; margin: 0; }
+.exs li { margin-bottom: 10px; }
+.en { font-family: var(--en); font-size: 1rem; margin: 0 0 2px; line-height: 1.55; }
+.jp { color: var(--ink2); font-size: .86rem; margin: 0; }
+.hl { color: var(--accent); }
+.lines { margin: 0; padding-left: 1.1em; font-size: .9rem; }
+.lines li { margin: 2px 0; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tags span { background: var(--soft); border-radius: 6px; padding: 3px 10px; font-size: .86rem; }
+.speak { border: 0; background: var(--soft); color: var(--ink2); width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; vertical-align: middle; padding: 0; flex: 0 0 auto; }
+.speak:hover { background: var(--accent-soft); color: var(--accent); }
+.speak.lg { width: 40px; height: 40px; }
+.stats .btn { margin-top: 4px; }
+
+/* テスト */
+.modepick { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+@media (min-width: 600px) { .modepick { grid-template-columns: repeat(3, 1fr); } }
+.mp { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; cursor: pointer; display: flex; flex-direction: column; }
+.mp input { position: absolute; opacity: 0; pointer-events: none; }
+.mp small { color: var(--ink3); font-size: .74rem; line-height: 1.4; }
+.mp.on { border-color: var(--accent); background: var(--accent-soft); }
+.form { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 600px) { .form { grid-template-columns: 1fr 1fr; } }
+.form label { font-size: .8rem; color: var(--ink2); display: flex; flex-direction: column; gap: 4px; }
+.pool { font-size: .86rem; color: var(--ink2); margin: 14px 0 10px; }
+.qhead { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: .85rem; color: var(--ink2); font-family: var(--en); }
+.qhead .ok { color: var(--good); }
+.qprog { flex: 1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.qprog span { display: block; height: 100%; background: var(--accent); }
+.qtype { font-size: .75rem; color: var(--ink3); margin: 0 2px 6px; }
+.quiz { text-align: center; padding: 26px 18px; }
+.qword { font-family: var(--en); font-size: 2.3rem; font-weight: 700; line-height: 1.25; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; word-break: break-word; }
+.qword.prep { font-size: 1.8rem; margin: 10px 0; }
+.qja { font-size: 1.4rem; font-weight: 700; line-height: 1.45; }
+.qja2 { font-size: 1.3rem; font-weight: 700; margin: 4px 0 10px; }
+.qsub { color: var(--ink3); font-size: .9rem; margin: 6px 0 18px; }
+.reveal { border-top: 1px dashed var(--line); padding-top: 14px; margin: 4px 0 16px; }
+.qact { margin-top: 10px; }
+.qact.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.opts { display: grid; grid-template-columns: 1fr; gap: 8px; text-align: left; margin-top: 8px; }
+.opts.four { grid-template-columns: 1fr 1fr; }
+@media (min-width: 600px) { .opts { grid-template-columns: 1fr 1fr; } }
+.opt { font: inherit; text-align: left; border: 1px solid var(--line); background: var(--card); border-radius: 12px; padding: 13px 14px; cursor: pointer; display: flex; gap: 10px; align-items: center; color: var(--ink); min-height: 54px; font-size: .98rem; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: var(--hover); }
+.opt .on { flex: 0 0 22px; height: 22px; border-radius: 6px; background: var(--soft); color: var(--ink3); font-size: .75rem; display: flex; align-items: center; justify-content: center; font-family: var(--en); }
+.opt:disabled { cursor: default; color: var(--ink2); }
+.opt.correct { border-color: var(--good); background: var(--good-soft); color: var(--ink); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opts.four .opt { font-family: var(--en); font-size: 1.1rem; justify-content: flex-start; }
+.blank { display: inline-block; min-width: 4.5em; border-bottom: 2px solid var(--accent); margin: 0 2px; color: var(--accent); text-align: center; }
+.blank.sm { min-width: 2.2em; }
+.fill-en { font-family: var(--en); font-size: 1.25rem; line-height: 1.7; text-align: left; margin: 0 0 10px; }
+.hintbox { text-align: left; font-size: .85rem; color: var(--ink2); margin-bottom: 8px; }
+.hintbox summary { cursor: pointer; color: var(--accent); }
+.hint { font-size: .85rem; color: var(--ink3); margin: 4px 0 12px; }
+.jform { display: flex; gap: 8px; margin: 10px 0 8px; }
+.jform input { font-family: var(--en); font-size: 1.1rem; }
+.fb { text-align: left; border-width: 2px; }
+.fb.good { border-color: var(--good-line); }
+.fb.bad { border-color: var(--bad-line); }
+.fb-h { font-weight: 700; font-size: 1.05rem; margin-bottom: 6px; }
+.fb.good .fb-h { color: var(--good); }
+.fb.bad .fb-h { color: var(--bad); }
+.fb-w { font-family: var(--en); font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fb-w a { color: var(--ink); }
+.fb-w .ipa { font-weight: normal; font-size: .9rem; }
+.fb-ja { font-weight: 600; margin-bottom: 8px; }
+.fb-pat code { background: var(--accent-soft); padding: 2px 8px; border-radius: 6px; }
+.fb .en { margin-top: 8px; }
+.fb-tip { font-size: .85rem; color: var(--ink2); background: var(--soft); border-radius: 8px; padding: 8px 10px; margin: 10px 0; }
+.fb-weak { font-size: .8rem; color: var(--bad); margin: 6px 0; }
+.other, .yours { font-size: .88rem; color: var(--ink2); margin: 4px 0 8px; }
+.fb .btn.big { margin-top: 12px; }
+.result { text-align: center; }
+.score { font-family: var(--en); font-size: 1.2rem; color: var(--ink2); margin: 6px 0 18px; }
+.score b { font-size: 3rem; color: var(--ink); }
+.score span { display: block; font-size: .95rem; }
+.perfect { color: var(--good); font-weight: 600; }
+.result .ract { justify-content: center; }
+.mark { font-weight: 700; }
+.mark.good { color: var(--good); } .mark.bad { color: var(--bad); }
+
+/* 熟語集中 */
+.drills { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px; }
+@media (min-width: 600px) { .drills { grid-template-columns: repeat(3, 1fr); } }
+.drill { font: inherit; text-align: left; border: 1px solid var(--line); background: var(--card); border-radius: 12px; padding: 12px; cursor: pointer; display: flex; flex-direction: column; color: var(--ink); }
+.drill:hover { border-color: var(--accent); background: var(--hover); }
+.drill small { color: var(--ink3); font-size: .74rem; }
+.idl .row { grid-template-columns: 12px auto 1fr; }
+
+/* 苦手・記録 */
+.rec { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.rec th { text-align: left; font-size: .72rem; color: var(--ink3); font-weight: 600; padding: 6px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.rec td { padding: 9px 6px; border-bottom: 1px solid var(--soft); font-family: var(--en); white-space: nowrap; }
+.rec td:first-child { white-space: normal; }
+.rec td a { color: var(--ink); display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.rec td a small { color: var(--ink3); font-family: var(--font); }
+.rec td.bad { color: var(--bad); font-weight: 600; }
+@media (max-width: 560px) {
+  .rec thead { display: none; }
+  .rec tr { display: flex; flex-wrap: wrap; gap: 2px 12px; padding: 10px 0; border-bottom: 1px solid var(--soft); }
+  .rec td { border: 0; padding: 0; font-size: .78rem; color: var(--ink2); }
+  .rec td:first-child { width: 100%; font-size: .95rem; margin-bottom: 2px; }
+  .rec td[data-l]::before { content: attr(data-l) " "; color: var(--ink3); font-family: var(--font); }
+}
+
+/* 設定 */
+.sw { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+.rng { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.src { font-size: .82rem; color: var(--ink2); padding-left: 1.2em; columns: 2; }
+
+/* お知らせ・確認ダイアログ */
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%); z-index: 50;
+  bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 10px; font-size: .9rem;
+  max-width: calc(100% - 32px); box-shadow: 0 4px 16px var(--shadow);
+}
+.modal { position: fixed; inset: 0; z-index: 40; background: rgba(10,14,22,.45); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.modal-box { background: var(--card); color: var(--ink); border-radius: var(--radius); padding: 20px; max-width: 420px; width: 100%; border: 1px solid var(--line); }
+.modal-box p { margin: 0 0 4px; }
+.modal-box .ract { justify-content: flex-end; }
+.btn.bad.big1 { background: var(--bad); color: var(--on-accent); border-color: var(--bad); }
+.backup textarea { width: 100%; font: .78rem/1.4 ui-monospace, Menlo, Consolas, monospace; border: 1px solid var(--line); border-radius: 10px; padding: 8px; background: var(--soft2); color: var(--ink); resize: vertical; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+</style>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9Ijk2IiBmaWxsPSIjMmY1YmQzIi8+PHRleHQgeD0iMjU2IiB5PSIzMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIxMCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Mue0mjwvdGV4dD48cmVjdCB4PSIxMzYiIHk9IjM1NiIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxOCIgcng9IjkiIGZpbGw9IiNmZmYiIG9wYWNpdHk9Ii43Ii8+PC9zdmc+Cg==" type="image/svg+xml">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9Ijk2IiBmaWxsPSIjMmY1YmQzIi8+PHRleHQgeD0iMjU2IiB5PSIzMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIxMCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Mue0mjwvdGV4dD48cmVjdCB4PSIxMzYiIHk9IjM1NiIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxOCIgcng9IjkiIGZpbGw9IiNmZmYiIG9wYWNpdHk9Ii43Ii8+PC9zdmc+Cg==">
+</head>
+<body>
+<header class="topbar">
+  <a href="#/" class="brand">英検2級 <span>Vocabulary &amp; Idiom Master</span></a>
+  <a href="#/options" class="gear" aria-label="設定"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1L15 3h-4l-.4 2.7a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.4 7.4 0 0 0 1.7 1L11 21h4l.4-2.7a7.4 7.4 0 0 0 1.7-1l2.5 1 2-3.5L19.4 13zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></a>
+</header>
+<nav class="tabbar" aria-label="メインメニュー">
+  <a href="#/" data-tab="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3z"/></svg>ホーム</a>
+  <a href="#/list" data-tab="list"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h11a3 3 0 0 1 3 3v15H7a3 3 0 0 1-3-3V4a1 1 0 0 1 1-1zm2 14a1 1 0 0 0 0 2h10v-2H7zM8 7v2h8V7H8zm0 4v2h6v-2H8z"/></svg>単語帳</a>
+  <a href="#/test" data-tab="test"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>テスト</a>
+  <a href="#/idioms" data-tab="idioms"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5h8v2H3zm0 6h8v2H3zm0 6h8v2H3zm11-12h7v14h-7zm2 2v10h3V7z"/></svg>熟語</a>
+  <a href="#/weak" data-tab="weak"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-2h2zm0-4h-2V7h2z"/></svg>苦手</a>
+</nav>
+<main id="app"><p class="empty">読み込み中…</p></main>
+
+<script>window.EIKEN_SINGLE_FILE=true;</script>
+<script>
+/*
+ * 単語データの登録口。各データファイルは EIKEN.add([...]) を呼ぶだけ。
+ * フィールド仕様は docs/DATA_FORMAT.md を参照。
+ */
+(function (g) {
+  "use strict";
+  var EIKEN = g.EIKEN || { items: [], sources: [] };
+  EIKEN.add = function (list, source) {
+    for (var i = 0; i < list.length; i++) {
+      var e = list[i];
+      e.k = e.k || "w";
+      e.id = e.id || e.w;
+      e._src = source || "";
+      EIKEN.items.push(e);
+    }
+    EIKEN.sources.push({ name: source || "", count: list.length });
+  };
+  g.EIKEN = EIKEN;
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<!-- DATA:BEGIN (node tools/sync.js で自動更新) -->
+<script>
+/* 英検2級 重要熟語・表現 01 */
+EIKEN.add([
+{ w:"take advantage of", k:"id", ja:"①〜を利用する、活用する ②（人）につけ込む", pat:"take advantage of A", lv:3,
+  ex:[["You should {take advantage of} this chance to study abroad.","留学するこの機会を活用すべきだ。"],["Some people {take advantage of} elderly people's kindness.","高齢者の親切につけ込む人もいる。"]],
+  syn:["make use of","use","exploit"], tip:"make use of は中立的に「利用する」。take advantage of は「チャンスを生かす」と「人につけ込む」の両方がある。",
+  note:"advantage に冠詞は付けない。× take an advantage of", cat:["life","human"] },
+{ w:"be responsible for", k:"id", ja:"①〜に責任がある、〜を担当している ②〜の原因である", pat:"be responsible for A / doing", lv:3,
+  ex:[["She {is responsible for} training new staff.","彼女は新しい社員の研修を担当している。"],["Humans {are responsible for} most of the damage to the forests.","森林被害の大部分は人間が原因だ。"]],
+  syn:["be in charge of"], rel:["responsibility (n) 責任"], tip:"be in charge of は「担当・管理している」。be responsible for は「原因である」の意味にもなる。",
+  note:"for の後ろは名詞・動名詞。", cat:["soc","eco"] },
+{ w:"be likely to", k:"id", ja:"〜しそうである、〜する可能性が高い", pat:"S be likely to do / It is likely that ...", lv:3,
+  ex:[["It {is likely to} rain this afternoon.","今日の午後は雨が降りそうだ。"],["Children who read a lot {are likely to} do well at school.","よく本を読む子どもは学校の成績が良い傾向にある。"]],
+  ant:["be unlikely to"], rel:["likelihood (n) 可能性"], tip:"長文で「〜する傾向がある」の意味で頻出。be unlikely to は「〜しそうにない」。",
+  note:"to の後ろは動詞の原形。", cat:["sci","soc"] },
+{ w:"take part in", k:"id", ja:"〜に参加する", pat:"take part in A", lv:3,
+  ex:[["Over 100 countries {took part in} the conference.","100か国以上がその会議に参加した。"]],
+  syn:["participate in","join"], tip:"participate in と同じ。join は他動詞なので in は不要。",
+  note:"part に冠詞は付けない。play a part in A は「Aで役割を果たす」で別の意味。", cat:["soc","life"] },
+{ w:"prevent A from doing", k:"id", ja:"Aが〜するのを妨げる、防ぐ", pat:"prevent A from doing", lv:3,
+  ex:[["The rain {prevented} us {from} going on a picnic.","雨のため私たちはピクニックに行けなかった。"]],
+  syn:["keep A from doing","stop A from doing"], tip:"keep / stop A from doing も同じ形。無生物主語なら「〜のせいでAは…できない」と訳すと自然。",
+  note:"from の後ろは動名詞。× prevent A to do", cat:["life","med"] },
+{ w:"keep A from doing", k:"id", ja:"Aに〜させない", pat:"keep A from doing", lv:2,
+  ex:[["The noise {kept} me {from} sleeping well.","騒音のせいでよく眠れなかった。"]],
+  syn:["prevent A from doing","stop A from doing"], tip:"keep A doing（Aに〜させ続ける）と from の有無で意味が逆になる。",
+  note:"from を忘れると意味が変わるので注意。", cat:["life"] },
+{ w:"be aware of", k:"id", ja:"〜に気づいている、〜を認識している", pat:"be aware of A / be aware that ...", lv:3,
+  ex:[["More people {are} now {aware of} the dangers of plastic waste.","今ではより多くの人がプラスチックごみの危険性を認識している。"]],
+  syn:["be conscious of","know"], ant:["be unaware of"], rel:["awareness (n) 意識、認識"], tip:"raise awareness of A（Aへの意識を高める）は環境・社会問題の長文で頻出。",
+  note:"that節が続くときは of を付けない。", cat:["env","soc"] },
+{ w:"in terms of", k:"id", ja:"〜の観点から、〜の点で", pat:"in terms of A", lv:3,
+  ex:[["{In terms of} cost, the train is better than the plane.","費用の点では、飛行機より電車の方が良い。"]],
+  syn:["from the viewpoint of","with regard to"], tip:"ライティングで「〜の面で」と観点を示すときに便利。",
+  note:"terms は必ず複数形。", cat:["eco"] },
+{ w:"due to", k:"id", ja:"〜のために、〜が原因で", pat:"due to A", lv:3,
+  ex:[["The flight was canceled {due to} heavy snow.","大雪のためその便は欠航になった。"]],
+  syn:["because of","owing to","on account of"], tip:"because of と同じだがやや硬い。be due to do は「〜する予定だ」で別の意味。",
+  note:"to は前置詞なので後ろは名詞。節が続くなら because を使う。", cat:["life"] },
+{ w:"in addition to", k:"id", ja:"〜に加えて", pat:"in addition to A / doing", lv:3,
+  ex:[["{In addition to} English, she can speak Chinese.","英語に加えて、彼女は中国語も話せる。"]],
+  syn:["besides","as well as"], tip:"In addition,（さらに）は文頭のつなぎ言葉としてライティングで使える。",
+  note:"to は前置詞。× in addition to speak", cat:["edu"] },
+{ w:"instead of", k:"id", ja:"〜の代わりに、〜しないで", pat:"instead of A / doing", lv:3,
+  ex:[["Why don't you walk {instead of} taking the bus?","バスに乗る代わりに歩いたらどう？"]],
+  syn:["in place of","rather than"], tip:"単独の Instead,（その代わりに）は文頭・文末で副詞として使う。",
+  note:"後ろは名詞・動名詞。", cat:["life"] },
+{ w:"according to", k:"id", ja:"①〜によれば ②〜に従って", pat:"according to A", lv:3,
+  ex:[["{According to} the report, the number of visitors doubled.","報告によれば、訪問者数が2倍になった。"]],
+  tip:"長文で情報源を示す最頻出表現。according to me とは言わない（in my opinion を使う）。",
+  note:"後ろは名詞。", cat:["sci","soc"] },
+{ w:"as a result", k:"id", ja:"その結果として", pat:"As a result, ... / as a result of A", lv:3,
+  ex:[["He practiced every day. {As a result}, he won the contest.","彼は毎日練習した。その結果、コンテストで優勝した。"]],
+  syn:["consequently","therefore"], tip:"as a result of A（Aの結果として）も重要。ライティングの論理展開に便利。",
+  note:"文頭で使うときはコンマを付ける。", cat:["soc"] },
+{ w:"on the other hand", k:"id", ja:"他方では、一方で", pat:"On the other hand, ...", lv:3,
+  ex:[["Living in the city is convenient. {On the other hand}, it can be expensive.","都会暮らしは便利だ。一方で、お金がかかることもある。"]],
+  syn:["however","in contrast"], tip:"2つの事柄を対比する。長文読解の空所補充で頻出のつなぎ言葉。",
+  note:"on the one hand ..., on the other hand ... の形もある。", cat:["life"] },
+{ w:"in fact", k:"id", ja:"実際は、実は", pat:"In fact, ...", lv:3,
+  ex:[["He looks young. {In fact}, he is over 50.","彼は若く見える。実は50歳を超えている。"]],
+  syn:["actually","indeed"], tip:"前の内容を強調・補足する場合と、予想に反する事実を示す場合がある。",
+  note:"文頭・文中どちらでも使える。", cat:["life"] },
+{ w:"at least", k:"id", ja:"少なくとも", pat:"at least", lv:3,
+  ex:[["You should drink {at least} two liters of water a day.","1日に少なくとも2リットルの水を飲むべきだ。"]],
+  ant:["at most"], tip:"at most（多くても）と対で覚える。",
+  note:"数字の前に置くことが多い。", cat:["med"] },
+{ w:"in order to", k:"id", ja:"〜するために", pat:"in order to do / in order not to do", lv:3,
+  ex:[["She saves money {in order to} travel abroad.","彼女は海外旅行をするためにお金を貯めている。"]],
+  syn:["so as to","so that"], tip:"目的を明確にする表現。否定は in order not to do。",
+  note:"to の後ろは動詞の原形。", cat:["life"] },
+{ w:"as well as", k:"id", ja:"〜だけでなく…も、〜と同様に", pat:"B as well as A（AだけでなくBも）", lv:3,
+  ex:[["The app is popular with adults {as well as} children.","そのアプリは子どもだけでなく大人にも人気がある。"]],
+  syn:["not only A but also B","in addition to"], tip:"B as well as A は「AだけでなくBも」で B に重点。not only A but also B と語順が逆。",
+  note:"主語に使うと動詞は前の名詞（B）に合わせる。", cat:["life"] },
+{ w:"a number of", k:"id", ja:"いくつかの、多くの", pat:"a number of 複数名詞", lv:3,
+  ex:[["{A number of} students were absent because of the flu.","インフルエンザで何人もの生徒が欠席した。"]],
+  tip:"the number of A は「Aの数」で単数扱い。a number of A は複数扱い。",
+  note:"a large number of（非常に多くの）も頻出。", cat:["soc"] },
+{ w:"a variety of", k:"id", ja:"さまざまな", pat:"a variety of 複数名詞", lv:3,
+  ex:[["The store sells {a variety of} products from all over the world.","その店は世界中のさまざまな商品を売っている。"]],
+  syn:["various","a wide range of"], rel:["vary (v) 異なる","various (adj) さまざまな"], tip:"a wide variety of（実にさまざまな）も頻出。",
+  note:"後ろは複数名詞。", cat:["life"] },
+{ w:"be about to", k:"id", ja:"まさに〜しようとしている", pat:"be about to do", lv:2,
+  ex:[["I {was about to} leave when the phone rang.","出かけようとしたところで電話が鳴った。"]],
+  tip:"be going to より「直前」のニュアンスが強い。when節と一緒に使うことが多い。",
+  note:"未来を表す語（tomorrow など）とは一緒に使わない。", cat:["life"] },
+{ w:"be based on", k:"id", ja:"〜に基づいている", pat:"A be based on B", lv:3,
+  ex:[["The movie {is based on} a true story.","その映画は実話に基づいている。"]],
+  rel:["basis (n) 基礎","basic (adj) 基本の"], tip:"base A on B（AをBに基づかせる）の受け身。",
+  note:"on の後ろが元になるもの。", cat:["sci"] },
+{ w:"be capable of", k:"id", ja:"〜する能力がある", pat:"be capable of doing", lv:2,
+  ex:[["This robot {is capable of} understanding human speech.","このロボットは人の話を理解することができる。"]],
+  syn:["be able to"], ant:["be incapable of"], tip:"be able to do と同義だが形が違う。of の後ろは動名詞。",
+  note:"× be capable to do", cat:["sci"] },
+{ w:"be concerned about", k:"id", ja:"〜を心配している", pat:"be concerned about A", lv:3,
+  ex:[["Many parents {are concerned about} their children's screen time.","多くの親が子どもの画面を見る時間を心配している。"]],
+  syn:["be worried about"], rel:["concern (n) 心配、関心"], tip:"be concerned with A は「Aに関係している」で別の意味。",
+  note:"前置詞で意味が変わる点に注意。", cat:["soc","med"] },
+{ w:"be familiar with", k:"id", ja:"（人が）〜をよく知っている", pat:"人 be familiar with 物事", lv:3,
+  ex:[["Are you {familiar with} this area?","この辺りはよくご存じですか。"]],
+  tip:"物事 be familiar to 人（物事が人によく知られている）と主語が逆になる。",
+  note:"with と to の使い分けが頻出。", cat:["life"] },
+{ w:"be known for", k:"id", ja:"〜で知られている", pat:"be known for A", lv:3,
+  ex:[["Kyoto {is known for} its old temples.","京都は古い寺で知られている。"]],
+  syn:["be famous for"], tip:"be known as A は「Aとして知られている」、be known to 人 は「人に知られている」。",
+  note:"前置詞 for / as / to の違いに注意。", cat:["life"] },
+{ w:"be supposed to", k:"id", ja:"〜することになっている、〜するはずだ", pat:"be supposed to do", lv:3,
+  ex:[["You {are supposed to} turn off your phone during the class.","授業中は携帯電話の電源を切ることになっている。"]],
+  syn:["be expected to","should"], tip:"規則・予定・期待を表す。否定は「〜してはいけないことになっている」。",
+  note:"supposed の d を落とさない。", cat:["life","edu"] },
+{ w:"be used to doing", k:"id", ja:"〜することに慣れている", pat:"be used to A / doing", lv:3,
+  ex:[["I'm {used to} getting up early.","私は早起きに慣れている。"]],
+  syn:["be accustomed to"], tip:"used to do（以前はよく〜したものだ）と形が似ているので区別する。get used to は「慣れる（変化）」。",
+  note:"to は前置詞なので後ろは名詞・動名詞。", cat:["life"] },
+{ w:"used to do", k:"id", ja:"以前は〜したものだ、以前は〜だった", pat:"used to do", lv:3,
+  ex:[["There {used to} be a big tree in front of the station.","以前は駅前に大きな木があった。"]],
+  tip:"現在はそうではない過去の習慣・状態。be used to doing（慣れている）と混同しない。",
+  note:"to の後ろは動詞の原形。", cat:["life"] },
+{ w:"get used to", k:"id", ja:"〜に慣れる", pat:"get used to A / doing", lv:3,
+  ex:[["It took me a while to {get used to} living in a big city.","大都市での生活に慣れるまでしばらくかかった。"]],
+  syn:["become accustomed to"], tip:"be used to は「慣れている（状態）」、get used to は「慣れる（変化）」。",
+  note:"後ろは名詞・動名詞。", cat:["life"] },
+{ w:"be willing to", k:"id", ja:"〜するのをいとわない、進んで〜する", pat:"be willing to do", lv:3,
+  ex:[["Many customers {are willing to} pay more for eco-friendly products.","多くの客は環境に優しい製品にはより多く支払うことをいとわない。"]],
+  ant:["be unwilling to","be reluctant to"], tip:"「（頼まれれば）喜んで〜する」。ライティングでも使いやすい。",
+  note:"to の後ろは動詞の原形。", cat:["eco","human"] },
+{ w:"be eager to", k:"id", ja:"しきりに〜したがっている", pat:"be eager to do / be eager for A", lv:2,
+  ex:[["The students {are eager to} learn about other cultures.","生徒たちは他の文化について学びたいと強く思っている。"]],
+  syn:["be keen to","be anxious to"], tip:"want to do より強い熱意を表す。",
+  note:"to の後ろは動詞の原形。", cat:["edu"] },
+{ w:"be similar to", k:"id", ja:"〜に似ている", pat:"A be similar to B", lv:3,
+  ex:[["My opinion {is similar to} yours.","私の意見はあなたの意見と似ている。"]],
+  ant:["be different from"], rel:["similarity (n) 類似点"], tip:"be different from（〜と異なる）と対で覚える。",
+  note:"前置詞は to。", cat:["edu"] },
+{ w:"be short of", k:"id", ja:"〜が不足している", pat:"be short of A", lv:2,
+  ex:[["The hospital {is short of} nurses.","その病院は看護師が不足している。"]],
+  syn:["lack"], rel:["shortage (n) 不足"], tip:"run short of A（Aが不足してくる）も覚える。",
+  note:"「人手不足」は be short of staff / a labor shortage。", cat:["med","eco"] },
+{ w:"be worth doing", k:"id", ja:"〜する価値がある", pat:"be worth doing / be worth A", lv:3,
+  ex:[["This museum {is worth} visiting.","この博物館は訪れる価値がある。"]],
+  tip:"主語が doing の目的語になる（This museum を visit する）。× is worth to visit",
+  note:"worth は前置詞的に働き、後ろは動名詞か名詞。", cat:["life"] },
+{ w:"be in charge of", k:"id", ja:"〜を担当している、管理している", pat:"be in charge of A", lv:3,
+  ex:[["Mr. Tanaka {is in charge of} the sales department.","田中さんが営業部を担当している。"]],
+  syn:["be responsible for"], tip:"take charge of A は「Aを引き受ける」。",
+  note:"後ろは名詞・動名詞。", cat:["eco"] },
+{ w:"be in danger of", k:"id", ja:"〜の危険がある", pat:"be in danger of A / doing", lv:3,
+  ex:[["Many animals {are in danger of} extinction.","多くの動物が絶滅の危機にある。"]],
+  syn:["be at risk of"], tip:"be in danger of dying out（絶滅の危機にある）も同じ意味。",
+  note:"後ろは名詞・動名詞。", cat:["env"] },
+{ w:"be at risk", k:"id", ja:"危険にさらされている", pat:"be at risk (of A)", lv:2,
+  ex:[["People who smoke {are at} higher {risk} of heart disease.","喫煙者は心臓病になる危険性が高い。"]],
+  syn:["be in danger"], tip:"at high risk / at higher risk のように形容詞を挟むことが多い。",
+  note:"of の後ろは名詞・動名詞。", cat:["med"] },
+{ w:"be related to", k:"id", ja:"〜と関係がある", pat:"A be related to B", lv:3,
+  ex:[["Some health problems {are related to} lack of sleep.","健康問題の中には睡眠不足と関係があるものもある。"]],
+  syn:["be connected with","have something to do with"], rel:["relation (n) 関係"], tip:"be closely related to（密接に関係している）も頻出。",
+  note:"前置詞は to。", cat:["med","sci"] },
+{ w:"be suitable for", k:"id", ja:"〜に適している", pat:"be suitable for A", lv:2,
+  ex:[["This book {is suitable for} beginners.","この本は初心者向きだ。"]],
+  syn:["be fit for","be appropriate for"], tip:"suit（似合う・都合が良い）の形容詞形。",
+  note:"後ろは名詞。", cat:["life"] },
+{ w:"be faced with", k:"id", ja:"〜に直面している", pat:"be faced with A", lv:3,
+  ex:[["Many towns {are faced with} a shortage of doctors.","多くの町が医師不足に直面している。"]],
+  syn:["face","confront"], tip:"face A（Aに直面する）を受け身にした形。",
+  note:"後ろは problem, challenge などの名詞。", cat:["soc"] },
+{ w:"be proud of", k:"id", ja:"〜を誇りに思う", pat:"be proud of A / doing", lv:2,
+  ex:[["The town {is proud of} its long history.","その町は長い歴史を誇りにしている。"]],
+  syn:["take pride in"], rel:["pride (n) 誇り"], tip:"take pride in A も同じ意味（前置詞が in）。",
+  note:"後ろは名詞・動名詞。", cat:["human"] },
+{ w:"be tired of", k:"id", ja:"〜にうんざりしている、飽きている", pat:"be tired of A / doing", lv:2,
+  ex:[["I'm {tired of} eating the same food every day.","毎日同じ物を食べるのにうんざりしている。"]],
+  syn:["be sick of","be fed up with"], tip:"be tired from A は「Aで疲れている」で別の意味。",
+  note:"前置詞で意味が変わる。", cat:["life"] },
+{ w:"be crowded with", k:"id", ja:"〜で混雑している", pat:"場所 be crowded with 人", lv:2,
+  ex:[["The beach {was crowded with} tourists.","ビーチは観光客で混雑していた。"]],
+  syn:["be filled with","be packed with"], tip:"主語が場所、with の後ろが人になる。",
+  note:"前置詞は with。", cat:["life"] },
+{ w:"be independent of", k:"id", ja:"〜から独立している", pat:"be independent of A", lv:2,
+  ex:[["He wants to {be independent of} his parents.","彼は親から自立したいと思っている。"]],
+  ant:["be dependent on"], rel:["independence (n) 独立"], tip:"反対の be dependent on と前置詞が異なる（of / on）。",
+  note:"前置詞は of（from も可）。", cat:["human"] },
+{ w:"make sure", k:"id", ja:"必ず〜するようにする、確かめる", pat:"make sure (that) ... / make sure of A", lv:3,
+  ex:[["{Make sure} you lock the door when you leave.","出かけるときは必ずドアに鍵をかけてね。"]],
+  syn:["ensure","make certain"], tip:"that節の中は未来のことでも現在形を使う。",
+  note:"× make sure to lock も可（to不定詞も使える）。", cat:["life"] },
+{ w:"make use of", k:"id", ja:"〜を利用する", pat:"make use of A", lv:3,
+  ex:[["We should {make} better {use of} renewable energy.","私たちは再生可能エネルギーをもっとうまく利用すべきだ。"]],
+  syn:["use","take advantage of","utilize"], tip:"make good use of A（Aを有効に使う）のように形容詞を挟める。",
+  note:"use は名詞（発音は [juːs]）。", cat:["env","life"] },
+{ w:"make a difference", k:"id", ja:"違いを生む、影響を与える、重要である", pat:"make a difference (to A)", lv:3,
+  ex:[["Small actions can {make a} big {difference} to the environment.","小さな行動が環境に大きな違いをもたらしうる。"]],
+  tip:"make no difference（違いはない、どうでもいい）も重要。",
+  note:"big / huge などを挟むことが多い。", cat:["env","soc"] },
+{ w:"make an effort", k:"id", ja:"努力する", pat:"make an effort to do", lv:3,
+  ex:[["The city is {making an effort} to reduce waste.","市はごみを減らす努力をしている。"]],
+  syn:["try hard","strive"], tip:"make every effort to do（あらゆる努力をする）も頻出。",
+  note:"to の後ろは動詞の原形。", cat:["soc"] },
+{ w:"make progress", k:"id", ja:"進歩する、はかどる", pat:"make progress (in A)", lv:3,
+  ex:[["She has {made} great {progress} in English.","彼女は英語が大いに上達した。"]],
+  syn:["improve","advance"], tip:"progress は不可算名詞なので a を付けない。",
+  note:"× make a progress", cat:["edu"] },
+{ w:"pay attention to", k:"id", ja:"〜に注意を払う", pat:"pay attention to A", lv:3,
+  ex:[["Please {pay attention to} the safety rules.","安全規則に注意を払ってください。"]],
+  syn:["focus on","notice"], tip:"pay close attention to（細心の注意を払う）。",
+  note:"to は前置詞。", cat:["edu","life"] },
+{ w:"take care of", k:"id", ja:"〜の世話をする、〜を処理する", pat:"take care of A", lv:3,
+  ex:[["Who will {take care of} your cat while you are away?","あなたの留守中、誰が猫の世話をするの？"]],
+  syn:["look after","care for","deal with"], tip:"「（仕事・問題を）片付ける」の意味もある。",
+  note:"of の後ろは名詞。", cat:["life","human"] },
+{ w:"take place", k:"id", ja:"行われる、起こる", pat:"A take place", lv:3,
+  ex:[["The next Olympics will {take place} in Los Angeles.","次のオリンピックはロサンゼルスで開催される。"]],
+  syn:["be held","happen","occur"], tip:"予定された行事は be held、予定外の出来事は happen と使い分ける。take place は両方に使える。",
+  note:"自動詞的で受け身にしない。× be taken place", cat:["life"] },
+{ w:"take action", k:"id", ja:"行動を起こす、措置をとる", pat:"take action (to do / against A)", lv:3,
+  ex:[["We must {take action} now to stop global warming.","地球温暖化を止めるために今すぐ行動を起こさなければならない。"]],
+  syn:["take measures","take steps","act"], tip:"ライティングの結論で使いやすい。",
+  note:"action は通常無冠詞。", cat:["env","soc"] },
+{ w:"take A into account", k:"id", ja:"Aを考慮に入れる", pat:"take A into account / take into account A", lv:3,
+  ex:[["You should {take} the cost {into account} before buying a car.","車を買う前に費用を考慮すべきだ。"]],
+  syn:["consider","take A into consideration"], tip:"take A into consideration も同じ意味。",
+  note:"A が長いときは take into account A の語順になる。", cat:["eco"] },
+{ w:"take A for granted", k:"id", ja:"Aを当然のことと思う", pat:"take A for granted / take it for granted that ...", lv:3,
+  ex:[["We often {take} clean water {for granted}.","私たちはきれいな水を当たり前だと思いがちだ。"]],
+  tip:"ありがたみを忘れて当然視するニュアンス。",
+  note:"that節が続くときは take it for granted that ... の形。", cat:["life","human"] },
+{ w:"have trouble doing", k:"id", ja:"〜するのに苦労する", pat:"have trouble (in) doing / have trouble with A", lv:3,
+  ex:[["Many elderly people {have trouble} using smartphones.","多くの高齢者がスマホを使うのに苦労している。"]],
+  syn:["have difficulty doing"], tip:"have difficulty (in) doing も同じ意味。",
+  note:"× have trouble to use", cat:["life","sci"] },
+{ w:"have nothing to do with", k:"id", ja:"〜と何の関係もない", pat:"have nothing to do with A", lv:2,
+  ex:[["His success {has nothing to do with} luck.","彼の成功は運とは関係ない。"]],
+  tip:"have something to do with A（Aと何か関係がある）、have a lot to do with A（大いに関係がある）。",
+  note:"nothing / something / a lot で関係の度合いを表す。", cat:["life"] },
+{ w:"have an effect on", k:"id", ja:"〜に影響を与える", pat:"have an effect on A", lv:3,
+  ex:[["Music can {have a} positive {effect on} our mood.","音楽は私たちの気分に良い影響を与えうる。"]],
+  syn:["affect","influence","have an impact on"], tip:"effect の前に positive / negative / great などを入れることが多い。",
+  note:"前置詞は on。", cat:["med","sci"] },
+{ w:"play a role in", k:"id", ja:"〜で役割を果たす", pat:"play a (形容詞) role in A", lv:3,
+  ex:[["Bees {play an} important {role in} growing crops.","ミツバチは作物を育てるうえで重要な役割を果たしている。"]],
+  syn:["play a part in"], tip:"important / key / major などを挟むのが一般的。",
+  note:"in の後ろは名詞・動名詞。", cat:["env","sci"] },
+{ w:"keep in touch with", k:"id", ja:"〜と連絡を取り合う", pat:"keep in touch with A", lv:3,
+  ex:[["I still {keep in touch with} my friends from elementary school.","小学校の友達と今も連絡を取り合っている。"]],
+  syn:["stay in touch with"], tip:"get in touch with A は「Aと連絡を取る（1回）」。",
+  note:"touch は名詞。", cat:["human"] },
+{ w:"at the same time", k:"id", ja:"同時に、それと同時に（とはいえ）", pat:"at the same time", lv:3,
+  ex:[["The Internet is useful. {At the same time}, it can be dangerous.","インターネットは便利だ。同時に、危険なこともある。"]],
+  tip:"「同時に」の他、対比的に「しかし一方で」の意味にもなる。",
+  note:"文頭で使う場合はコンマを付ける。", cat:["life"] },
+{ w:"in advance", k:"id", ja:"前もって、事前に", pat:"in advance", lv:3,
+  ex:[["Please book your tickets {in advance}.","チケットは事前に予約してください。"]],
+  syn:["beforehand","ahead of time"], tip:"お知らせ・アナウンスで頻出。",
+  note:"文末に置くことが多い。", cat:["life"] },
+{ w:"in public", k:"id", ja:"人前で、公然と", pat:"in public", lv:2,
+  ex:[["He is shy and doesn't like speaking {in public}.","彼は内気で人前で話すのが好きではない。"]],
+  ant:["in private"], tip:"in private（内密に）と対。",
+  note:"冠詞は付けない。", cat:["human"] },
+{ w:"on purpose", k:"id", ja:"わざと、故意に", pat:"on purpose", lv:3,
+  ex:[["I'm sure he didn't break the window {on purpose}.","きっと彼はわざと窓を割ったわけではない。"]],
+  syn:["deliberately","intentionally"], ant:["by accident","by mistake"], tip:"by accident（偶然に）と対で覚える。",
+  note:"前置詞は on。", cat:["human"] },
+{ w:"by mistake", k:"id", ja:"誤って、間違えて", pat:"by mistake", lv:2,
+  ex:[["I took someone else's umbrella {by mistake}.","間違えて他人の傘を持って行ってしまった。"]],
+  syn:["by accident"], ant:["on purpose"], tip:"make a mistake（間違える）とは形が違う。",
+  note:"冠詞は付けない。", cat:["life"] },
+{ w:"for free", k:"id", ja:"無料で", pat:"for free", lv:3,
+  ex:[["Children can enter the museum {for free}.","子どもは無料で博物館に入れる。"]],
+  syn:["free of charge","for nothing"], tip:"free of charge はお知らせ文で頻出。",
+  note:"free 単独でも「無料で」の副詞になる。", cat:["life","eco"] },
+{ w:"in the long run", k:"id", ja:"長い目で見れば、結局は", pat:"in the long run", lv:3,
+  ex:[["Solar panels are expensive, but they save money {in the long run}.","太陽光パネルは高価だが、長い目で見ればお金の節約になる。"]],
+  ant:["in the short run"], tip:"ライティングで長期的な利点を述べるのに便利。",
+  note:"文頭・文末どちらにも置ける。", cat:["eco","env"] },
+{ w:"in spite of", k:"id", ja:"〜にもかかわらず", pat:"in spite of A / doing", lv:3,
+  ex:[["{In spite of} the rain, the game continued.","雨にもかかわらず試合は続いた。"]],
+  syn:["despite","even though"], tip:"despite は1語で同じ意味（× despite of）。節が続くなら although を使う。",
+  note:"後ろは名詞・動名詞。", cat:["life"] },
+{ w:"regardless of", k:"id", ja:"〜に関係なく", pat:"regardless of A", lv:2,
+  ex:[["Anyone can join the club {regardless of} age.","年齢に関係なく誰でもそのクラブに入れる。"]],
+  syn:["no matter","irrespective of"], tip:"age / gender / nationality などと一緒に使うことが多い。",
+  note:"後ろは名詞・wh節。", cat:["soc"] },
+{ w:"thanks to", k:"id", ja:"〜のおかげで", pat:"thanks to A", lv:3,
+  ex:[["{Thanks to} modern medicine, people live longer than before.","現代医学のおかげで、人々は以前より長生きしている。"]],
+  syn:["because of","owing to"], tip:"良い結果に使うことが多いが、皮肉で悪い結果に使うこともある。",
+  note:"後ろは名詞。", cat:["med","sci"] },
+{ w:"on behalf of", k:"id", ja:"〜を代表して、〜の代わりに", pat:"on behalf of A", lv:2,
+  ex:[["I'd like to thank you {on behalf of} all the members.","メンバー全員を代表してお礼を申し上げます。"]],
+  tip:"スピーチ・アナウンスの定番表現。",
+  note:"on A's behalf の形もある。", cat:["soc"] },
+{ w:"as long as", k:"id", ja:"〜する限り、〜しさえすれば", pat:"as long as S V", lv:3,
+  ex:[["You can borrow my bike {as long as} you return it by six.","6時までに返してくれるなら自転車を貸すよ。"]],
+  syn:["if","provided that"], tip:"条件を表す（〜しさえすれば）。as far as は範囲（〜する限りでは）。",
+  note:"未来のことでも節内は現在形。", cat:["life"] },
+{ w:"even if", k:"id", ja:"たとえ〜でも", pat:"even if S V", lv:3,
+  ex:[["{Even if} it rains tomorrow, the event will be held.","たとえ明日雨が降っても、イベントは開催される。"]],
+  tip:"even though は「（実際に）〜だけれども」で事実を表す。even if は仮定。",
+  note:"節内は現在形で未来を表す。", cat:["life"] },
+{ w:"in case", k:"id", ja:"〜する場合に備えて、もし〜なら", pat:"in case S V / in case of A", lv:3,
+  ex:[["Take an umbrella {in case} it rains.","雨が降るといけないから傘を持って行きなさい。"]],
+  tip:"in case of A は「Aの場合には」（in case of emergency 非常時には）。",
+  note:"節内は現在形。", cat:["life"] },
+{ w:"no longer", k:"id", ja:"もはや〜ない", pat:"no longer / not ... any longer", lv:3,
+  ex:[["This type of phone is {no longer} sold in stores.","この種類の電話はもう店では売られていない。"]],
+  syn:["not ... anymore"], tip:"not ... any longer / not ... anymore と同じ。",
+  note:"be動詞・助動詞の後、一般動詞の前に置く。", cat:["life"] },
+{ w:"not only A but also B", k:"id", ja:"AだけでなくBも", pat:"not only A but (also) B", lv:3,
+  ex:[["The festival is popular {not only} with locals {but also} with tourists.","その祭りは地元の人だけでなく観光客にも人気がある。"]],
+  syn:["B as well as A"], tip:"A と B は同じ形（名詞同士・前置詞句同士）にそろえる。",
+  note:"主語に使うと動詞は B に合わせる。", cat:["life"] },
+{ w:"so far", k:"id", ja:"今までのところ", pat:"so far", lv:3,
+  ex:[["{So far}, more than 1,000 people have signed the petition.","今までに1,000人以上が署名した。"]],
+  syn:["until now","up to now"], tip:"現在完了形と一緒に使うことが多い。",
+  note:"文頭・文末に置く。", cat:["life"] },
+{ w:"in general", k:"id", ja:"一般に、概して", pat:"in general", lv:3,
+  ex:[["{In general}, Japanese trains are very punctual.","一般に、日本の電車はとても時間に正確だ。"]],
+  syn:["generally","on the whole"], tip:"名詞の後ろに置くと「〜全般」（people in general 一般の人々）。",
+  note:"文頭で使う場合はコンマを付ける。", cat:["life"] },
+{ w:"on average", k:"id", ja:"平均して", pat:"on average", lv:3,
+  ex:[["{On average}, Japanese people live for about 84 years.","平均して日本人は約84年生きる。"]],
+  tip:"グラフ・統計の説明で頻出。",
+  note:"冠詞は付けない。", cat:["soc","sci"] },
+{ w:"in the end", k:"id", ja:"結局、最後には", pat:"in the end", lv:3,
+  ex:[["We talked for hours, and {in the end} we agreed.","何時間も話し合い、最後には意見が一致した。"]],
+  syn:["finally","eventually","after all"], tip:"at the end of A（Aの終わりに）と区別する。",
+  note:"文頭・文中・文末に置ける。", cat:["life"] },
+{ w:"prefer A to B", k:"id", ja:"BよりAを好む", pat:"prefer A to B", lv:3,
+  ex:[["I {prefer} tea {to} coffee.","私はコーヒーより紅茶が好きだ。"]],
+  syn:["like A better than B"], tip:"than ではなく to を使う。prefer to do（〜する方を好む）も重要。",
+  note:"× prefer A than B", cat:["life"] },
+{ w:"cannot help doing", k:"id", ja:"〜せずにはいられない", pat:"cannot help doing", lv:2,
+  ex:[["I {couldn't help} laughing at his joke.","彼の冗談に笑わずにはいられなかった。"]],
+  syn:["cannot help but do"], tip:"cannot help but do も同じ意味。",
+  note:"help の後ろは動名詞。", cat:["human"] },
+{ w:"spend time doing", k:"id", ja:"〜して時間を過ごす", pat:"spend 時間・お金 (on) doing / on A", lv:3,
+  ex:[["Teenagers {spend} a lot of time using smartphones.","10代は多くの時間をスマホを使って過ごしている。"]],
+  tip:"spend A on B（BにAを費やす）。× spend time to do",
+  note:"後ろは動名詞。", cat:["life"] },
+{ w:"it takes A to do", k:"id", ja:"〜するのにA（時間・労力）がかかる", pat:"It takes (人) 時間 to do", lv:3,
+  ex:[["{It takes} about an hour {to} get to the airport.","空港まで約1時間かかる。"]],
+  tip:"お金なら It costs (人) 金額 to do。",
+  note:"主語は形式主語 it。", cat:["life"] },
+{ w:"in response to", k:"id", ja:"〜に応えて、〜に反応して", pat:"in response to A", lv:2,
+  ex:[["The company changed its policy {in response to} customer feedback.","会社は客の意見に応えて方針を変更した。"]],
+  tip:"respond to A の名詞版。",
+  note:"後ろは名詞。", cat:["eco","soc"] },
+{ w:"in favor of", k:"id", ja:"〜に賛成して", pat:"be in favor of A / doing", lv:3,
+  ex:[["Most students are {in favor of} the new rule.","大半の生徒が新しい規則に賛成している。"]],
+  ant:["against"], tip:"ディベート・意見文で使える。be against A（Aに反対だ）と対。",
+  note:"後ろは名詞・動名詞。", cat:["soc"] },
+{ w:"out of order", k:"id", ja:"故障して", pat:"be out of order", lv:2,
+  ex:[["The elevator is {out of order}, so please use the stairs.","エレベーターが故障中なので階段をご利用ください。"]],
+  syn:["broken","not working"], tip:"掲示やアナウンスで頻出。",
+  note:"公共の機械に使う。", cat:["life"] },
+{ w:"up to date", k:"id", ja:"最新の", pat:"be up to date / up-to-date 名詞", lv:2,
+  ex:[["It is important to keep your software {up to date}.","ソフトウェアを最新の状態に保つことは大切だ。"]],
+  ant:["out of date"], rel:["update (v) 更新する"], tip:"名詞の前ではハイフンを付ける（up-to-date information）。",
+  note:"反対は out of date（時代遅れの）。", cat:["sci"] },
+{ w:"by the time", k:"id", ja:"〜するまでには", pat:"by the time S V", lv:2,
+  ex:[["{By the time} we arrived, the concert had already started.","私たちが着くまでには、コンサートはすでに始まっていた。"]],
+  tip:"until（〜までずっと）と by（〜までに）の違いがそのまま当てはまる。",
+  note:"未来のことでも節内は現在形。", cat:["life"] },
+{ w:"in return", k:"id", ja:"お返しに、見返りに", pat:"in return (for A)", lv:2,
+  ex:[["She helped me with math, and {in return} I taught her English.","彼女が数学を教えてくれ、お返しに私は英語を教えた。"]],
+  tip:"in return for A（Aのお返しに）。",
+  note:"冠詞は付けない。", cat:["human"] },
+{ w:"little by little", k:"id", ja:"少しずつ", pat:"little by little", lv:2,
+  ex:[["My English is improving {little by little}.","私の英語は少しずつ上達している。"]],
+  syn:["gradually","step by step"], tip:"step by step（一歩ずつ）も同様の表現。",
+  note:"副詞として文末に置くことが多い。", cat:["edu"] },
+{ w:"one after another", k:"id", ja:"次々に", pat:"one after another", lv:2,
+  ex:[["New stores opened {one after another} near the station.","駅の近くに新しい店が次々にオープンした。"]],
+  syn:["one by one"], tip:"one by one は「1つずつ」。",
+  note:"副詞として使う。", cat:["life"] },
+{ w:"for the sake of", k:"id", ja:"〜のために", pat:"for the sake of A", lv:2,
+  ex:[["He moved to the countryside {for the sake of} his health.","彼は健康のために田舎へ引っ越した。"]],
+  syn:["for the benefit of"], tip:"for A's sake（Aのために）の形もある。",
+  note:"後ろは名詞。", cat:["med"] },
+{ w:"with the help of", k:"id", ja:"〜の助けを借りて", pat:"with the help of A", lv:2,
+  ex:[["{With the help of} AI, doctors can find diseases earlier.","AIの助けを借りて、医師は病気をより早く発見できる。"]],
+  tip:"with A's help の形もある。",
+  note:"後ろは名詞。", cat:["sci","med"] },
+{ w:"had better", k:"id", ja:"〜した方がよい（しないとまずい）", pat:"had better do / had better not do", lv:2,
+  ex:[["You {had better} see a doctor soon.","すぐに医者に診てもらった方がいいよ。"]],
+  syn:["should"], tip:"「そうしないと困ったことになる」という強い忠告。目上の人には should が無難。",
+  note:"否定は had better not do。", cat:["life"] },
+{ w:"would rather", k:"id", ja:"むしろ〜したい", pat:"would rather do (than do)", lv:2,
+  ex:[["I {would rather} stay home than go out in this rain.","この雨の中出かけるより、家にいたい。"]],
+  syn:["prefer to do"], tip:"than の後ろも動詞の原形。",
+  note:"短縮形は I'd rather。", cat:["life"] },
+{ w:"there is no doubt that", k:"id", ja:"〜ということは疑いない", pat:"There is no doubt that ...", lv:2,
+  ex:[["{There is no doubt that} smartphones have changed our lives.","スマートフォンが私たちの生活を変えたことは疑いない。"]],
+  syn:["certainly","without doubt"], tip:"ライティングの主張を強める表現として使える。",
+  note:"doubt の後ろは that節。", cat:["soc"] },
+{ w:"more and more", k:"id", ja:"ますます多くの、ますます", pat:"more and more A / 比較級 and 比較級", lv:3,
+  ex:[["{More and more} people are working from home.","ますます多くの人が在宅勤務をしている。"]],
+  syn:["an increasing number of"], tip:"an increasing number of A（ますます多くのA）は長文で頻出の言い換え。",
+  note:"後ろの名詞が複数なら動詞も複数形。", cat:["soc"] },
+{ w:"from now on", k:"id", ja:"今後は、これからは", pat:"from now on", lv:2,
+  ex:[["{From now on}, I will walk to school every day.","これからは毎日歩いて学校に行くつもりだ。"]],
+  tip:"決意を述べるときによく使う。",
+  note:"文頭・文末に置く。", cat:["life"] },
+{ w:"at once", k:"id", ja:"①すぐに ②同時に", pat:"at once", lv:2,
+  ex:[["Please call the police {at once}.","すぐに警察に電話してください。"]],
+  syn:["immediately","right away"], tip:"all at once は「突然」。",
+  note:"文末に置くことが多い。", cat:["life"] },
+{ w:"all of a sudden", k:"id", ja:"突然", pat:"all of a sudden", lv:2,
+  ex:[["{All of a sudden}, the lights went out.","突然、明かりが消えた。"]],
+  syn:["suddenly","all at once"], tip:"suddenly と同じ意味の熟語。",
+  note:"文頭で使うことが多い。", cat:["life"] }
+], "idioms-01");
+
+</script>
+<script>
+/* 英検2級 重要句動詞 01
+ * note の「分離可」＝ 目的語を動詞と副詞の間に置ける（代名詞なら必ず間に置く）
+ *       「分離不可」＝ 前置詞の後ろに目的語を置く
+ */
+EIKEN.add([
+{ w:"deal with", k:"ph", ja:"〜に対処する、〜を扱う", pat:"deal with A", lv:3,
+  ex:[["The city has to {deal with} the problem of traffic jams.","市は交通渋滞の問題に対処しなければならない。"],["This book {deals with} the history of Japanese food.","この本は日本食の歴史を扱っている。"]],
+  syn:["handle","cope with","tackle"], tip:"cope with は「（困難を）何とか切り抜ける」ニュアンスが強い。deal with は問題処理・話題を扱う意味まで幅広い。",
+  note:"分離不可。deal with it（× deal it with）。過去形は dealt [delt]。", cat:["soc"] },
+{ w:"come up with", k:"ph", ja:"（考え・案）を思いつく、考え出す", pat:"come up with A", lv:3,
+  ex:[["She {came up with} a great idea for the school festival.","彼女は文化祭のためのすばらしいアイデアを思いついた。"]],
+  syn:["think of","invent"], tip:"think of より「（解決策などを）ひねり出す」ニュアンス。目的語は idea, plan, solution など。",
+  note:"分離不可。3語で1つの他動詞として扱う。", cat:["edu"] },
+{ w:"carry out", k:"ph", ja:"〜を実行する、実施する", pat:"carry out A / carry A out", lv:3,
+  ex:[["Scientists {carried out} an experiment to test the theory.","科学者たちはその理論を検証するための実験を行った。"]],
+  syn:["conduct","perform","do"], tip:"目的語は experiment, survey, research, plan など。「計画・調査を実行する」で頻出。",
+  note:"分離可。代名詞は carry it out の語順。", cat:["sci"] },
+{ w:"put off", k:"ph", ja:"〜を延期する", pat:"put off A / put A off / put off doing", lv:3,
+  ex:[["We had to {put} the meeting {off} until next week.","私たちは会議を来週まで延期しなければならなかった。"],["Don't {put off} doing your homework.","宿題をするのを先延ばしにしてはいけない。"]],
+  syn:["postpone","delay"], tip:"postpone は硬い1語の同義語。call off（中止する）と混同しない。",
+  note:"分離可。put it off（× put off it）。後ろに動詞を置くときは動名詞。", cat:["life"] },
+{ w:"figure out", k:"ph", ja:"〜を理解する、〜を解決する、わかる", pat:"figure out A / figure A out / figure out wh-節", lv:3,
+  ex:[["I couldn't {figure out} how to use the new software.","新しいソフトの使い方がわからなかった。"]],
+  syn:["work out","understand","solve"], tip:"考えた末に「わかる・答えを出す」。find out は「（調べて事実を）知る」。",
+  note:"分離可。figure it out。how / why などの疑問詞節を続けることが多い。", cat:["edu"] },
+{ w:"account for", k:"ph", ja:"①（割合）を占める ②〜を説明する、〜の原因となる", pat:"account for A", lv:3,
+  ex:[["Young people {account for} about 30 percent of the users.","若者が利用者の約30％を占めている。"],["Bad weather {accounted for} the delay.","悪天候が遅延の原因だった。"]],
+  syn:["make up","explain"], tip:"グラフ・割合の説明で「〜を占める」の意味が特に頻出。",
+  note:"分離不可。", cat:["eco","soc"] },
+{ w:"call off", k:"ph", ja:"〜を中止する", pat:"call off A / call A off", lv:3,
+  ex:[["The baseball game was {called off} because of the rain.","雨のため野球の試合は中止になった。"]],
+  syn:["cancel"], tip:"put off（延期）との違いが頻出。call off ＝ cancel（中止）。",
+  note:"分離可。call it off。", cat:["life"] },
+{ w:"bring about", k:"ph", ja:"〜を引き起こす、もたらす", pat:"bring about A", lv:3,
+  ex:[["The Internet has {brought about} great changes in our lives.","インターネットは私たちの生活に大きな変化をもたらした。"]],
+  syn:["cause","lead to","result in"], tip:"目的語は change, revolution など。cause は悪い結果が多いが、bring about は良い変化にも使う。",
+  note:"目的語が長いので通常 bring about A の語順。", cat:["soc","sci"] },
+{ w:"bring up", k:"ph", ja:"①〜を育てる ②（話題）を持ち出す", pat:"bring up A / bring A up", lv:3,
+  ex:[["She was {brought up} by her grandparents.","彼女は祖父母に育てられた。"],["He {brought up} an interesting topic at the meeting.","彼は会議で興味深い話題を持ち出した。"]],
+  syn:["raise","mention"], tip:"「育てる」は raise とも言える。grow up は自動詞で「育つ」。",
+  note:"分離可。受け身の be brought up（育てられる）が頻出。", cat:["human"] },
+{ w:"look into", k:"ph", ja:"〜を調査する", pat:"look into A", lv:3,
+  ex:[["The police are {looking into} the cause of the fire.","警察は火事の原因を調べている。"]],
+  syn:["investigate","examine"], tip:"「中をのぞき込む」から「調査する」。investigate の口語的表現。",
+  note:"分離不可。look into it。", cat:["soc"] },
+{ w:"look up to", k:"ph", ja:"〜を尊敬する", pat:"look up to A", lv:3,
+  ex:[["Many young players {look up to} him as a role model.","多くの若い選手が彼を手本として尊敬している。"]],
+  syn:["respect","admire"], ant:["look down on"], tip:"反対は look down on（〜を見下す）。up / down のイメージで覚える。",
+  note:"分離不可。", cat:["human"] },
+{ w:"look down on", k:"ph", ja:"〜を見下す、軽蔑する", pat:"look down on A", lv:2,
+  ex:[["You should not {look down on} people because of their jobs.","職業で人を見下すべきではない。"]],
+  syn:["despise"], ant:["look up to"], tip:"look up to（尊敬する）と対で覚える。",
+  note:"分離不可。", cat:["human"] },
+{ w:"look forward to", k:"ph", ja:"〜を楽しみに待つ", pat:"look forward to A / doing", lv:3,
+  ex:[["I'm {looking forward to} seeing you again.","またお会いできるのを楽しみにしています。"]],
+  tip:"手紙・メールの結びの定番。I look forward to hearing from you.（お返事をお待ちしています）",
+  note:"to は前置詞なので後ろは名詞か動名詞。× look forward to see", cat:["human","life"] },
+{ w:"look after", k:"ph", ja:"〜の世話をする", pat:"look after A", lv:3,
+  ex:[["My sister {looks after} our dog when we travel.","私たちが旅行するとき、姉が犬の世話をしてくれる。"]],
+  syn:["take care of","care for"], tip:"take care of と同じ意味。care for は「〜の世話をする／〜を好む」。",
+  note:"分離不可。", cat:["life","human"] },
+{ w:"make up for", k:"ph", ja:"〜の埋め合わせをする、〜を補う", pat:"make up for A", lv:3,
+  ex:[["He worked late to {make up for} the time he had lost.","彼は失った時間を取り戻すために遅くまで働いた。"]],
+  syn:["compensate for"], tip:"compensate for は硬い同義表現。lost time / mistake などを目的語にとる。",
+  note:"分離不可。", cat:["life"] },
+{ w:"make out", k:"ph", ja:"〜を理解する、〜を見分ける・聞き取る", pat:"make out A / make A out", lv:2,
+  ex:[["It was so dark that I couldn't {make out} the sign.","とても暗かったので標識が読み取れなかった。"]],
+  syn:["understand","figure out"], tip:"否定文で「（見えにくい・聞こえにくいものが）わからない」と使うことが多い。",
+  note:"分離可。", cat:["life"] },
+{ w:"make up", k:"ph", ja:"①〜を構成する ②（話）をでっち上げる ③仲直りする", pat:"make up A / be made up of A", lv:2,
+  ex:[["Women {make up} more than half of the members.","女性がメンバーの半数以上を占めている。"],["He {made up} an excuse for being late.","彼は遅刻の言い訳をでっち上げた。"]],
+  syn:["form","compose","invent"], tip:"be made up of A ＝ consist of A（Aから成る）。make up with A は「Aと仲直りする」。",
+  note:"分離可（構成する の意味では通常 make up A）。", cat:["soc","human"] },
+{ w:"put up with", k:"ph", ja:"〜を我慢する", pat:"put up with A", lv:3,
+  ex:[["I can't {put up with} the noise from upstairs any longer.","上の階からの騒音にはもう我慢できない。"]],
+  syn:["stand","bear","tolerate"], tip:"stand / bear / tolerate は1語の同義語。否定文でよく使う。",
+  note:"分離不可。", cat:["life","human"] },
+{ w:"put out", k:"ph", ja:"（火・明かり）を消す", pat:"put out A / put A out", lv:2,
+  ex:[["The firefighters quickly {put out} the fire.","消防士たちはすぐに火を消し止めた。"]],
+  syn:["extinguish"], tip:"「（火を）外に出す」ではなく「消す」。",
+  note:"分離可。put it out。", cat:["life"] },
+{ w:"set up", k:"ph", ja:"〜を設立する、設置する、準備する", pat:"set up A / set A up", lv:3,
+  ex:[["They {set up} a company to sell local vegetables online.","彼らは地元の野菜をネットで売る会社を立ち上げた。"]],
+  syn:["establish","found"], tip:"establish の口語的表現。テントや機器を「組み立てる・設置する」にも使う。",
+  note:"分離可。", cat:["eco"] },
+{ w:"give up", k:"ph", ja:"〜をあきらめる、やめる", pat:"give up A / give up doing", lv:3,
+  ex:[["He {gave up} smoking for his health.","彼は健康のためにたばこをやめた。"]],
+  syn:["quit","abandon"], tip:"後ろに動詞を置くなら動名詞（give up doing）。",
+  note:"分離可。give it up。", cat:["med","life"] },
+{ w:"give in", k:"ph", ja:"屈する、降参する", pat:"give in (to A)", lv:2,
+  ex:[["The company finally {gave in} to the workers' demands.","会社はついに労働者の要求に屈した。"]],
+  syn:["yield","surrender"], tip:"give in to A（Aに屈する）。hand in / turn in（提出する）と混同しない。",
+  note:"自動詞的に使う。", cat:["soc"] },
+{ w:"turn down", k:"ph", ja:"①〜を断る ②（音量など）を下げる", pat:"turn down A / turn A down", lv:3,
+  ex:[["She {turned down} the job offer because the salary was too low.","給料が低すぎたので彼女はその仕事の申し出を断った。"],["Could you {turn} the TV {down}?","テレビの音量を下げてもらえますか。"]],
+  syn:["refuse","reject","decline"], ant:["turn up"], tip:"offer / invitation / request が目的語なら「断る」。",
+  note:"分離可。turn it down。", cat:["human"] },
+{ w:"turn out", k:"ph", ja:"〜だとわかる、結局〜になる", pat:"turn out (to be) A / It turns out that ...", lv:3,
+  ex:[["The rumor {turned out} to be false.","そのうわさは誤りだとわかった。"]],
+  syn:["prove"], tip:"prove (to be) A も同じ意味。It turned out that ...（〜ということがわかった）。",
+  note:"自動詞として使い、後ろに to be＋補語や that節が続く。", cat:["life"] },
+{ w:"turn in", k:"ph", ja:"〜を提出する", pat:"turn in A / turn A in", lv:2,
+  ex:[["Please {turn in} your reports by Friday.","金曜日までにレポートを提出してください。"]],
+  syn:["hand in","submit"], tip:"hand in / submit と同義。",
+  note:"分離可。", cat:["edu"] },
+{ w:"hand in", k:"ph", ja:"〜を提出する", pat:"hand in A / hand A in", lv:3,
+  ex:[["You must {hand in} the application form by the end of the month.","今月末までに申込書を提出しなければならない。"]],
+  syn:["turn in","submit"], tip:"学校の課題や書類の提出で使う。",
+  note:"分離可。hand it in。", cat:["edu"] },
+{ w:"find out", k:"ph", ja:"〜を（調べて）知る、明らかにする", pat:"find out A / find out wh-節/that節", lv:3,
+  ex:[["I {found out} that the store was closed on Mondays.","その店は月曜日が定休日だとわかった。"]],
+  syn:["discover","learn"], tip:"find は「（物を）見つける」、find out は「（情報・事実を）知る」。",
+  note:"分離可だが、節が続くことが多い。", cat:["life"] },
+{ w:"point out", k:"ph", ja:"〜を指摘する", pat:"point out A / point out that ...", lv:3,
+  ex:[["The teacher {pointed out} some mistakes in my essay.","先生は私の作文のいくつかの誤りを指摘した。"]],
+  syn:["indicate","mention"], tip:"長文で「専門家は〜と指摘している」（Experts point out that ...）の形で頻出。",
+  note:"分離可。", cat:["edu","sci"] },
+{ w:"pick up", k:"ph", ja:"①〜を拾い上げる ②（車で）迎えに行く ③（自然に）身につける", pat:"pick up A / pick A up", lv:3,
+  ex:[["I'll {pick} you {up} at the station at six.","6時に駅まで車で迎えに行くよ。"],["She {picked up} Spanish while living in Mexico.","彼女はメキシコに住んでいる間にスペイン語を身につけた。"]],
+  syn:["collect","learn"], tip:"「（言語・習慣を）自然に覚える」の意味は英検でよく出る。",
+  note:"分離可。pick him up。", cat:["life","edu"] },
+{ w:"run out of", k:"ph", ja:"〜を使い果たす、〜がなくなる", pat:"run out of A", lv:3,
+  ex:[["We are {running out of} time, so let's hurry.","時間がなくなってきたので急ごう。"]],
+  syn:["use up"], tip:"「A がなくなる」は A runs out とも言える（Time is running out.）。",
+  note:"分離不可。主語は「人」。", cat:["life","env"] },
+{ w:"keep up with", k:"ph", ja:"〜に遅れずについていく", pat:"keep up with A", lv:3,
+  ex:[["It is hard to {keep up with} the latest technology.","最新の技術についていくのは難しい。"]],
+  syn:["stay up to date with"], tip:"keep up with は「遅れない状態を保つ」、catch up with は「遅れている状態から追いつく」。",
+  note:"分離不可。", cat:["sci","edu"] },
+{ w:"catch up with", k:"ph", ja:"〜に追いつく", pat:"catch up with A", lv:3,
+  ex:[["He studied hard to {catch up with} the rest of the class.","彼はクラスのほかの生徒に追いつくため一生懸命勉強した。"]],
+  syn:["overtake"], tip:"keep up with（ついていく）との違いを確認。",
+  note:"分離不可。", cat:["edu"] },
+{ w:"get along with", k:"ph", ja:"〜とうまくやっていく、仲良くする", pat:"get along with A", lv:3,
+  ex:[["She {gets along} well {with} her classmates.","彼女はクラスメートと仲良くやっている。"]],
+  syn:["get on with"], tip:"well を入れて get along well with A とすることが多い。",
+  note:"分離不可（well は along の後ろに入る）。", cat:["human"] },
+{ w:"get over", k:"ph", ja:"〜から回復する、〜を乗り越える", pat:"get over A", lv:3,
+  ex:[["It took her a long time to {get over} the shock.","彼女がそのショックから立ち直るのに長い時間がかかった。"]],
+  syn:["recover from","overcome"], tip:"病気・ショック・困難のいずれにも使える。",
+  note:"分離不可。get over it。", cat:["med","human"] },
+{ w:"go through", k:"ph", ja:"①（困難）を経験する ②〜を詳しく調べる", pat:"go through A", lv:3,
+  ex:[["Many families {went through} hard times after the war.","戦後、多くの家族がつらい時期を経験した。"]],
+  syn:["experience","undergo","examine"], tip:"「〜を通り抜ける」から「（つらいこと）を経験する」。",
+  note:"分離不可。", cat:["life","human"] },
+{ w:"fill out", k:"ph", ja:"（書類）に記入する", pat:"fill out A / fill A out", lv:2,
+  ex:[["Please {fill out} this form and give it to the receptionist.","この用紙に記入して受付係に渡してください。"]],
+  syn:["fill in","complete"], tip:"fill in もほぼ同じ意味（イギリス英語で多い）。",
+  note:"分離可。", cat:["life"] },
+{ w:"break down", k:"ph", ja:"①故障する ②〜を分解する ③（感情的に）取り乱す", pat:"break down / break down A", lv:3,
+  ex:[["My car {broke down} on the way to work.","通勤途中で車が故障した。"],["Bacteria {break down} food waste into soil.","細菌は生ごみを分解して土にする。"]],
+  syn:["stop working","decompose"], tip:"機械が「故障する」の意味が最頻出。名詞 breakdown（故障）。",
+  note:"「分解する」は他動詞で分離可。", cat:["life","sci"] },
+{ w:"break out", k:"ph", ja:"（戦争・火事・病気が）突然起こる", pat:"break out", lv:3,
+  ex:[["A fire {broke out} in the hotel last night.","昨夜ホテルで火事が発生した。"]],
+  syn:["start","occur"], tip:"主語は war, fire, disease など悪いこと。名詞 outbreak（発生）。",
+  note:"自動詞。受け身にはならない。", cat:["soc","med"] },
+{ w:"set off", k:"ph", ja:"①出発する ②〜を引き起こす、作動させる", pat:"set off / set off A", lv:2,
+  ex:[["We {set off} early in the morning to avoid traffic.","渋滞を避けるため私たちは朝早く出発した。"]],
+  syn:["set out","leave","trigger"], tip:"set out も「出発する」。set off an alarm は「警報を鳴らす」。",
+  note:"「出発する」は自動詞。", cat:["life"] },
+{ w:"show up", k:"ph", ja:"現れる、姿を見せる", pat:"show up", lv:3,
+  ex:[["Only five people {showed up} for the meeting.","会議に来たのはたった5人だった。"]],
+  syn:["turn up","appear","arrive"], tip:"turn up も同じ意味。口語的な表現。",
+  note:"自動詞。", cat:["life"] },
+{ w:"show off", k:"ph", ja:"〜を見せびらかす", pat:"show off (A)", lv:2,
+  ex:[["He likes to {show off} his new smartphone.","彼は新しいスマホを見せびらかすのが好きだ。"]],
+  tip:"日本語の「ショーオフ」と同じく、自慢げに見せるマイナスのニュアンス。",
+  note:"分離可。", cat:["human"] },
+{ w:"take over", k:"ph", ja:"〜を引き継ぐ、支配する", pat:"take over A / take A over", lv:3,
+  ex:[["She {took over} her father's business when he retired.","父親が引退したとき、彼女が事業を引き継いだ。"]],
+  syn:["succeed to","inherit"], tip:"take over from A（Aから引き継ぐ）の形もある。",
+  note:"分離可。", cat:["eco"] },
+{ w:"take off", k:"ph", ja:"①離陸する ②〜を脱ぐ ③（急に）売れ出す・成功する", pat:"take off / take off A", lv:3,
+  ex:[["The plane {took off} on time.","飛行機は定刻に離陸した。"],["Please {take off} your shoes here.","ここで靴を脱いでください。"]],
+  ant:["land","put on"], tip:"「（商品・事業が）急に人気になる」の意味も長文で出る。",
+  note:"「脱ぐ」は分離可（take it off）。", cat:["life"] },
+{ w:"take up", k:"ph", ja:"①（趣味など）を始める ②（時間・場所）を取る", pat:"take up A / take A up", lv:3,
+  ex:[["My father {took up} golf after he retired.","父は退職後にゴルフを始めた。"],["This sofa {takes up} too much space.","このソファーは場所を取りすぎる。"]],
+  syn:["start","occupy"], tip:"「（新しい趣味・仕事）を始める」の意味が頻出。",
+  note:"分離可。", cat:["life"] },
+{ w:"take after", k:"ph", ja:"（親など）に似ている", pat:"take after A", lv:2,
+  ex:[["She {takes after} her mother in many ways.","彼女は多くの点で母親に似ている。"]],
+  syn:["resemble"], tip:"血縁関係のある年上の人に似ている場合に使う。進行形にはしない。",
+  note:"分離不可。", cat:["human"] },
+{ w:"cut down on", k:"ph", ja:"〜の量を減らす", pat:"cut down on A", lv:3,
+  ex:[["The doctor told him to {cut down on} salt.","医者は彼に塩分を控えるように言った。"]],
+  syn:["reduce","cut back on"], tip:"食べ物・出費などを「減らす」。cut back on もほぼ同じ。",
+  note:"分離不可。", cat:["med","eco"] },
+{ w:"depend on", k:"ph", ja:"①〜に頼る ②〜次第である", pat:"depend on A (for B)", lv:3,
+  ex:[["Japan {depends on} other countries for most of its energy.","日本はエネルギーの大半を他国に頼っている。"],["Whether we go or not {depends on} the weather.","行くかどうかは天気次第だ。"]],
+  syn:["rely on","count on"], tip:"「〜次第だ」の意味で It depends.（場合によるね）も会話で頻出。",
+  note:"depend on A for B（BをAに頼る）。", cat:["eco","life"] },
+{ w:"rely on", k:"ph", ja:"〜に頼る、〜を当てにする", pat:"rely on A (for B) / rely on A to do", lv:3,
+  ex:[["Many elderly people {rely on} their families for help.","多くの高齢者は家族の助けに頼っている。"]],
+  syn:["depend on","count on"], rel:["reliable (adj) 信頼できる","reliance (n) 依存"], tip:"depend on とほぼ同義。rely on A to do（Aが〜してくれると当てにする）。",
+  note:"分離不可。", cat:["soc","human"] },
+{ w:"count on", k:"ph", ja:"〜を当てにする、頼りにする", pat:"count on A (to do)", lv:2,
+  ex:[["You can {count on} me to help you.","手伝うから私を当てにしていいよ。"]],
+  syn:["rely on","depend on"], tip:"会話でよく使う口語的表現。",
+  note:"分離不可。", cat:["human"] },
+{ w:"consist of", k:"ph", ja:"〜から成る", pat:"consist of A", lv:3,
+  ex:[["The committee {consists of} ten members.","委員会は10人のメンバーで構成されている。"]],
+  syn:["be made up of","be composed of"], tip:"consist in A は「（本質が）Aにある」で別の意味。",
+  note:"受け身・進行形にしない。× is consisted of", cat:["soc"] },
+{ w:"result in", k:"ph", ja:"〜という結果になる、〜をもたらす", pat:"原因 result in 結果", lv:3,
+  ex:[["The heavy rain {resulted in} serious flooding.","大雨は深刻な洪水をもたらした。"]],
+  syn:["lead to","cause","bring about"], tip:"result in の後ろは「結果」、result from の後ろは「原因」。前置詞で向きが逆になる。",
+  note:"主語が原因、目的語が結果。", cat:["env","soc"] },
+{ w:"result from", k:"ph", ja:"〜から生じる、〜が原因である", pat:"結果 result from 原因", lv:3,
+  ex:[["Many health problems {result from} a lack of exercise.","多くの健康問題は運動不足から生じる。"]],
+  syn:["be caused by","stem from"], tip:"result in（結果になる）と向きが逆。from＝「〜から（生じる）」と考える。",
+  note:"主語が結果、目的語が原因。", cat:["med","soc"] },
+{ w:"lead to", k:"ph", ja:"〜につながる、〜を引き起こす", pat:"原因 lead to 結果", lv:3,
+  ex:[["Eating too much fast food can {lead to} health problems.","ファストフードの食べすぎは健康問題につながることがある。"]],
+  syn:["result in","cause","bring about"], tip:"ライティングで「〜につながる」と理由を述べる際に非常に便利。to は前置詞なので後ろは名詞・動名詞。",
+  note:"過去形は led。× lead to do", cat:["med","soc"] },
+{ w:"contribute to", k:"ph", ja:"〜に貢献する、〜の一因となる", pat:"contribute to A", lv:3,
+  ex:[["Volunteers {contributed} greatly {to} the success of the event.","ボランティアはイベントの成功に大きく貢献した。"],["Car exhaust {contributes to} air pollution.","車の排気ガスは大気汚染の一因となっている。"]],
+  rel:["contribution (n) 貢献"], tip:"良い意味（貢献する）と悪い意味（一因となる）の両方がある。",
+  note:"to は前置詞。make a contribution to A も同じ意味。", cat:["soc","env"] },
+{ w:"belong to", k:"ph", ja:"〜に所属する、〜のものである", pat:"belong to A", lv:3,
+  ex:[["This land {belongs to} the city.","この土地は市の所有だ。"]],
+  rel:["belongings (n) 所持品"], tip:"状態を表すので進行形にしない。× I'm belonging to ...",
+  note:"分離不可。", cat:["soc","life"] },
+{ w:"apply for", k:"ph", ja:"〜に応募する、〜を申し込む", pat:"apply for A", lv:3,
+  ex:[["She {applied for} a job at a travel agency.","彼女は旅行会社の仕事に応募した。"]],
+  rel:["application (n) 申し込み","applicant (n) 応募者"], tip:"apply for A（Aを求めて申し込む）、apply to A（Aに当てはまる／A（組織）に申し込む）。",
+  note:"apply to a university for a scholarship（大学に奨学金を申し込む）のように組み合わせることも。", cat:["eco","edu"] },
+{ w:"apply to", k:"ph", ja:"〜に当てはまる、適用される", pat:"A apply to B", lv:2,
+  ex:[["These rules {apply to} all students.","これらの規則はすべての生徒に適用される。"]],
+  syn:["be true of"], tip:"apply A to B は「AをBに応用・適用する」。",
+  note:"apply for（応募する）と前置詞で意味が変わる。", cat:["soc","edu"] },
+{ w:"focus on", k:"ph", ja:"〜に集中する、焦点を当てる", pat:"focus on A / focus A on B", lv:3,
+  ex:[["This year, our club will {focus on} training young members.","今年、私たちのクラブは若いメンバーの育成に力を入れる。"]],
+  syn:["concentrate on"], tip:"concentrate on とほぼ同じ。focus A on B（AをBに集中させる）。",
+  note:"on の後ろは名詞・動名詞。", cat:["edu"] },
+{ w:"participate in", k:"ph", ja:"〜に参加する", pat:"participate in A", lv:3,
+  ex:[["More than 300 people {participated in} the beach cleanup.","300人以上が海岸清掃に参加した。"]],
+  syn:["take part in","join"], rel:["participation (n) 参加","participant (n) 参加者"], tip:"take part in と同じ。join は他動詞なので in は不要。",
+  note:"× participate the event", cat:["soc","life"] },
+{ w:"refer to", k:"ph", ja:"①〜に言及する ②〜を参照する ③〜を指す", pat:"refer to A / refer to A as B", lv:3,
+  ex:[["The speaker {referred to} the problem of food waste.","講演者は食品ロスの問題に言及した。"],["Young people born after 1997 are often {referred to} as Generation Z.","1997年以降に生まれた若者は、しばしばZ世代と呼ばれる。"]],
+  syn:["mention","consult"], rel:["reference (n) 言及、参照"], tip:"refer to A as B（AをBと呼ぶ）は長文で頻出。",
+  note:"分離不可。過去形は referred（r を重ねる）。", cat:["edu"] },
+{ w:"stand for", k:"ph", ja:"①（略語などが）〜を表す ②〜を支持する", pat:"A stand for B", lv:3,
+  ex:[["\"UN\" {stands for} the United Nations.","「UN」は国際連合を表す。"]],
+  syn:["represent","mean"], tip:"略語の説明で最頻出。進行形にはしない。",
+  note:"分離不可。", cat:["soc"] },
+{ w:"come across", k:"ph", ja:"〜に偶然出会う、偶然見つける", pat:"come across A", lv:3,
+  ex:[["I {came across} an old photo while cleaning my room.","部屋を掃除していて古い写真を偶然見つけた。"]],
+  syn:["run into","find by chance"], tip:"人にも物にも使える。run into は主に人と偶然会うとき。",
+  note:"分離不可。", cat:["life"] },
+{ w:"run into", k:"ph", ja:"①〜に偶然会う ②（困難）にぶつかる", pat:"run into A", lv:2,
+  ex:[["I {ran into} my old teacher at the supermarket.","スーパーで昔の先生にばったり会った。"],["The project {ran into} financial problems.","その計画は資金難にぶつかった。"]],
+  syn:["bump into","come across","encounter"], tip:"bump into も「偶然会う」の口語表現。",
+  note:"分離不可。", cat:["life","human"] },
+{ w:"drop out", k:"ph", ja:"（学校など）を中退する、脱落する", pat:"drop out (of A)", lv:2,
+  ex:[["He {dropped out} of college to start his own business.","彼は自分の事業を始めるために大学を中退した。"]],
+  rel:["dropout (n) 中退者"], tip:"drop out of school（学校を中退する）。",
+  note:"「〜から」は of を使う。", cat:["edu"] },
+{ w:"sign up for", k:"ph", ja:"〜に申し込む、登録する", pat:"sign up for A", lv:3,
+  ex:[["I {signed up for} a free online English course.","無料のオンライン英語講座に申し込んだ。"]],
+  syn:["register for","enroll in"], tip:"講座・イベント・サービスへの申し込み。リスニングの会話で頻出。",
+  note:"sign up to do（〜することに申し込む）の形もある。", cat:["edu","life"] },
+{ w:"work out", k:"ph", ja:"①運動する ②〜を解決する、考え出す ③うまくいく", pat:"work out / work out A", lv:3,
+  ex:[["I {work out} at the gym three times a week.","私は週3回ジムで運動している。"],["Don't worry. Everything will {work out}.","心配しないで。全部うまくいくよ。"]],
+  syn:["exercise","figure out","solve"], tip:"自動詞なら「運動する／うまくいく」、他動詞なら「解決する」。",
+  note:"「解決する」は分離可（work it out）。", cat:["med","life"] },
+{ w:"throw away", k:"ph", ja:"〜を捨てる", pat:"throw away A / throw A away", lv:3,
+  ex:[["Japanese people {throw away} a lot of food every year.","日本人は毎年大量の食べ物を捨てている。"]],
+  syn:["dispose of","discard","get rid of"], tip:"dispose of A は硬い表現。food waste（食品ロス）の文脈で頻出。",
+  note:"分離可。throw it away。", cat:["env","life"] },
+{ w:"go over", k:"ph", ja:"〜を見直す、よく調べる", pat:"go over A", lv:2,
+  ex:[["Let's {go over} the plan once more before the meeting.","会議の前にもう一度計画を見直そう。"]],
+  syn:["review","check","look over"], tip:"look over（ざっと目を通す）より念入りに確認するニュアンス。",
+  note:"分離不可。", cat:["edu"] },
+{ w:"die out", k:"ph", ja:"絶滅する、（習慣などが）すたれる", pat:"die out", lv:3,
+  ex:[["Many species may {die out} because of climate change.","気候変動のせいで多くの種が絶滅するかもしれない。"]],
+  syn:["become extinct","disappear"], tip:"become extinct と同じ意味。伝統文化が「廃れる」にも使う。",
+  note:"自動詞。", cat:["env"] },
+{ w:"end up", k:"ph", ja:"結局〜することになる", pat:"end up doing / end up in A", lv:3,
+  ex:[["We missed the last train and {ended up} taking a taxi.","終電を逃し、結局タクシーに乗ることになった。"]],
+  syn:["wind up","finally"], tip:"予定外の結末になったときに使う。",
+  note:"後ろは動名詞。× end up to take", cat:["life"] },
+{ w:"settle down", k:"ph", ja:"①落ち着く ②（結婚などして）身を固める、定住する", pat:"settle down", lv:2,
+  ex:[["After traveling around the world, he {settled down} in a small town.","世界中を旅した後、彼は小さな町に落ち着いた。"]],
+  syn:["calm down"], tip:"calm down は気持ちが落ち着く、settle down は生活が落ち着くことも表す。",
+  note:"自動詞。", cat:["life"] },
+{ w:"care for", k:"ph", ja:"①〜の世話をする ②〜を好む（否定・疑問文で）", pat:"care for A", lv:2,
+  ex:[["Nurses {care for} patients day and night.","看護師は昼も夜も患者の世話をする。"]],
+  syn:["look after","take care of"], tip:"Would you care for some tea?（お茶はいかがですか）は丁寧な勧め。care about A は「Aを気にかける」。",
+  note:"分離不可。", cat:["med","human"] },
+{ w:"stick to", k:"ph", ja:"〜を守り通す、〜に固執する", pat:"stick to A", lv:2,
+  ex:[["It is hard to {stick to} a diet for a long time.","長期間ダイエットを続けるのは難しい。"]],
+  syn:["keep to","adhere to"], tip:"計画・規則・約束などを「最後まで守る」。",
+  note:"to は前置詞。", cat:["life"] },
+{ w:"concentrate on", k:"ph", ja:"〜に集中する", pat:"concentrate on A / doing", lv:3,
+  ex:[["I can't {concentrate on} my studies when my phone is nearby.","スマホが近くにあると勉強に集中できない。"]],
+  syn:["focus on"], rel:["concentration (n) 集中"], tip:"focus on と同義。",
+  note:"on の後ろは名詞・動名詞。", cat:["edu"] },
+{ w:"insist on", k:"ph", ja:"〜を強く主張する、〜と言い張る", pat:"insist on A / doing", lv:2,
+  ex:[["My mother {insisted on} paying for dinner.","母は夕食代を払うと言い張った。"]],
+  syn:["demand"], tip:"insist that S (should) 原形（〜すべきだと主張する）の形も重要。",
+  note:"on の後ろは動名詞。", cat:["human"] },
+{ w:"object to", k:"ph", ja:"〜に反対する", pat:"object to A / doing", lv:2,
+  ex:[["Many residents {objected to} the plan to build a new airport.","多くの住民が新空港の建設計画に反対した。"]],
+  syn:["oppose","be against"], rel:["objection (n) 反対"], tip:"oppose は他動詞（oppose A）、object は自動詞（object to A）。",
+  note:"to は前置詞。× object to build", cat:["soc"] },
+{ w:"cope with", k:"ph", ja:"〜にうまく対処する", pat:"cope with A", lv:2,
+  ex:[["Students need to learn how to {cope with} stress.","生徒はストレスへの対処法を学ぶ必要がある。"]],
+  syn:["deal with","handle","manage"], tip:"困難・ストレスなどを「何とか切り抜ける」ニュアンス。",
+  note:"分離不可。", cat:["med","human"] },
+{ w:"stay up", k:"ph", ja:"（寝ないで）起きている", pat:"stay up (late)", lv:2,
+  ex:[["I {stayed up} late to finish my report.","レポートを仕上げるため夜遅くまで起きていた。"]],
+  syn:["sit up"], tip:"stay up late（夜更かしする）の形が頻出。",
+  note:"自動詞。", cat:["life"] },
+{ w:"try on", k:"ph", ja:"〜を試着する", pat:"try on A / try A on", lv:2,
+  ex:[["Can I {try on} this jacket?","このジャケットを試着してもいいですか。"]],
+  tip:"買い物の会話で頻出。fitting room（試着室）もセットで。",
+  note:"分離可。try it on。", cat:["life"] },
+{ w:"leave out", k:"ph", ja:"〜を省く、除外する", pat:"leave out A / leave A out", lv:2,
+  ex:[["Please don't {leave out} any important information.","重要な情報は何も省かないでください。"]],
+  syn:["omit","exclude"], tip:"feel left out（仲間外れにされたと感じる）も覚えておく。",
+  note:"分離可。", cat:["life","human"] },
+{ w:"let down", k:"ph", ja:"〜を失望させる、がっかりさせる", pat:"let A down", lv:2,
+  ex:[["I promise I won't {let} you {down}.","あなたをがっかりさせないと約束します。"]],
+  syn:["disappoint"], tip:"目的語は人。通常 let A down の語順で使う。",
+  note:"分離可。代名詞は必ず間に入る。", cat:["human"] },
+{ w:"look back on", k:"ph", ja:"〜を振り返る、回想する", pat:"look back on A", lv:2,
+  ex:[["When I {look back on} my school days, I remember my friends most.","学生時代を振り返ると、友人のことを一番よく思い出す。"]],
+  syn:["recall","reflect on"], tip:"過去の出来事や経験を思い出すときに使う。",
+  note:"分離不可。", cat:["life"] },
+{ w:"look over", k:"ph", ja:"〜にざっと目を通す", pat:"look over A / look A over", lv:2,
+  ex:[["Could you {look over} my essay before I hand it in?","提出する前に私の作文に目を通してもらえますか。"]],
+  syn:["check","go over"], tip:"go over（念入りに見直す）より軽いチェック。",
+  note:"分離可。", cat:["edu"] },
+{ w:"use up", k:"ph", ja:"〜を使い果たす", pat:"use up A / use A up", lv:2,
+  ex:[["We will {use up} all the oil in the world someday.","いつか世界中の石油を使い果たすだろう。"]],
+  syn:["run out of","exhaust"], tip:"主語が人なら run out of A ともいえる。",
+  note:"分離可。", cat:["env"] },
+{ w:"pass away", k:"ph", ja:"亡くなる", pat:"pass away", lv:2,
+  ex:[["His grandfather {passed away} last year at the age of 95.","彼の祖父は昨年95歳で亡くなった。"]],
+  syn:["die"], tip:"die の婉曲的・丁寧な表現。",
+  note:"自動詞。", cat:["life"] },
+{ w:"hold on", k:"ph", ja:"①（電話を切らずに）待つ ②しっかりつかまる", pat:"hold on (to A)", lv:2,
+  ex:[["{Hold on} a minute. I'll check the schedule.","少しお待ちください。予定を確認します。"]],
+  syn:["wait","hang on"], tip:"電話や会話で「ちょっと待って」。hold on to A は「Aにしがみつく、Aを手放さない」。",
+  note:"自動詞。", cat:["life"] },
+{ w:"calm down", k:"ph", ja:"落ち着く、〜を落ち着かせる", pat:"calm down / calm A down", lv:2,
+  ex:[["Take a deep breath and try to {calm down}.","深呼吸して落ち着くようにしなさい。"]],
+  syn:["relax","settle down"], tip:"命令文 Calm down! は「落ち着いて」。",
+  note:"他動詞では分離可（calm him down）。", cat:["human"] },
+{ w:"run out", k:"ph", ja:"（物・時間が）尽きる、なくなる", pat:"A run out", lv:2,
+  ex:[["Our food supplies will {run out} in a week.","私たちの食料は1週間でなくなるだろう。"]],
+  tip:"主語が「なくなる物」。人が主語なら run out of A。",
+  note:"自動詞。", cat:["life","env"] },
+{ w:"get rid of", k:"ph", ja:"〜を取り除く、処分する", pat:"get rid of A", lv:3,
+  ex:[["I want to {get rid of} old clothes that I no longer wear.","もう着ない古い服を処分したい。"]],
+  syn:["remove","throw away","dispose of"], tip:"不要な物・悪い習慣・問題などを取り除く。",
+  note:"rid は過去分詞なので形は変わらない。", cat:["life","env"] },
+{ w:"hang up", k:"ph", ja:"電話を切る、〜を掛ける", pat:"hang up / hang up A", lv:2,
+  ex:[["Please don't {hang up}. I'll transfer your call.","電話を切らずにお待ちください。おつなぎします。"]],
+  ant:["hold on"], tip:"hang up on A は「Aとの電話を一方的に切る」。",
+  note:"「掛ける」は分離可（hang it up）。", cat:["life"] },
+{ w:"put on", k:"ph", ja:"①〜を身に着ける ②（体重）が増える", pat:"put on A / put A on", lv:2,
+  ex:[["I {put on} three kilograms during the winter vacation.","冬休みの間に3キロ太った。"]],
+  ant:["take off"], tip:"put on は「着る動作」、wear は「着ている状態」。put on weight（太る）は gain weight と同義。",
+  note:"分離可。", cat:["life","med"] },
+{ w:"put away", k:"ph", ja:"〜を片付ける、しまう", pat:"put away A / put A away", lv:2,
+  ex:[["Please {put away} your toys before dinner.","夕食の前におもちゃを片付けなさい。"]],
+  syn:["tidy up"], tip:"「（元の場所に）しまう」イメージ。",
+  note:"分離可。", cat:["life"] },
+{ w:"slow down", k:"ph", ja:"速度を落とす、〜を遅らせる", pat:"slow down / slow down A", lv:2,
+  ex:[["Economic growth has {slowed down} in recent years.","近年、経済成長は鈍化している。"]],
+  ant:["speed up"], tip:"経済成長の「鈍化」の文脈でも頻出。",
+  note:"他動詞では分離可。", cat:["eco","life"] },
+{ w:"run for", k:"ph", ja:"〜に立候補する", pat:"run for A", lv:2,
+  ex:[["She decided to {run for} mayor.","彼女は市長選に立候補することを決めた。"]],
+  tip:"選挙の話題で使う。役職名は無冠詞が多い（run for president）。",
+  note:"分離不可。", cat:["soc"] }
+], "phrasal-01");
+
+</script>
+<script>
+/* 英検2級 重要動詞 01 */
+EIKEN.add([
+{ w:"reduce", ipa:"rɪˈduːs", kana:"リドゥース", pos:["v"], ja:"〜を減らす、削減する", key:"環境・経済の長文で最頻出。reduce A by B（AをBだけ減らす）の形も重要。",
+  ex:[["Many cities are trying to {reduce} the amount of plastic waste.","多くの都市がプラスチックごみの量を減らそうとしている。"]],
+  syn:["decrease","cut","lower"], ant:["increase"], rel:["reduction (n) 削減"], col:["reduce costs 費用を削減する","reduce stress ストレスを減らす","reduce A by 20% Aを20%減らす"], lv:3,
+  tip:"reduce は「人が意図的に減らす」他動詞が中心。「自然に減る」は decrease や fall を使うことが多い。", cat:["env","eco"] },
+{ w:"increase", ipa:"ɪnˈkriːs", kana:"インクリース", pos:["v","n"], ja:"増える、〜を増やす／増加", key:"自動詞・他動詞・名詞すべてで頻出。名詞は an increase in A（Aの増加）。",
+  ex:[["The number of foreign tourists has {increased} sharply.","外国人観光客の数が急激に増えた。"],["There has been a large {increase} in online shopping.","オンラインショッピングが大幅に増加している。"]],
+  syn:["rise","grow"], ant:["decrease","reduce"], rel:["increasingly (adv) ますます"], col:["increase sharply 急増する","an increase in A Aの増加"], lv:3,
+  tip:"名詞は第1音節にアクセント（ˈɪnkriːs）。「〜の増加」は of ではなく in を使う点に注意。", cat:["eco","soc"] },
+{ w:"decrease", ipa:"dɪˈkriːs", kana:"ディクリース", pos:["v","n"], ja:"減る、〜を減らす／減少", key:"グラフ・統計を説明する長文やリスニングで頻出。",
+  ex:[["The birth rate in Japan has been {decreasing} for years.","日本の出生率は何年も減少し続けている。"]],
+  syn:["reduce","decline","fall"], ant:["increase"], col:["a decrease in A Aの減少","decrease gradually 徐々に減る"], lv:3,
+  tip:"increase と対で覚える。名詞は第1音節にアクセント（ˈdiːkriːs）。", cat:["soc","eco"] },
+{ w:"improve", ipa:"ɪmˈpruːv", kana:"インプルーヴ", pos:["v"], ja:"〜を改善する、良くなる", key:"ライティングで「〜を改善できる」と主張する際に便利。",
+  ex:[["Regular exercise can {improve} your mental health.","定期的な運動は心の健康を改善することがある。"]],
+  syn:["enhance","better"], ant:["worsen"], rel:["improvement (n) 改善"], col:["improve the quality of A Aの質を高める","improve skills 技能を向上させる"], lv:3,
+  tip:"自動詞（良くなる）と他動詞（良くする）の両方で使える。", cat:["med","edu"] },
+{ w:"provide", ipa:"prəˈvaɪd", kana:"プロヴァイド", pos:["v"], ja:"〜を提供する、供給する", key:"provide A with B ＝ provide B for A（AにBを与える）の語順が頻出。",
+  ex:[["The school {provides} students with free lunches.","その学校は生徒に無料の昼食を提供している。"]],
+  syn:["supply","offer","give"], rel:["provision (n) 供給","provided (that) (conj) もし〜ならば"], col:["provide A with B AにBを提供する","provide B for A AのためにBを提供する"], lv:3,
+  tip:"provide A with B と provide B for/to A の前置詞の違いを必ず区別する。", note:"「人」が先なら with、「物」が先なら for/to。", cat:["soc","life"] },
+{ w:"prevent", ipa:"prɪˈvent", kana:"プリヴェント", pos:["v"], ja:"〜を防ぐ、妨げる", key:"prevent A from doing（Aが〜するのを妨げる）の形が最重要。",
+  ex:[["Washing your hands can {prevent} the spread of disease.","手を洗うことで病気の拡大を防ぐことができる。"],["Heavy snow {prevented} us from leaving the house.","大雪のため私たちは家を出られなかった。"]],
+  syn:["stop","avoid"], rel:["prevention (n) 予防","preventive (adj) 予防の"], col:["prevent accidents 事故を防ぐ","prevent A from doing Aが〜するのを妨げる"], lv:3,
+  tip:"avoid は「自分が〜を避ける」、prevent は「〜が起こらないようにする」。", cat:["med","env"] },
+{ w:"protect", ipa:"prəˈtekt", kana:"プロテクト", pos:["v"], ja:"〜を守る、保護する", key:"protect A from B（AをBから守る）。環境保護の文脈で頻出。",
+  ex:[["We need to {protect} endangered animals from hunters.","私たちは絶滅危惧種の動物を密猟者から守る必要がある。"]],
+  syn:["defend","guard","preserve"], rel:["protection (n) 保護","protective (adj) 保護する"], col:["protect the environment 環境を守る","protect A from B AをBから守る"], lv:3,
+  tip:"defend は「攻撃から防御する」意味合いが強い。protect は危険全般から守る。", cat:["env"] },
+{ w:"require", ipa:"rɪˈkwaɪər", kana:"リクワイア", pos:["v"], ja:"〜を必要とする、要求する", key:"be required to do（〜することが義務付けられている）が頻出。",
+  ex:[["All students are {required} to wear a uniform.","すべての生徒は制服を着用することが義務付けられている。"]],
+  syn:["need","demand"], rel:["requirement (n) 必要条件"], col:["require A to do Aに〜するよう求める","be required by law 法律で義務付けられている"], lv:3,
+  tip:"need より硬い語で、規則・条件について述べるときによく使う。", cat:["soc","edu"] },
+{ w:"recommend", ipa:"ˌrekəˈmend", kana:"レコメンド", pos:["v"], ja:"〜を勧める、推薦する", key:"recommend that S (should) 動詞の原形 の形が重要。",
+  ex:[["Doctors {recommend} that people sleep at least seven hours a night.","医師は人々に一晩少なくとも7時間眠ることを勧めている。"]],
+  syn:["suggest","advise"], rel:["recommendation (n) 推薦"], col:["highly recommend 強く勧める","recommend doing 〜することを勧める"], lv:3,
+  tip:"recommend A to do も使えるが、that節やdoingの形がより一般的。that節内は原形になる。", note:"× recommend me to buy より recommend that I buy / recommend buying が自然。", cat:["med","life"] },
+{ w:"suggest", ipa:"səɡˈdʒest", kana:"サジェスト", pos:["v"], ja:"〜を提案する、〜をそれとなく示す", key:"①提案する ②（データなどが）示唆する、の2つの意味が頻出。",
+  ex:[["My teacher {suggested} that I read more English books.","先生は私にもっと英語の本を読むよう提案した。"],["Recent studies {suggest} that coffee may be good for health.","最近の研究は、コーヒーが健康に良いかもしれないことを示唆している。"]],
+  syn:["propose","recommend","indicate"], rel:["suggestion (n) 提案"], col:["suggest doing 〜することを提案する"], lv:3,
+  tip:"「提案する」の意味では that節内が原形。「示唆する」の意味では通常の時制になる。", note:"× suggest me to do は誤り。suggest (to me) that ... とする。", cat:["sci","human"] },
+{ w:"consider", ipa:"kənˈsɪdər", kana:"コンシダー", pos:["v"], ja:"〜をよく考える、〜を…とみなす", key:"consider doing（〜することを検討する）と consider A (to be) B（AをBとみなす）。",
+  ex:[["She is {considering} studying abroad next year.","彼女は来年留学することを検討している。"],["He is {considered} one of the best players in the team.","彼はチームで最も優れた選手の一人とみなされている。"]],
+  syn:["think about","regard"], rel:["consideration (n) 考慮","considerable (adj) かなりの","considerate (adj) 思いやりのある"], col:["consider doing 〜することを検討する","take A into consideration Aを考慮する"], lv:3,
+  tip:"consider の後ろは to不定詞ではなく動名詞。派生語 considerable と considerate の意味の違いも頻出。", cat:["human"] },
+{ w:"develop", ipa:"dɪˈveləp", kana:"ディヴェロップ", pos:["v"], ja:"〜を発達させる、開発する、（病気に）なる", key:"技術開発・国の発展・病気の発症など意味が広い。",
+  ex:[["The company {developed} a new type of battery.","その会社は新型の電池を開発した。"],["Some people {develop} allergies as adults.","大人になってからアレルギーを発症する人もいる。"]],
+  syn:["create","grow","build"], rel:["development (n) 発達、開発","developing country 発展途上国"], col:["develop skills 技能を伸ばす","develop a disease 病気になる"], lv:3,
+  tip:"「病気になる」の意味は英検でよく狙われる。developed country は「先進国」。", cat:["sci","eco","med"] },
+{ w:"encourage", ipa:"ɪnˈkɜːrɪdʒ", kana:"インカーリッジ", pos:["v"], ja:"〜を励ます、促す、奨励する", key:"encourage A to do（Aに〜するよう促す）が頻出。",
+  ex:[["The city {encourages} residents to use public transportation.","市は住民に公共交通機関を利用するよう促している。"]],
+  syn:["urge","motivate","promote"], ant:["discourage"], rel:["encouragement (n) 激励"], col:["encourage A to do Aに〜するよう促す"], lv:3,
+  tip:"反対の discourage A from doing（Aに〜するのを思いとどまらせる）は前置詞 from を使う。", cat:["edu","soc"] },
+{ w:"allow", ipa:"əˈlaʊ", kana:"アラウ", pos:["v"], ja:"〜を許す、〜を可能にする", key:"allow A to do（Aが〜するのを許す／可能にする）。",
+  ex:[["Smartphones {allow} us to get information anywhere.","スマートフォンのおかげで私たちはどこでも情報を得られる。"]],
+  syn:["permit","let","enable"], ant:["forbid","prohibit"], rel:["allowance (n) 手当、小遣い"], col:["allow A to do Aが〜するのを可能にする","be allowed to do 〜することが許される"], lv:3,
+  tip:"無生物主語＋allow A to do は「〜のおかげでAは…できる」と訳すと自然。発音は「アロウ」ではなく「アラウ」。", cat:["sci","soc"] },
+{ w:"affect", ipa:"əˈfekt", kana:"アフェクト", pos:["v"], ja:"〜に影響を与える", key:"他動詞なので affect on とはしない。名詞 effect と混同注意。",
+  ex:[["Climate change will {affect} farming all over the world.","気候変動は世界中の農業に影響を与えるだろう。"]],
+  syn:["influence","have an effect on"], rel:["effect (n) 影響、効果"], col:["be badly affected by A Aによって大きな打撃を受ける"], lv:3,
+  tip:"動詞 affect（影響する）／名詞 effect（影響）。have an effect on A ＝ affect A。", note:"× affect on A。affect A と直接目的語をとる。", cat:["env","med"] },
+{ w:"cause", ipa:"kɔːz", kana:"コーズ", pos:["v","n"], ja:"〜を引き起こす／原因", key:"cause A to do（Aに〜させる）と名詞 the cause of A（Aの原因）。",
+  ex:[["The heavy rain {caused} serious damage to the town.","大雨はその町に深刻な被害をもたらした。"],["Scientists are still looking for the {cause} of the disease.","科学者たちはまだその病気の原因を探している。"]],
+  syn:["lead to","result in","bring about"], ant:["effect","result"], col:["cause damage 被害をもたらす","cause A to do Aに〜させる","the main cause of A Aの主な原因"], lv:3,
+  tip:"cause は悪い結果に使うことが多い。原因と結果の関係を表す表現（lead to, result in）とセットで覚える。", cat:["env","sci"] },
+{ w:"produce", ipa:"prəˈduːs", kana:"プロドゥース", pos:["v","n"], ja:"〜を生産する、生み出す／農産物", key:"名詞は「（野菜・果物などの）農産物」（ˈproʊduːs）。",
+  ex:[["This factory {produces} 1,000 cars a day.","この工場は1日に1,000台の車を生産している。"]],
+  syn:["make","manufacture","create"], ant:["consume"], rel:["product (n) 製品","production (n) 生産","productive (adj) 生産的な"], col:["produce electricity 電気を作る","local produce 地元の農産物"], lv:3,
+  tip:"名詞 produce は不可算で「農産物」。product（製品）と区別する。", cat:["eco","env"] },
+{ w:"consume", ipa:"kənˈsuːm", kana:"コンスーム", pos:["v"], ja:"〜を消費する、食べる・飲む", key:"エネルギー・資源の消費の話題で頻出。",
+  ex:[["Air conditioners {consume} a lot of electricity in summer.","夏はエアコンが大量の電気を消費する。"]],
+  syn:["use up","eat"], ant:["produce","save"], rel:["consumption (n) 消費","consumer (n) 消費者"], col:["consume energy エネルギーを消費する"], lv:3,
+  tip:"consumer（消費者）と producer（生産者）は経済の長文で対になって登場する。", cat:["eco","env"] },
+{ w:"avoid", ipa:"əˈvɔɪd", kana:"アヴォイド", pos:["v"], ja:"〜を避ける", key:"avoid doing（〜するのを避ける）。to不定詞はとらない。",
+  ex:[["You should {avoid} eating too much sugar.","砂糖を摂りすぎるのは避けるべきだ。"]],
+  syn:["stay away from","escape"], ant:["face"], col:["avoid doing 〜するのを避ける","avoid traffic jams 渋滞を避ける"], lv:3,
+  tip:"動名詞をとる動詞（avoid, enjoy, finish, mind, consider, give up）はまとめて覚える。", note:"× avoid to eat → ○ avoid eating", cat:["med","life"] },
+{ w:"achieve", ipa:"əˈtʃiːv", kana:"アチーヴ", pos:["v"], ja:"〜を達成する、成し遂げる", key:"目標（goal）や成功（success）と結びつく。",
+  ex:[["She worked hard to {achieve} her goal of becoming a doctor.","彼女は医者になるという目標を達成するために努力した。"]],
+  syn:["accomplish","attain","reach"], rel:["achievement (n) 業績、達成"], col:["achieve a goal 目標を達成する","achieve success 成功を収める"], lv:3,
+  tip:"努力して何かを手に入れる・実現するニュアンス。", cat:["edu"] },
+{ w:"attract", ipa:"əˈtrækt", kana:"アトラクト", pos:["v"], ja:"〜を引きつける、魅了する", key:"観光・広告の文脈で頻出。",
+  ex:[["The festival {attracts} thousands of visitors every year.","その祭りは毎年何千人もの観光客を引きつけている。"]],
+  syn:["draw","appeal to"], rel:["attraction (n) 魅力、呼び物","attractive (adj) 魅力的な"], col:["attract attention 注目を集める","attract tourists 観光客を呼び込む"], lv:3,
+  tip:"tourist attraction（観光名所）もセットで覚える。", cat:["eco","life"] },
+{ w:"compare", ipa:"kəmˈper", kana:"コンペア", pos:["v"], ja:"〜を比較する、たとえる", key:"compare A with/to B（AをBと比べる）、compared with/to A（Aと比べると）。",
+  ex:[["{Compared} with last year, sales have improved a lot.","昨年と比べると、売り上げは大きく伸びた。"]],
+  syn:["contrast"], rel:["comparison (n) 比較","comparative (adj) 比較の"], col:["compare A with B AをBと比べる","compared to A Aと比べると"], lv:3,
+  tip:"compare A to B は「AをBにたとえる」の意味にもなる。", cat:["edu"] },
+{ w:"complain", ipa:"kəmˈpleɪn", kana:"コンプレイン", pos:["v"], ja:"不平を言う、苦情を言う", key:"complain about/of A（Aについて文句を言う）、complain to 人。",
+  ex:[["Some neighbors {complained} about the noise from the construction site.","近所の住民の何人かが工事現場の騒音について苦情を言った。"]],
+  rel:["complaint (n) 不平、苦情"], col:["complain about A Aについて不平を言う","make a complaint 苦情を言う"], lv:3,
+  tip:"自動詞なので目的語の前に about が必要。「〜に苦情を言う」の相手は to で示す。", note:"× complain the noise → ○ complain about the noise", cat:["life","human"] },
+{ w:"contain", ipa:"kənˈteɪn", kana:"コンテイン", pos:["v"], ja:"〜を含む、（感情を）抑える", key:"食品の成分や物質に含まれるものの説明で頻出。",
+  ex:[["Many soft drinks {contain} a lot of sugar.","多くの清涼飲料水には大量の砂糖が含まれている。"]],
+  syn:["include","hold"], rel:["container (n) 容器"], col:["contain vitamins ビタミンを含む"], lv:3,
+  tip:"contain は「中身として含む」、include は「全体の一部として含む」。進行形にはしない。", cat:["med","sci"] },
+{ w:"create", ipa:"kriˈeɪt", kana:"クリエイト", pos:["v"], ja:"〜を創り出す、生み出す", key:"create jobs（雇用を生み出す）は経済の頻出表現。",
+  ex:[["The new factory will {create} about 500 jobs.","新工場は約500人の雇用を生み出すだろう。"]],
+  syn:["make","produce","generate"], rel:["creation (n) 創造","creative (adj) 創造的な","creature (n) 生き物"], col:["create jobs 雇用を生み出す","create a problem 問題を生む"], lv:3,
+  tip:"creature（生き物）も同じ語源。", cat:["eco"] },
+{ w:"describe", ipa:"dɪˈskraɪb", kana:"ディスクライブ", pos:["v"], ja:"〜を説明する、描写する", key:"describe A as B（AをBだと言う）も重要。",
+  ex:[["Can you {describe} the man you saw at the station?","駅で見た男性の特徴を説明してもらえますか。"]],
+  syn:["explain","depict"], rel:["description (n) 説明、描写"], col:["describe A as B AをBだと述べる"], lv:3,
+  tip:"× describe about A とはしない。他動詞なので直接目的語をとる。", cat:["edu"] },
+{ w:"destroy", ipa:"dɪˈstrɔɪ", kana:"ディストロイ", pos:["v"], ja:"〜を破壊する", key:"自然破壊・災害の文脈で頻出。",
+  ex:[["Large areas of rainforest are {destroyed} every year.","毎年広い範囲の熱帯雨林が破壊されている。"]],
+  syn:["ruin","damage"], ant:["build","create"], rel:["destruction (n) 破壊","destructive (adj) 破壊的な"], col:["destroy the environment 環境を破壊する"], lv:3,
+  tip:"damage は「損害を与える」程度、destroy は「完全に壊す」。", cat:["env"] },
+{ w:"discover", ipa:"dɪˈskʌvər", kana:"ディスカヴァー", pos:["v"], ja:"〜を発見する、〜だとわかる", key:"科学の発見やthat節「〜ということがわかる」で頻出。",
+  ex:[["Researchers {discovered} that the bird can recognize human faces.","研究者たちはその鳥が人間の顔を識別できることを発見した。"]],
+  syn:["find","find out"], rel:["discovery (n) 発見"], col:["discover a new species 新種を発見する"], lv:3,
+  tip:"invent は「（存在しなかった物を）発明する」、discover は「（既にある物を）発見する」。", cat:["sci"] },
+{ w:"establish", ipa:"ɪˈstæblɪʃ", kana:"イスタブリッシュ", pos:["v"], ja:"〜を設立する、確立する", key:"be established in 年（〜年に設立された）が頻出。",
+  ex:[["The university was {established} in 1890.","その大学は1890年に設立された。"]],
+  syn:["found","set up"], rel:["establishment (n) 設立、施設"], col:["establish a company 会社を設立する","establish a relationship 関係を築く"], lv:3,
+  tip:"found（設立する）は find の過去形と混同しやすい。found-founded-founded。", cat:["soc","eco"] },
+{ w:"estimate", ipa:"ˈestɪmeɪt", kana:"エスティメイト", pos:["v","n"], ja:"〜を見積もる、推定する／見積もり", key:"It is estimated that ...（〜と推定されている）が長文で頻出。",
+  ex:[["It is {estimated} that about 8 million tons of plastic enter the ocean each year.","毎年約800万トンのプラスチックが海に流れ込んでいると推定されている。"]],
+  syn:["calculate","guess"], col:["it is estimated that 〜と推定されている","a rough estimate おおよその見積もり"], lv:2,
+  tip:"名詞の発音は語尾が「メット」（ˈestɪmət）になる。", cat:["eco","sci"] },
+{ w:"examine", ipa:"ɪɡˈzæmɪn", kana:"イグザミン", pos:["v"], ja:"〜を調べる、診察する", key:"研究・医療の場面で頻出。",
+  ex:[["The doctor {examined} the boy's injured leg carefully.","医師は少年のけがをした脚を注意深く診察した。"]],
+  syn:["inspect","check","investigate"], rel:["examination (n) 試験、検査"], col:["examine the data データを調べる"], lv:2,
+  tip:"exam は examination の短縮形。", cat:["med","sci"] },
+{ w:"expand", ipa:"ɪkˈspænd", kana:"イクスパンド", pos:["v"], ja:"〜を拡大する、広がる", key:"事業拡大・都市の拡大などの文脈で使う。",
+  ex:[["The company plans to {expand} its business into Asia.","その会社はアジアへ事業を拡大する計画だ。"]],
+  syn:["enlarge","extend","grow"], ant:["shrink"], rel:["expansion (n) 拡大"], col:["expand a business 事業を拡大する"], lv:2,
+  tip:"extend は「長さ・期間を延ばす」、expand は「規模・範囲を広げる」。", cat:["eco"] },
+{ w:"express", ipa:"ɪkˈspres", kana:"イクスプレス", pos:["v","adj"], ja:"〜を表現する、述べる／急行の", key:"express one's opinion（意見を述べる）はライティングでも使える。",
+  ex:[["It is important to {express} your opinions clearly.","自分の意見をはっきり述べることが大切だ。"]],
+  syn:["state","show"], rel:["expression (n) 表現、表情"], col:["express one's feelings 気持ちを表す","express thanks 感謝を述べる"], lv:3,
+  tip:"express oneself（自分の考えを表現する）という再帰用法もある。", cat:["human","edu"] },
+{ w:"force", ipa:"fɔːrs", kana:"フォース", pos:["v","n"], ja:"〜に無理やり…させる／力、軍隊", key:"be forced to do（〜せざるを得ない）が頻出。",
+  ex:[["Many shops were {forced} to close because of the storm.","嵐のために多くの店が閉店を余儀なくされた。"]],
+  syn:["make","compel"], col:["be forced to do 〜せざるを得ない","force A to do Aに無理に〜させる","the air force 空軍"], lv:3,
+  tip:"make A do と違い、force A to do と to が必要。", cat:["soc"] },
+{ w:"gain", ipa:"ɡeɪn", kana:"ゲイン", pos:["v","n"], ja:"〜を得る、（体重などが）増える／増加、利益", key:"gain experience / gain weight が頻出。",
+  ex:[["Students can {gain} valuable experience through volunteer work.","学生はボランティア活動を通じて貴重な経験を得ることができる。"]],
+  syn:["get","obtain","acquire"], ant:["lose"], col:["gain experience 経験を得る","gain weight 体重が増える","gain popularity 人気を得る"], lv:3,
+  tip:"gain は努力や時間をかけて徐々に得るニュアンス。lose weight（体重が減る）と対で覚える。", cat:["edu","med"] },
+{ w:"identify", ipa:"aɪˈdentɪfaɪ", kana:"アイデンティファイ", pos:["v"], ja:"〜を特定する、身元を確認する", key:"identify the cause（原因を特定する）など研究の文脈で頻出。",
+  ex:[["Scientists have {identified} the gene that causes the disease.","科学者たちはその病気を引き起こす遺伝子を特定した。"]],
+  syn:["recognize","find"], rel:["identity (n) 身元、独自性","identification (n) 身分証明"], col:["identify the cause 原因を特定する","identify A as B AをBだと確認する"], lv:2,
+  tip:"ID（身分証）は identification の略。", cat:["sci","med"] },
+{ w:"include", ipa:"ɪnˈkluːd", kana:"インクルード", pos:["v"], ja:"〜を含む", key:"including A（Aを含めて）の前置詞的用法も頻出。",
+  ex:[["The price {includes} breakfast and dinner.","その料金には朝食と夕食が含まれている。"]],
+  syn:["contain","involve"], ant:["exclude"], rel:["including (prep) 〜を含めて"], col:["be included in A Aに含まれている"], lv:3,
+  tip:"「全体の一部として含む」ニュアンス。contain は「中身として持っている」。", cat:["life"] },
+{ w:"indicate", ipa:"ˈɪndɪkeɪt", kana:"インディケイト", pos:["v"], ja:"〜を示す、指し示す", key:"調査結果が〜を示す（The survey indicates that ...）で頻出。",
+  ex:[["The survey {indicates} that most students want more free time.","その調査は、ほとんどの学生がもっと自由時間を欲していることを示している。"]],
+  syn:["show","suggest","point to"], rel:["indication (n) 兆候","indicator (n) 指標"], col:["indicate that 〜ということを示す"], lv:2,
+  tip:"show より硬い表現で、データ・研究の説明で使われる。", cat:["sci"] },
+{ w:"introduce", ipa:"ˌɪntrəˈduːs", kana:"イントロドゥース", pos:["v"], ja:"〜を導入する、紹介する", key:"「制度・技術を導入する」の意味が長文で頻出。",
+  ex:[["Several schools have {introduced} tablets into their classrooms.","いくつかの学校が教室にタブレットを導入した。"]],
+  syn:["bring in","launch","present"], rel:["introduction (n) 導入、紹介"], col:["introduce a new system 新しい制度を導入する","introduce A to B AをBに紹介する"], lv:3,
+  tip:"「紹介する」だけでなく「導入する」の意味を必ず覚える。", cat:["edu","soc"] },
+{ w:"involve", ipa:"ɪnˈvɑːlv", kana:"インヴォルヴ", pos:["v"], ja:"〜を含む、伴う、巻き込む", key:"be involved in A（Aに関わる・巻き込まれる）が頻出。",
+  ex:[["The job {involves} a lot of traveling.","その仕事には出張がたくさんある。"],["More parents are getting {involved} in school activities.","学校活動に関わる親が増えている。"]],
+  syn:["include","entail"], rel:["involvement (n) 関与"], col:["be involved in A Aに関わる","involve doing 〜することを伴う"], lv:3,
+  tip:"involve の後ろは動名詞（involve doing）。", cat:["human","soc"] },
+{ w:"maintain", ipa:"meɪnˈteɪn", kana:"メインテイン", pos:["v"], ja:"〜を維持する、整備する、主張する", key:"maintain good health（健康を維持する）、maintain that ...（〜と主張する）。",
+  ex:[["It is important to {maintain} a healthy weight.","健康的な体重を維持することは大切だ。"]],
+  syn:["keep","preserve"], rel:["maintenance (n) 維持、整備"], col:["maintain a balance バランスを保つ","maintain a relationship 関係を維持する"], lv:2,
+  tip:"名詞 maintenance のつづりに注意（maintainance ではない）。", cat:["med","life"] },
+{ w:"manage", ipa:"ˈmænɪdʒ", kana:"マニッジ", pos:["v"], ja:"〜を管理する、何とか〜する", key:"manage to do（何とか〜する）が最重要。",
+  ex:[["Although it was raining hard, we {managed} to arrive on time.","大雨だったが、私たちは何とか時間通りに到着できた。"]],
+  syn:["handle","run","succeed in"], rel:["management (n) 経営、管理","manager (n) 管理者"], col:["manage to do 何とか〜する","manage a company 会社を経営する"], lv:3,
+  tip:"manage to do は「困難だったが実際にできた」。could は過去の一回きりの成功には使いにくい。", cat:["eco","life"] },
+{ w:"measure", ipa:"ˈmeʒər", kana:"メジャー", pos:["v","n"], ja:"〜を測る／対策、措置", key:"名詞 take measures（対策を講じる）が長文で頻出。",
+  ex:[["The government must take {measures} to reduce air pollution.","政府は大気汚染を減らすための対策を講じなければならない。"]],
+  syn:["step","action"], rel:["measurement (n) 測定"], col:["take measures 対策を講じる","measure the size 大きさを測る"], lv:3,
+  tip:"「対策」の意味では複数形 measures が普通。", cat:["soc","sci"] },
+{ w:"notice", ipa:"ˈnoʊtɪs", kana:"ノウティス", pos:["v","n"], ja:"〜に気づく／通知、掲示", key:"notice A doing（Aが〜しているのに気づく）。",
+  ex:[["I {noticed} a man standing at the door.","私は男性がドアのところに立っているのに気づいた。"]],
+  syn:["realize","recognize"], rel:["noticeable (adj) 目立つ"], col:["without notice 予告なしに","notice that 〜ということに気づく"], lv:3,
+  tip:"realize は「頭で理解する」、notice は「五感で気づく」。", cat:["life"] },
+{ w:"obtain", ipa:"əbˈteɪn", kana:"オブテイン", pos:["v"], ja:"〜を手に入れる、獲得する", key:"get の硬い言い方。information / permission と結びつく。",
+  ex:[["You need to {obtain} permission before using the photos.","その写真を使う前に許可を得る必要がある。"]],
+  syn:["get","acquire","gain"], col:["obtain information 情報を得る","obtain permission 許可を得る"], lv:2,
+  tip:"努力や手続きを経て手に入れるニュアンス。", cat:["soc"] },
+{ w:"permit", ipa:"pərˈmɪt", kana:"パーミット", pos:["v","n"], ja:"〜を許可する／許可証", key:"permit A to do、be permitted to do（〜することが許されている）。",
+  ex:[["Visitors are not {permitted} to take photos inside the museum.","来館者は博物館内での写真撮影を許可されていない。"]],
+  syn:["allow","let"], ant:["prohibit","forbid"], rel:["permission (n) 許可"], col:["be permitted to do 〜することが許される","a work permit 労働許可証"], lv:2,
+  tip:"allow より公式・規則的な許可に使う。名詞は第1音節アクセント（ˈpɜːrmɪt）。", cat:["soc"] },
+{ w:"persuade", ipa:"pərˈsweɪd", kana:"パースウェイド", pos:["v"], ja:"〜を説得する", key:"persuade A to do（Aを説得して〜させる）。",
+  ex:[["I finally {persuaded} my father to stop smoking.","私はついに父を説得してたばこをやめさせた。"]],
+  syn:["convince","talk A into doing"], rel:["persuasion (n) 説得","persuasive (adj) 説得力のある"], col:["persuade A to do Aを説得して〜させる"], lv:2,
+  tip:"persuade は「説得して実際に行動させた」まで含む。try to persuade なら説得を試みただけ。", cat:["human"] },
+{ w:"predict", ipa:"prɪˈdɪkt", kana:"プリディクト", pos:["v"], ja:"〜を予測する", key:"experts predict that ...（専門家は〜と予測している）。",
+  ex:[["Experts {predict} that the population will continue to decline.","専門家は人口が減少し続けると予測している。"]],
+  syn:["forecast","expect"], rel:["prediction (n) 予測","predictable (adj) 予測できる"], col:["predict the future 未来を予測する"], lv:2,
+  tip:"天気予報は weather forecast。", cat:["sci","soc"] },
+{ w:"promote", ipa:"prəˈmoʊt", kana:"プロモウト", pos:["v"], ja:"〜を促進する、昇進させる、宣伝する", key:"①促進する ②昇進させる（be promoted to A）の2つの意味が重要。",
+  ex:[["The event aims to {promote} international exchange.","そのイベントは国際交流を促進することを目的としている。"],["She was {promoted} to manager last month.","彼女は先月部長に昇進した。"]],
+  syn:["encourage","advertise"], rel:["promotion (n) 昇進、販売促進"], col:["promote health 健康を増進する","be promoted to A Aに昇進する"], lv:2,
+  tip:"商品の「プロモーション」＝宣伝・販売促進。", cat:["eco","soc"] },
+{ w:"propose", ipa:"prəˈpoʊz", kana:"プロポウズ", pos:["v"], ja:"〜を提案する、結婚を申し込む", key:"propose that S (should) 原形、propose doing。",
+  ex:[["The mayor {proposed} building a new library.","市長は新しい図書館の建設を提案した。"]],
+  syn:["suggest","put forward"], rel:["proposal (n) 提案"], col:["propose a plan 計画を提案する","propose to A Aに結婚を申し込む"], lv:2,
+  tip:"suggest より正式な提案。名詞は proposal。", cat:["soc"] },
+{ w:"purchase", ipa:"ˈpɜːrtʃəs", kana:"パーチェス", pos:["v","n"], ja:"〜を購入する／購入（品）", key:"buy の硬い言い方。広告・お知らせ文で頻出。",
+  ex:[["Tickets can be {purchased} online or at the gate.","チケットはオンラインまたは入口で購入できる。"]],
+  syn:["buy"], ant:["sell"], col:["make a purchase 買い物をする","purchase A online Aをネットで購入する"], lv:2,
+  tip:"発音は「パーチェイス」ではなく「パーチェス」。", cat:["eco","life"] },
+{ w:"realize", ipa:"ˈriːəlaɪz", kana:"リーアライズ", pos:["v"], ja:"〜に気づく、〜を実現する", key:"①（事実に）気づく ②（夢を）実現する。",
+  ex:[["I didn't {realize} how important my family was until I lived alone.","一人暮らしをするまで、家族がどれほど大切か気づかなかった。"],["She finally {realized} her dream of opening a bakery.","彼女はついにパン屋を開くという夢を実現した。"]],
+  syn:["notice","understand","achieve"], rel:["realization (n) 認識、実現"], col:["realize a dream 夢を実現する"], lv:3,
+  tip:"realize は頭で理解して「気づく」、notice は見たり聞いたりして「気づく」。", cat:["human"] },
+{ w:"recognize", ipa:"ˈrekəɡnaɪz", kana:"レコグナイズ", pos:["v"], ja:"〜を認識する、（見て）わかる、認める", key:"①見覚えがある ②（価値・事実を）認める。",
+  ex:[["I didn't {recognize} my old friend because she had changed so much.","旧友はとても変わっていたので、誰だかわからなかった。"]],
+  syn:["identify","admit","acknowledge"], rel:["recognition (n) 認識、承認"], col:["be recognized as A Aとして認められる"], lv:2,
+  tip:"以前の知識と照らして「それとわかる」のが recognize。", cat:["human","sci"] },
+{ w:"recover", ipa:"rɪˈkʌvər", kana:"リカヴァー", pos:["v"], ja:"回復する、〜を取り戻す", key:"recover from A（Aから回復する）。",
+  ex:[["It took him three months to {recover} from the injury.","彼がけがから回復するのに3か月かかった。"]],
+  syn:["get better","get over"], rel:["recovery (n) 回復"], col:["recover from an illness 病気から回復する","economic recovery 景気回復"], lv:2,
+  tip:"get over A も「Aから回復する」の意味の句動詞。", cat:["med","eco"] },
+{ w:"reflect", ipa:"rɪˈflekt", kana:"リフレクト", pos:["v"], ja:"〜を反映する、映す、よく考える", key:"①反映する ②reflect on A（Aを熟考・反省する）。",
+  ex:[["The results {reflect} the students' hard work.","その結果は生徒たちの努力を反映している。"],["Take some time to {reflect} on what you have learned.","学んだことをじっくり振り返る時間を取りなさい。"]],
+  syn:["show","mirror","think about"], rel:["reflection (n) 反射、熟考"], col:["reflect on A Aをよく考える"], lv:2,
+  tip:"「鏡に映す」が基本イメージ。そこから「反映する」「（自分を）振り返る」へ広がる。", cat:["edu","human"] },
+{ w:"refuse", ipa:"rɪˈfjuːz", kana:"リフューズ", pos:["v"], ja:"〜を断る、拒否する", key:"refuse to do（〜することを拒む）。",
+  ex:[["He {refused} to answer the reporter's questions.","彼は記者の質問に答えることを拒否した。"]],
+  syn:["reject","decline","turn down"], ant:["accept"], rel:["refusal (n) 拒否"], col:["refuse to do 〜するのを拒む","refuse an offer 申し出を断る"], lv:3,
+  tip:"refuse は強く断る、decline は丁寧に断る。refuse の後ろは to不定詞。", cat:["human"] },
+{ w:"regard", ipa:"rɪˈɡɑːrd", kana:"リガード", pos:["v","n"], ja:"〜を…とみなす／配慮、敬意", key:"regard A as B（AをBとみなす）が最重要。",
+  ex:[["Many people {regard} him as the best singer in Japan.","多くの人が彼を日本で最高の歌手だとみなしている。"]],
+  syn:["consider","see A as B","think of A as B"], col:["regard A as B AをBとみなす","with regard to A Aに関して"], lv:3,
+  tip:"regard A as B / see A as B / think of A as B / look on A as B はすべて同じ意味。as を忘れない。", cat:["human"] },
+{ w:"reject", ipa:"rɪˈdʒekt", kana:"リジェクト", pos:["v"], ja:"〜を拒絶する、却下する", key:"提案・計画・申請を「却下する」。",
+  ex:[["The committee {rejected} our proposal.","委員会は私たちの提案を却下した。"]],
+  syn:["refuse","turn down"], ant:["accept","approve"], rel:["rejection (n) 拒絶"], col:["reject a plan 計画を却下する"], lv:2,
+  tip:"reject は対象（提案・申請）をはねつける。refuse は to do も取れる。", cat:["soc"] },
+{ w:"release", ipa:"rɪˈliːs", kana:"リリース", pos:["v","n"], ja:"〜を放出する、解放する、公開する／発売", key:"CO2の放出、新製品・映画の公開などで使う。",
+  ex:[["Factories {release} large amounts of carbon dioxide.","工場は大量の二酸化炭素を排出する。"],["The movie will be {released} next month.","その映画は来月公開される。"]],
+  syn:["emit","free","publish"], col:["release gas ガスを放出する","be released from prison 刑務所から釈放される"], lv:2,
+  tip:"「閉じ込めていたものを外に出す」が基本イメージ。", cat:["env","sci"] },
+{ w:"remain", ipa:"rɪˈmeɪn", kana:"リメイン", pos:["v"], ja:"〜のままである、残る", key:"remain＋形容詞（〜のままである）。",
+  ex:[["The museum will {remain} closed until next spring.","その博物館は来春まで閉館したままとなる。"]],
+  syn:["stay","keep"], rel:["remains (n) 遺跡、残り物"], col:["remain silent 黙ったままでいる","remain unchanged 変わらないままである"], lv:3,
+  tip:"stay と同様に後ろに形容詞を置ける（SVC）。", cat:["life"] },
+{ w:"remove", ipa:"rɪˈmuːv", kana:"リムーヴ", pos:["v"], ja:"〜を取り除く、移す", key:"remove A from B（BからAを取り除く）。",
+  ex:[["Volunteers {removed} trash from the beach.","ボランティアが浜辺からごみを取り除いた。"]],
+  syn:["take away","get rid of","eliminate"], rel:["removal (n) 除去"], col:["remove A from B BからAを取り除く"], lv:3,
+  tip:"get rid of A（Aを取り除く）は口語的な同義表現。", cat:["env","life"] },
+{ w:"replace", ipa:"rɪˈpleɪs", kana:"リプレイス", pos:["v"], ja:"〜に取って代わる、〜を取り替える", key:"replace A with B（AをBと取り替える）と A replaces B（AがBに取って代わる）。",
+  ex:[["Robots may {replace} humans in many jobs.","多くの仕事でロボットが人間に取って代わるかもしれない。"],["We {replaced} the old lights with LED ones.","私たちは古い照明をLEDのものに取り替えた。"]],
+  syn:["substitute","take the place of"], rel:["replacement (n) 交換、後任"], col:["replace A with B AをBと取り替える"], lv:3,
+  tip:"「AがBに取って代わる」は A replaces B。B が古い方である点に注意。", cat:["sci","eco"] },
+{ w:"represent", ipa:"ˌreprɪˈzent", kana:"レプリゼント", pos:["v"], ja:"〜を代表する、表す", key:"①代表する ②象徴する・表す。",
+  ex:[["She was chosen to {represent} Japan at the Olympics.","彼女はオリンピックで日本を代表する選手に選ばれた。"]],
+  syn:["stand for","symbolize"], rel:["representative (n) 代表者","representation (n) 表現"], col:["represent one's country 国を代表する"], lv:2,
+  tip:"stand for A（Aを表す）も同じ意味で使える。", cat:["soc"] },
+{ w:"respond", ipa:"rɪˈspɑːnd", kana:"リスポンド", pos:["v"], ja:"答える、反応する", key:"respond to A（Aに応じる・反応する）。",
+  ex:[["The company quickly {responded} to customer complaints.","その会社は顧客の苦情に素早く対応した。"]],
+  syn:["reply","react","answer"], rel:["response (n) 反応、返答","responsible (adj) 責任のある"], col:["respond to A Aに応じる"], lv:3,
+  tip:"自動詞なので目的語の前に to が必要。", note:"× respond the question → ○ respond to the question", cat:["human"] },
+{ w:"reveal", ipa:"rɪˈviːl", kana:"リヴィール", pos:["v"], ja:"〜を明らかにする、暴露する", key:"研究・調査が〜を明らかにした（The study revealed that ...）。",
+  ex:[["The study {revealed} that many teenagers do not get enough sleep.","その研究は多くの10代が十分な睡眠をとっていないことを明らかにした。"]],
+  syn:["show","disclose","uncover"], ant:["hide","conceal"], col:["reveal a secret 秘密を明かす"], lv:2,
+  tip:"隠れていたものの「ベールを取る」イメージ。", cat:["sci"] },
+{ w:"satisfy", ipa:"ˈsætɪsfaɪ", kana:"サティスファイ", pos:["v"], ja:"〜を満足させる、（条件を）満たす", key:"be satisfied with A（Aに満足している）。",
+  ex:[["The hotel staff did their best to {satisfy} every guest.","ホテルの従業員はすべての客を満足させるよう最善を尽くした。"]],
+  syn:["please","meet"], rel:["satisfaction (n) 満足","satisfactory (adj) 満足のいく"], col:["be satisfied with A Aに満足している","satisfy the needs ニーズを満たす"], lv:3,
+  tip:"satisfied（人が満足した）と satisfying / satisfactory（物事が満足のいく）を区別する。", cat:["human","eco"] },
+{ w:"select", ipa:"səˈlekt", kana:"セレクト", pos:["v"], ja:"〜を選ぶ、選抜する", key:"choose より慎重に選ぶニュアンス。",
+  ex:[["Only ten students were {selected} for the program.","その制度にはわずか10人の生徒しか選ばれなかった。"]],
+  syn:["choose","pick"], rel:["selection (n) 選択"], col:["be selected for A Aに選ばれる"], lv:2,
+  tip:"natural selection は「自然選択（自然淘汰）」。", cat:["edu"] },
+{ w:"solve", ipa:"sɑːlv", kana:"ソルヴ", pos:["v"], ja:"〜を解決する、解く", key:"solve a problem（問題を解決する）。",
+  ex:[["We need to work together to {solve} environmental problems.","環境問題を解決するために私たちは協力する必要がある。"]],
+  syn:["resolve","settle","work out"], rel:["solution (n) 解決策"], col:["solve a problem 問題を解決する","a solution to A Aの解決策"], lv:3,
+  tip:"「〜の解決策」は solution to A（of ではなく to）。", cat:["soc","env"] },
+{ w:"store", ipa:"stɔːr", kana:"ストア", pos:["v","n"], ja:"〜を保存する、蓄える／店", key:"動詞「保存する・蓄える」を見落とさない。",
+  ex:[["Solar energy can be {stored} in batteries.","太陽エネルギーは電池に蓄えることができる。"]],
+  syn:["keep","save"], rel:["storage (n) 保管"], col:["store data データを保存する","store food 食料を蓄える"], lv:2,
+  tip:"名詞の「店」より、長文では動詞「保存する」の方が重要。", cat:["sci","life"] },
+{ w:"suffer", ipa:"ˈsʌfər", kana:"サファー", pos:["v"], ja:"苦しむ、（損害などを）受ける", key:"suffer from A（A＝病気・問題に苦しむ）が頻出。",
+  ex:[["Many people {suffer} from hay fever in spring.","春には多くの人が花粉症に苦しむ。"],["The company {suffered} huge losses last year.","その会社は昨年莫大な損失を被った。"]],
+  syn:["experience","undergo"], rel:["suffering (n) 苦しみ"], col:["suffer from A Aに苦しむ","suffer damage 損害を受ける"], lv:3,
+  tip:"自動詞 suffer from A（慢性的に苦しむ）と他動詞 suffer A（損害・痛みを受ける）の両方がある。", cat:["med","eco"] },
+{ w:"supply", ipa:"səˈplaɪ", kana:"サプライ", pos:["v","n"], ja:"〜を供給する／供給（量）", key:"supply A with B ＝ supply B to A。supply and demand（需要と供給）。",
+  ex:[["The dam {supplies} the city with water.","そのダムは市に水を供給している。"]],
+  syn:["provide","furnish"], ant:["demand"], col:["supply and demand 需要と供給","a water supply 給水"], lv:2,
+  tip:"provide A with B と同じ語順をとる。日本語と逆の「需要と供給」は英語では supply and demand の語順。", cat:["eco"] },
+{ w:"support", ipa:"səˈpɔːrt", kana:"サポート", pos:["v","n"], ja:"〜を支える、支持する、養う／支援", key:"①支援する ②（意見に）賛成する ③（家族を）養う。",
+  ex:[["Most local residents {support} the plan to build a new park.","地元住民の大半は新しい公園の建設計画に賛成している。"],["He works two jobs to {support} his family.","彼は家族を養うために仕事を2つしている。"]],
+  syn:["back","help","be in favor of"], ant:["oppose"], rel:["supporter (n) 支持者"], col:["financial support 経済的支援","support a family 家族を養う"], lv:3,
+  tip:"ライティングで「〜に賛成だ」は I support the idea that ... とも書ける。", cat:["soc","human"] },
+{ w:"survive", ipa:"sərˈvaɪv", kana:"サヴァイヴ", pos:["v"], ja:"生き残る、〜を切り抜ける", key:"他動詞として survive the accident（事故を生き延びる）。",
+  ex:[["Only a few animals can {survive} in such a cold place.","そんな寒い場所で生き延びられる動物はわずかしかいない。"]],
+  syn:["live through","outlive"], rel:["survival (n) 生存","survivor (n) 生存者"], col:["survive an accident 事故を生き延びる"], lv:3,
+  tip:"他動詞のとき前置詞は不要。× survive from the war", cat:["env","sci"] },
+{ w:"threaten", ipa:"ˈθretn", kana:"スレトゥン", pos:["v"], ja:"〜を脅かす、脅す", key:"be threatened with extinction（絶滅の危機にある）。",
+  ex:[["Rising sea levels {threaten} many coastal cities.","海面上昇は多くの沿岸都市を脅かしている。"]],
+  syn:["endanger","menace"], rel:["threat (n) 脅威"], col:["threaten to do 〜すると脅す","be threatened with extinction 絶滅の危機にある"], lv:2,
+  tip:"名詞 threat（脅威）は a threat to A（Aへの脅威）。", cat:["env"] },
+{ w:"translate", ipa:"trænsˈleɪt", kana:"トランスレイト", pos:["v"], ja:"〜を翻訳する", key:"translate A into B（AをBに翻訳する）。",
+  ex:[["Her novel has been {translated} into more than 20 languages.","彼女の小説は20以上の言語に翻訳されている。"]],
+  rel:["translation (n) 翻訳","translator (n) 翻訳者"], col:["translate A into B AをBに翻訳する"], lv:2,
+  tip:"「〜語に」は into を使う。AI翻訳の話題でも登場する。", cat:["edu","sci"] },
+{ w:"treat", ipa:"triːt", kana:"トリート", pos:["v","n"], ja:"〜を扱う、治療する、おごる／ごちそう", key:"①扱う ②治療する ③おごる、と意味が多い。",
+  ex:[["Please {treat} the books carefully.","本は丁寧に扱ってください。"],["The doctor {treated} the patient with a new drug.","医師は新薬でその患者を治療した。"]],
+  syn:["handle","cure"], rel:["treatment (n) 治療、扱い"], col:["treat A like B AをBのように扱う","medical treatment 医療"], lv:3,
+  tip:"cure は「（病気を）治す」結果まで含む。treat は「治療する」行為。", cat:["med","human"] }
+], "words-verbs-01");
+
+</script>
+<!-- DATA:END -->
+<script>
+/* 共通ユーティリティ */
+(function (g) {
+  "use strict";
+  var U = {};
+
+  U.esc = function (s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  };
+
+  /* 例文中の {対象語} を強調表示 */
+  U.markEx = function (s) {
+    return U.esc(s).replace(/\{([^}]*)\}/g, '<b class="hl">$1</b>');
+  };
+  /* 例文中の {対象語} を空欄にする */
+  U.blankEx = function (s) {
+    return U.esc(s).replace(/\{([^}]*)\}/g, '<span class="blank">　　　</span>');
+  };
+  U.plainEx = function (s) { return String(s).replace(/[{}]/g, ""); };
+  U.hasTarget = function (s) { return /\{[^}]+\}/.test(s); };
+
+  U.shuffle = function (a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  };
+  U.pick = function (a) { return a[Math.floor(Math.random() * a.length)]; };
+
+  U.today = function (d) {
+    d = d || new Date();
+    var m = d.getMonth() + 1, day = d.getDate();
+    return d.getFullYear() + "-" + (m < 10 ? "0" : "") + m + "-" + (day < 10 ? "0" : "") + day;
+  };
+  U.fmtDate = function (ts) {
+    if (!ts) return "—";
+    var d = new Date(ts);
+    return (d.getMonth() + 1) + "/" + d.getDate();
+  };
+  U.pct = function (a, b) { return b ? Math.round((a / b) * 100) : 0; };
+
+  /* 解答の比較用：小文字化・記号除去・A/B/doing などのプレースホルダー除去 */
+  var PH = { a: 1, b: 1, "one's": 1, oneself: 1, doing: 1, someone: 1, something: 1, sb: 1, sth: 1, "~": 1, "〜": 1 };
+  U.normAnswer = function (s) {
+    return String(s || "").toLowerCase()
+      .replace(/[’`]/g, "'")
+      .replace(/[^a-z' ~〜-]/g, " ")
+      .split(/\s+/).filter(function (t) { return t && !PH[t]; }).join(" ");
+  };
+
+  U.qs = function (sel, root) { return (root || document).querySelector(sel); };
+  U.qsa = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+
+  g.U = U;
+})(window);
+
+</script>
+<script>
+/*
+ * 学習記録の保存（localStorage）と復習スケジュール（間隔反復）
+ *
+ * 1語ごとの記録 p:
+ *   n: 学習回数  c: 正解数  x: 不正解数  s: 連続正解数
+ *   b: 習熟ボックス(0-5)  due: 次回復習の目安時刻  last: 最終学習時刻
+ *   weak: 苦手フラグ（1度でも間違えると true、3回連続正解で卒業）
+ */
+(function (g) {
+  "use strict";
+  var KEY = "eiken2.progress.v1";
+  var SKEY = "eiken2.settings.v1";
+  var DAY = 86400000;
+  /* ボックスごとの次回復習までの間隔 */
+  var INTERVAL = [10 * 60000, 1 * DAY, 3 * DAY, 7 * DAY, 14 * DAY, 30 * DAY];
+  var WEAK_CLEAR = 3; // 苦手卒業に必要な連続正解数
+  var MASTER_BOX = 3; // このボックス以上を「定着」とみなす
+
+  var state = load(KEY, { items: {}, daily: {}, v: 1 });
+  var settings = load(SKEY, { autoSpeak: false, rate: 0.9, listView: "both" });
+
+  function load(k, def) {
+    try {
+      var s = localStorage.getItem(k);
+      if (s) {
+        var o = JSON.parse(s);
+        for (var key in def) if (!(key in o)) o[key] = def[key];
+        return o;
+      }
+    } catch (e) { /* 読めない場合は初期値 */ }
+    return JSON.parse(JSON.stringify(def));
+  }
+  var saveTimer = null;
+  function save() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(flush, 200);
+  }
+  function flush() {
+    clearTimeout(saveTimer);
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { console.warn("保存に失敗", e); }
+  }
+  window.addEventListener("pagehide", flush);
+  window.addEventListener("beforeunload", flush);
+
+  var S = {
+    MASTER_BOX: MASTER_BOX,
+    WEAK_CLEAR: WEAK_CLEAR,
+    get: function (id) { return state.items[id] || null; },
+    all: function () { return state.items; },
+    daily: function () { return state.daily; },
+
+    /* 解答結果を記録する */
+    record: function (id, ok) {
+      var now = Date.now();
+      var p = state.items[id] || (state.items[id] = { n: 0, c: 0, x: 0, s: 0, b: 0, due: 0, last: 0, weak: false });
+      p.n++; p.last = now;
+      if (ok) {
+        p.c++; p.s++;
+        p.b = Math.min(p.b + 1, INTERVAL.length - 1);
+        if (p.weak && p.s >= WEAK_CLEAR) p.weak = false;
+      } else {
+        p.x++; p.s = 0;
+        p.b = 0;
+        p.weak = true;
+      }
+      p.due = now + INTERVAL[p.b];
+      var d = U.today();
+      var day = state.daily[d] || (state.daily[d] = { n: 0, c: 0 });
+      day.n++; if (ok) day.c++;
+      save();
+      return p;
+    },
+
+    setWeak: function (id, flag) {
+      var p = state.items[id] || (state.items[id] = { n: 0, c: 0, x: 0, s: 0, b: 0, due: 0, last: 0, weak: false });
+      p.weak = !!flag;
+      if (flag) p.s = 0;
+      save();
+    },
+
+    status: function (id) {
+      var p = state.items[id];
+      if (!p || !p.n) return "new";
+      if (p.weak) return "weak";
+      if (p.b >= MASTER_BOX) return "master";
+      return "learning";
+    },
+
+    /*
+     * 出題の優先度（重み）。苦手・復習期限切れは高く、
+     * 何度も正解して定着した語は低くする。
+     */
+    weight: function (id) {
+      var p = state.items[id];
+      if (!p || !p.n) return 1.2;               // 未学習
+      var now = Date.now();
+      var w;
+      if (p.weak) w = 6 + Math.min(p.x, 5);      // 苦手
+      else if (p.due <= now) w = 3 + Math.min((now - p.due) / DAY, 7) * 0.5; // 復習期限切れ
+      else w = 0.6 / (p.b + 1);                 // まだ期限前
+      return w;
+    },
+    isDue: function (id) {
+      var p = state.items[id];
+      return !!p && p.n > 0 && (p.weak || p.due <= Date.now());
+    },
+
+    streakDays: function () {
+      var n = 0, d = new Date();
+      if (!state.daily[U.today(d)]) d.setDate(d.getDate() - 1); // 今日まだなら昨日から数える
+      while (state.daily[U.today(d)]) { n++; d.setDate(d.getDate() - 1); }
+      return n;
+    },
+
+    settings: settings,
+    saveSettings: function () {
+      try { localStorage.setItem(SKEY, JSON.stringify(settings)); } catch (e) { /* noop */ }
+    },
+
+    exportJSON: function () {
+      flush();
+      return JSON.stringify({ app: "eiken2-vocab", exported: new Date().toISOString(), progress: state, settings: settings });
+    },
+    importJSON: function (text) {
+      var o = JSON.parse(text);
+      if (!o || !o.progress || typeof o.progress.items !== "object") throw new Error("形式が正しくありません");
+      state = o.progress;
+      if (!state.daily) state.daily = {};
+      flush();
+    },
+    reset: function () {
+      state = { items: {}, daily: {}, v: 1 };
+      flush();
+    }
+  };
+
+  g.Store = S;
+})(window);
+
+</script>
+<script>
+/* 単語データの索引・カテゴリ・検索 */
+(function (g) {
+  "use strict";
+  var items = (g.EIKEN && g.EIKEN.items) || [];
+  var byId = {};
+  items.forEach(function (e, i) {
+    e._i = i;
+    if (typeof e.pos === "string") e.pos = [e.pos];
+    e.pos = e.pos || [];
+    e.cat = e.cat || [];
+    e.ex = e.ex || [];
+    if (byId[e.id]) console.warn("ID重複:", e.id);
+    byId[e.id] = e;
+    e._search = (e.w + " " + e.ja + " " + (e.syn || []).join(" ") + " " + (e.pat || "")).toLowerCase();
+  });
+
+  var POS_LABEL = { v: "動", n: "名", adj: "形", adv: "副", prep: "前", conj: "接" };
+  var KIND_LABEL = { w: "単語", ph: "句動詞", id: "熟語" };
+
+  function hasPos(p) { return function (e) { return e.k === "w" && e.pos.indexOf(p) >= 0; }; }
+  function hasCat(c) { return function (e) { return e.cat.indexOf(c) >= 0; }; }
+
+  var CATS = [
+    { id: "all", label: "全単語", group: "", test: function () { return true; } },
+    { id: "v", label: "動詞", group: "品詞", test: hasPos("v") },
+    { id: "n", label: "名詞", group: "品詞", test: hasPos("n") },
+    { id: "adj", label: "形容詞", group: "品詞", test: hasPos("adj") },
+    { id: "adv", label: "副詞", group: "品詞", test: hasPos("adv") },
+    { id: "phr_all", label: "熟語すべて", group: "熟語", test: function (e) { return e.k === "id" || e.k === "ph"; } },
+    { id: "idiom", label: "熟語・表現", group: "熟語", test: function (e) { return e.k === "id"; } },
+    { id: "phrasal", label: "句動詞", group: "熟語", test: function (e) { return e.k === "ph"; } },
+    { id: "env", label: "環境", group: "分野", test: hasCat("env") },
+    { id: "sci", label: "科学・テクノロジー", group: "分野", test: hasCat("sci") },
+    { id: "edu", label: "教育", group: "分野", test: hasCat("edu") },
+    { id: "soc", label: "社会・政治", group: "分野", test: hasCat("soc") },
+    { id: "eco", label: "経済", group: "分野", test: hasCat("eco") },
+    { id: "med", label: "医療・健康", group: "分野", test: hasCat("med") },
+    { id: "life", label: "生活", group: "分野", test: hasCat("life") },
+    { id: "human", label: "人間関係", group: "分野", test: hasCat("human") }
+  ];
+  var catById = {};
+  CATS.forEach(function (c) { catById[c.id] = c; });
+
+  /* 種類ごとに事前計算（数千語でも高速に絞り込めるように） */
+  var catIndex = {};
+  CATS.forEach(function (c) { catIndex[c.id] = items.filter(c.test); });
+
+  var D = {
+    items: items,
+    get: function (id) { return byId[id]; },
+    CATS: CATS,
+    cat: function (id) { return catById[id] || catById.all; },
+    inCat: function (id) { return catIndex[id] || items; },
+    isIdiom: function (e) { return e.k === "ph" || e.k === "id"; },
+    posLabel: function (e) {
+      if (e.k !== "w") return KIND_LABEL[e.k];
+      return e.pos.map(function (p) { return POS_LABEL[p] || p; }).join("・");
+    },
+    kindLabel: function (e) { return KIND_LABEL[e.k] || ""; },
+    catLabels: function (e) {
+      return e.cat.map(function (c) { return catById[c] ? catById[c].label : c; });
+    },
+    /*
+     * 絞り込み
+     * opt: {cat, q, lv, status}  status = all|new|weak|learning|master|due
+     */
+    filter: function (opt) {
+      var list = D.inCat(opt.cat || "all");
+      var q = (opt.q || "").trim().toLowerCase();
+      var lv = +opt.lv || 0;
+      var st = opt.status || "all";
+      if (!q && !lv && st === "all") return list;
+      var out = list.filter(function (e) {
+        if (lv && e.lv !== lv) return false;
+        if (q && e._search.indexOf(q) < 0) return false;
+        if (st !== "all") {
+          if (st === "due") { if (!Store.isDue(e.id)) return false; }
+          else if (Store.status(e.id) !== st) return false;
+        }
+        return true;
+      });
+      if (q) {
+        // 見出し語が検索語で始まるものを先頭に
+        var head = [], rest = [];
+        out.forEach(function (e) { (e.w.toLowerCase().indexOf(q) === 0 ? head : rest).push(e); });
+        out = head.concat(rest);
+      }
+      return out;
+    },
+    /* 意味の主要部分（選択肢の重複判定用） */
+    glossTokens: function (e) {
+      return String(e.ja).split(/[、,，;；／\/①-⑨()（）\s]+/)
+        .map(function (t) { return t.replace(/^[〜~]?(を|に|が|は|と|で|の)?/, "").replace(/[〜~]/g, "").trim(); })
+        .filter(function (t) { return t.length >= 2; });
+    }
+  };
+
+  g.Data = D;
+})(window);
+
+</script>
+<script>
+/* 発音（ブラウザ標準の音声合成。ネット接続・APIキー不要） */
+(function (g) {
+  "use strict";
+  var synth = g.speechSynthesis;
+  var voice = null;
+  function pickVoice() {
+    if (!synth) return;
+    var vs = synth.getVoices().filter(function (v) { return /^en[-_]/i.test(v.lang); });
+    voice = vs.filter(function (v) { return /en[-_]US/i.test(v.lang) && /Samantha|Google|Microsoft|Natural/i.test(v.name); })[0] ||
+      vs.filter(function (v) { return /en[-_]US/i.test(v.lang); })[0] || vs[0] || null;
+  }
+  if (synth) {
+    pickVoice();
+    if (typeof synth.onvoiceschanged !== "undefined") synth.onvoiceschanged = pickVoice;
+  }
+  g.Speech = {
+    available: !!synth,
+    /* head=true のときは見出し語として A / B などの記号を読み飛ばす */
+    say: function (text, head) {
+      if (!synth || !text) return;
+      synth.cancel();
+      var t = U.plainEx(text);
+      if (head) t = t.replace(/(^|\s)(A|B)(?=\s|$)/g, " ").replace(/[〜~]/g, "");
+      var u = new SpeechSynthesisUtterance(t);
+      u.lang = "en-US";
+      if (voice) u.voice = voice;
+      u.rate = Store.settings.rate || 0.9;
+      synth.speak(u);
+    }
+  };
+})(window);
+
+</script>
+<script>
+/* 出題ロジック：セッション作成・選択肢生成 */
+(function (g) {
+  "use strict";
+
+  var PARTICLES = ["about", "across", "after", "against", "along", "around", "as", "at", "away", "back",
+    "by", "down", "for", "from", "in", "into", "of", "off", "on", "out", "over", "through", "to", "up", "with"];
+  var COMMON = ["in", "on", "at", "to", "for", "with", "from", "of", "by", "up", "out", "off", "into", "about", "down", "over", "away"];
+  var isParticle = {};
+  PARTICLES.forEach(function (p) { isParticle[p] = 1; });
+
+  var MODES = {
+    e2j: { label: "英語 → 日本語", desc: "単語を見て意味を思い出す（自己採点）" },
+    j2e: { label: "日本語 → 英語", desc: "意味を見て英語を入力する" },
+    mc: { label: "4択テスト", desc: "似た意味の選択肢から正しいものを選ぶ" },
+    fill: { label: "例文穴埋め", desc: "文脈から空欄に入る語を選ぶ" },
+    prep: { label: "前置詞・副詞を選ぶ", desc: "熟語の前置詞・副詞を正確に覚える" },
+    mix: { label: "おすすめミックス", desc: "4択・穴埋め・前置詞を混ぜて出題" }
+  };
+
+  function exWithTarget(e) {
+    return e.ex.filter(function (x) { return U.hasTarget(x[0]); });
+  }
+  /* 前置詞・副詞の空欄候補の位置 */
+  function particleSlots(e) {
+    if (e.k === "w") return [];
+    var t = e.w.split(/\s+/), slots = [];
+    for (var i = 0; i < t.length; i++) {
+      if (!isParticle[t[i]]) continue;
+      if (i === 0 && e.k === "ph") continue;
+      slots.push(i);
+    }
+    return slots;
+  }
+
+  /* 紛らわしい選択肢を選ぶ（同じ品詞・同じ分野を優先、意味が重なるものは除外） */
+  function distractors(e, n, mode) {
+    var idiom = Data.isIdiom(e);
+    var pool = Data.items.filter(function (o) {
+      if (o === e || o.w === e.w) return false;
+      if (idiom) return Data.isIdiom(o);
+      return o.k === "w" && o.pos.some(function (p) { return e.pos.indexOf(p) >= 0; });
+    });
+    if (pool.length < n) pool = Data.items.filter(function (o) { return o !== e; });
+
+    var gt = Data.glossTokens(e);
+    var syn = {}; (e.syn || []).forEach(function (s) { syn[s.toLowerCase()] = 1; });
+    var scored = [];
+    pool.forEach(function (o) {
+      var og = Data.glossTokens(o);
+      var overlap = og.some(function (t) { return gt.some(function (u) { return t === u || (t.length >= 3 && u.indexOf(t) >= 0) || (u.length >= 3 && t.indexOf(u) >= 0); }); });
+      if (overlap) return;
+      if (mode === "fill" && (syn[o.w.toLowerCase()] || (o.syn || []).indexOf(e.w) >= 0)) return; // 文脈で正解になり得る語は除外
+      var s = Math.random() * 2.5;
+      o.cat.forEach(function (c) { if (e.cat.indexOf(c) >= 0) s += 1.5; });
+      if (o.pos[0] === e.pos[0]) s += 1;
+      if (o.lv === e.lv) s += 0.5;
+      if (mode !== "fill" && syn[o.w.toLowerCase()]) s += 2; // 意味が近い語は良い引っかけ
+      scored.push([s, o]);
+    });
+    scored.sort(function (a, b) { return b[0] - a[0]; });
+    var out = [], seen = {};
+    for (var i = 0; i < scored.length && out.length < n; i++) {
+      var o = scored[i][1];
+      if (seen[o.ja] || seen[o.w]) continue;
+      seen[o.ja] = seen[o.w] = 1;
+      out.push(o);
+    }
+    return out;
+  }
+
+  function makeQuestion(e, type, dir) {
+    var q = { type: type, id: e.id, dir: dir || "e2j" };
+    if (type === "mc") {
+      q.options = U.shuffle([e].concat(distractors(e, 3, "mc"))).map(function (o) { return o.id; });
+    } else if (type === "fill") {
+      var exs = exWithTarget(e);
+      q.ex = U.pick(exs);
+      q.options = U.shuffle([e].concat(distractors(e, 3, "fill"))).map(function (o) { return o.id; });
+    } else if (type === "prep") {
+      var slots = particleSlots(e);
+      var si = U.pick(slots);
+      var tokens = e.w.split(/\s+/);
+      var ans = tokens[si];
+      var others = U.shuffle(COMMON.filter(function (p) { return p !== ans && tokens.indexOf(p) < 0; })).slice(0, 3);
+      q.slot = si;
+      q.answer = ans;
+      q.options = U.shuffle([ans].concat(others));
+      q.ex = exWithTarget(e)[0] || e.ex[0];
+    }
+    return q;
+  }
+
+  function canDo(e, type) {
+    if (type === "fill") return exWithTarget(e).length > 0;
+    if (type === "prep") return particleSlots(e).length > 0;
+    return true;
+  }
+
+  /* 重み付きランダム抽出（重みが大きい語ほど選ばれやすい） */
+  function weightedPick(list, n) {
+    return list.map(function (e) {
+      var w = Math.max(Store.weight(e.id), 0.01);
+      return [Math.pow(Math.random(), 1 / w), e];
+    }).sort(function (a, b) { return b[0] - a[0]; }).slice(0, n).map(function (x) { return x[1]; });
+  }
+
+  /*
+   * opt: {mode, cat, status, lv, count, order(smart|random|list), dir(e2j|j2e), ids}
+   */
+  function buildSession(opt) {
+    var mode = opt.mode || "mc";
+    var pool = opt.ids ? opt.ids.map(Data.get).filter(Boolean) : Data.filter(opt);
+    if (mode === "fill" || mode === "prep") pool = pool.filter(function (e) { return canDo(e, mode); });
+    var count = Math.min(opt.count || 20, pool.length);
+    var chosen;
+    if (opt.order === "list") chosen = pool.slice(0, count);
+    else if (opt.order === "random") chosen = U.shuffle(pool.slice()).slice(0, count);
+    else chosen = weightedPick(pool, count);
+
+    var qs = chosen.map(function (e) {
+      var type = mode;
+      if (mode === "mix") {
+        var r = Math.random();
+        if (canDo(e, "prep") && r < 0.3) type = "prep";
+        else if (canDo(e, "fill") && r < 0.65) type = "fill";
+        else type = "mc";
+      }
+      return { type: type, id: e.id };
+    });
+    return { mode: mode, dir: opt.dir || "e2j", opt: opt, qs: qs, i: 0, results: [], started: Date.now() };
+  }
+
+  g.Quiz = {
+    MODES: MODES,
+    buildSession: buildSession,
+    makeQuestion: makeQuestion,
+    canDo: canDo,
+    particleSlots: particleSlots,
+    poolSize: function (opt) {
+      var pool = Data.filter(opt);
+      if (opt.mode === "fill" || opt.mode === "prep") pool = pool.filter(function (e) { return canDo(e, opt.mode); });
+      return pool.length;
+    }
+  };
+})(window);
+
+</script>
+<script>
+/* 画面（ルーティング・描画・操作） */
+(function (g) {
+  "use strict";
+  var esc = U.esc;
+  var app = document.getElementById("app");
+  var keyHandler = null;          // 現在の画面のキーボード操作
+  var session = null;             // 実行中のテスト
+  var lastList = [];              // 単語帳で最後に表示した一覧（前後移動用）
+  var listState = { cat: "all", q: "", lv: 0, status: "all", shown: 80 };
+  var STATUS_LABEL = { new: "未学習", learning: "学習中", weak: "苦手", master: "定着" };
+
+  /* ---------- 共通部品 ---------- */
+  /* お知らせ（alert の代わり） */
+  function toast(msg) {
+    var t = document.createElement("div");
+    t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 2600);
+  }
+  /* 確認ダイアログ（confirm の代わり。どの環境でも動く） */
+  function ask(msg, okLabel, onOk, danger) {
+    var w = document.createElement("div");
+    w.className = "modal";
+    w.innerHTML = '<div class="modal-box" role="dialog" aria-modal="true"><p>' + esc(msg) + '</p><div class="ract">' +
+      '<button class="btn" data-a="no">キャンセル</button><button class="btn ' + (danger ? "bad big1" : "primary") + '" data-a="ok">' + esc(okLabel) + "</button></div></div>";
+    document.body.appendChild(w);
+    var prevKeys = keyHandler;
+    keyHandler = function (ev) { if (ev.key === "Escape") close(); };
+    function close() { w.remove(); keyHandler = prevKeys; }
+    w.onclick = function (ev) {
+      var a = ev.target.getAttribute("data-a");
+      if (ev.target === w || a === "no") close();
+      else if (a === "ok") { close(); onOk(); }
+    };
+    w.querySelector('[data-a="ok"]').focus();
+  }
+  function stars(lv) { return '<span class="stars" title="重要度">' + "★★★".slice(0, lv) + '<i>' + "★★★".slice(lv) + "</i></span>"; }
+  function statusDot(id) {
+    var s = Store.status(id);
+    return '<span class="dot ' + s + '" title="' + STATUS_LABEL[s] + '"></span>';
+  }
+  function speakBtn(text, head, cls) {
+    if (!Speech.available) return "";
+    return '<button class="speak ' + (cls || "") + '" data-say="' + esc(text) + '"' + (head ? ' data-head="1"' : "") + ' aria-label="発音を聞く">' +
+      '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg></button>';
+  }
+  function catOptions(sel) {
+    return Data.CATS.map(function (c) {
+      return '<option value="' + c.id + '"' + (c.id === sel ? " selected" : "") + ">" + (c.group ? c.group + "：" : "") + c.label + "（" + Data.inCat(c.id).length + "）</option>";
+    }).join("");
+  }
+  function href(path, params) {
+    var q = [];
+    for (var k in params) if (params[k] !== undefined && params[k] !== "") q.push(k + "=" + encodeURIComponent(params[k]));
+    return "#/" + path + (q.length ? "?" + q.join("&") : "");
+  }
+  function parseHash() {
+    var h = location.hash.replace(/^#\/?/, "");
+    var qi = h.indexOf("?");
+    var path = qi >= 0 ? h.slice(0, qi) : h;
+    var params = {};
+    if (qi >= 0) h.slice(qi + 1).split("&").forEach(function (kv) {
+      var p = kv.split("=");
+      if (p[0]) params[p[0]] = decodeURIComponent(p[1] || "");
+    });
+    var parts = path.split("/").map(decodeURIComponent);
+    return { name: parts[0] || "home", arg: parts.slice(1).join("/"), params: params };
+  }
+  function counts(list) {
+    var c = { new: 0, learning: 0, weak: 0, master: 0, total: list.length };
+    for (var i = 0; i < list.length; i++) c[Store.status(list[i].id)]++;
+    return c;
+  }
+  function progressBar(c) {
+    var t = c.total || 1;
+    return '<div class="pbar" role="img" aria-label="定着' + c.master + ' 学習中' + c.learning + ' 苦手' + c.weak + ' 未学習' + c.new + '">' +
+      ['master', 'learning', 'weak'].map(function (k) {
+        return c[k] ? '<span class="seg ' + k + '" style="width:' + (c[k] / t * 100) + '%"></span>' : "";
+      }).join("") + "</div>";
+  }
+  function legend(c) {
+    return '<div class="legend">' + ["master", "learning", "weak", "new"].map(function (k) {
+      return '<span><i class="dot ' + k + '"></i>' + STATUS_LABEL[k] + " <b>" + c[k] + "</b></span>";
+    }).join("") + "</div>";
+  }
+
+  /* ---------- ホーム ---------- */
+  function viewHome() {
+    var all = Data.items;
+    var c = counts(all);
+    var daily = Store.daily();
+    var td = daily[U.today()] || { n: 0, c: 0 };
+    var due = 0;
+    all.forEach(function (e) { if (Store.isDue(e.id)) due++; });
+
+    var days = [], max = 1;
+    for (var i = 6; i >= 0; i--) {
+      var d = new Date(); d.setDate(d.getDate() - i);
+      var r = daily[U.today(d)] || { n: 0, c: 0 };
+      days.push({ d: d, r: r }); if (r.n > max) max = r.n;
+    }
+    var wd = "日月火水木金土";
+    var chart = '<div class="chart">' + days.map(function (x) {
+      return '<div class="col"><div class="bars"><span class="b" style="height:' + (x.r.n / max * 100) + '%"><span class="bc" style="height:' + U.pct(x.r.c, x.r.n) + '%"></span></span></div>' +
+        '<small>' + (x.r.n || "") + "</small><em>" + wd[x.d.getDay()] + "</em></div>";
+    }).join("") + "</div>";
+
+    var modes = [
+      ["list", "1", "単語帳", "一覧・検索・詳しい解説", href("list")],
+      ["e2j", "2", "英語 → 日本語", "見て意味を思い出す", href("test", { mode: "e2j" })],
+      ["j2e", "3", "日本語 → 英語", "意味から英語を書く", href("test", { mode: "j2e" })],
+      ["mc", "4", "4択テスト", "紛らわしい選択肢で実戦練習", href("test", { mode: "mc" })],
+      ["idioms", "5", "熟語集中", "熟語・句動詞・前置詞", href("idioms")],
+      ["fill", "6", "例文穴埋め", "文脈から判断する", href("test", { mode: "fill" })]
+    ];
+
+    var catRows = Data.CATS.filter(function (x) { return x.group === "分野"; }).map(function (cat) {
+      var cc = counts(Data.inCat(cat.id));
+      return '<a class="catrow" href="' + href("list", { cat: cat.id }) + '"><span class="cl">' + cat.label + "</span>" + progressBar(cc) +
+        '<span class="cn">' + cc.master + "/" + cc.total + "</span></a>";
+    }).join("");
+
+    app.innerHTML =
+      '<section class="card hero">' +
+      '<div class="hero-head"><h1>今日の学習</h1><span class="streak">' + (Store.streakDays() ? "🔥 " + Store.streakDays() + "日連続" : "今日から始めよう") + "</span></div>" +
+      '<div class="kpis">' +
+      kpi(td.n, "今日の解答") + kpi(td.n ? U.pct(td.c, td.n) + "%" : "—", "正答率") +
+      kpi(due, "復習待ち") + kpi(c.weak, "苦手") +
+      "</div>" +
+      '<button class="btn primary big" id="startReco">おすすめ復習を始める <small>苦手・復習期限を優先して20問</small></button>' +
+      "</section>" +
+      '<section class="card"><h2>全体の進捗 <small>' + all.length + "項目（単語 " + Data.items.filter(function (e) { return e.k === "w"; }).length + " ／ 熟語・句動詞 " + Data.inCat("phr_all").length + "）</small></h2>" +
+      progressBar(c) + legend(c) +
+      '<h3>直近7日間の解答数</h3>' + chart + "</section>" +
+      '<section><h2 class="sec">学習モード</h2><div class="modes">' + modes.map(function (m) {
+        return '<a class="mode" href="' + m[4] + '"><span class="mn">' + m[1] + "</span><b>" + m[2] + "</b><small>" + m[3] + "</small></a>";
+      }).join("") + "</div></section>" +
+      '<section class="card"><h2>分野別の進捗 <small>定着数／全体</small></h2>' + catRows + "</section>";
+
+    U.qs("#startReco").onclick = function () {
+      startSession({ mode: "mix", cat: "all", status: "all", count: 20, order: "smart" });
+    };
+    function kpi(v, l) { return '<div class="kpi"><b>' + v + "</b><span>" + l + "</span></div>"; }
+  }
+
+  /* ---------- 単語帳（一覧） ---------- */
+  function viewList(params) {
+    if (params.cat) listState.cat = params.cat;
+    if (params.status) listState.status = params.status;
+    var view = Store.settings.listView || "both";
+    app.innerHTML =
+      '<div class="toolbar card">' +
+      '<input id="q" type="search" placeholder="英語・日本語で検索" value="' + esc(listState.q) + '" autocomplete="off">' +
+      '<div class="chips" id="chips">' + Data.CATS.map(function (c) {
+        return '<button class="chip' + (c.id === listState.cat ? " on" : "") + '" data-cat="' + c.id + '">' + c.label + "</button>";
+      }).join("") + "</div>" +
+      '<div class="filters">' +
+      '<select id="lv"><option value="0">重要度：すべて</option><option value="3">★★★ 最重要</option><option value="2">★★ 重要</option><option value="1">★ 発展</option></select>' +
+      '<select id="st"><option value="all">状態：すべて</option><option value="new">未学習</option><option value="learning">学習中</option><option value="weak">苦手</option><option value="master">定着</option><option value="due">復習期限</option></select>' +
+      '<div class="seg-ctl" id="view" role="group" aria-label="表示切替">' +
+      [["both", "英＋日"], ["en", "英語のみ"], ["ja", "日本語のみ"]].map(function (v) {
+        return '<button data-v="' + v[0] + '"' + (v[0] === view ? ' class="on"' : "") + ">" + v[1] + "</button>";
+      }).join("") + "</div></div></div>" +
+      '<div class="listhead"><span id="cnt"></span><span class="acts"><button class="btn sm" id="toCard">カードで学習</button><button class="btn sm" id="toMc">4択テスト</button></span></div>' +
+      '<div id="rows" class="rows view-' + view + '"></div>';
+
+    U.qs("#lv").value = String(listState.lv);
+    U.qs("#st").value = listState.status;
+
+    function render(reset) {
+      if (reset) listState.shown = 80;
+      lastList = Data.filter(listState);
+      U.qs("#cnt").textContent = lastList.length + "件";
+      var html = lastList.slice(0, listState.shown).map(function (e) {
+        return '<a class="row" href="#/word/' + encodeURIComponent(e.id) + '">' + statusDot(e.id) +
+          '<span class="rw">' + esc(e.w) + "</span>" +
+          '<span class="rp">' + esc(Data.posLabel(e)) + "</span>" +
+          '<span class="rj">' + esc(e.ja) + "</span>" +
+          '<span class="rl">' + stars(e.lv) + "</span></a>";
+      }).join("");
+      if (!lastList.length) html = '<p class="empty">該当する項目がありません。</p>';
+      if (lastList.length > listState.shown) html += '<button class="btn more" id="more">さらに表示（残り ' + (lastList.length - listState.shown) + "件）</button>";
+      U.qs("#rows").innerHTML = html;
+      var more = U.qs("#more");
+      if (more) more.onclick = function () { listState.shown += 200; render(false); };
+    }
+    render(false);
+
+    var timer;
+    U.qs("#q").oninput = function (ev) {
+      clearTimeout(timer);
+      timer = setTimeout(function () { listState.q = ev.target.value; render(true); }, 120);
+    };
+    U.qs("#chips").onclick = function (ev) {
+      var b = ev.target.closest("[data-cat]"); if (!b) return;
+      listState.cat = b.getAttribute("data-cat");
+      U.qsa(".chip", this).forEach(function (x) { x.classList.toggle("on", x === b); });
+      render(true);
+    };
+    U.qs("#lv").onchange = function () { listState.lv = +this.value; render(true); };
+    U.qs("#st").onchange = function () { listState.status = this.value; render(true); };
+    U.qs("#view").onclick = function (ev) {
+      var b = ev.target.closest("[data-v]"); if (!b) return;
+      Store.settings.listView = b.getAttribute("data-v"); Store.saveSettings();
+      U.qsa("button", this).forEach(function (x) { x.classList.toggle("on", x === b); });
+      U.qs("#rows").className = "rows view-" + Store.settings.listView;
+    };
+    var chipOn = U.qs(".chip.on"); if (chipOn) chipOn.scrollIntoView({ block: "nearest", inline: "center" });
+    U.qs("#toCard").onclick = function () { fromList("e2j"); };
+    U.qs("#toMc").onclick = function () { fromList("mc"); };
+    function fromList(mode) {
+      if (!lastList.length) return;
+      startSession({ mode: mode, ids: lastList.map(function (e) { return e.id; }), count: 20, order: "smart" });
+    }
+  }
+
+  /* ---------- 単語の詳細 ---------- */
+  function linkWord(w) {
+    var base = String(w).split(" (")[0].trim();
+    var e = Data.get(base);
+    return e ? '<a href="#/word/' + encodeURIComponent(e.id) + '">' + esc(w) + "</a>" : esc(w);
+  }
+  function viewWord(id) {
+    var e = Data.get(id);
+    if (!e) { app.innerHTML = '<p class="empty">項目が見つかりません。</p>'; return; }
+    var p = Store.get(id) || { n: 0, c: 0, x: 0, s: 0, last: 0, weak: false };
+    var idx = lastList.indexOf(e);
+    var prev = idx > 0 ? lastList[idx - 1] : null;
+    var next = idx >= 0 && idx < lastList.length - 1 ? lastList[idx + 1] : null;
+    var st = Store.status(id);
+
+    function sec(title, body) { return body ? '<div class="sec-b"><h3>' + title + "</h3>" + body + "</div>" : ""; }
+    function chips(arr, link) {
+      return arr && arr.length ? '<div class="tags">' + arr.map(function (x) { return "<span>" + (link ? linkWord(x) : esc(x)) + "</span>"; }).join("") + "</div>" : "";
+    }
+    function lines(arr) {
+      return arr && arr.length ? "<ul class=\"lines\">" + arr.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "";
+    }
+
+    app.innerHTML =
+      '<div class="wnav"><a href="#/list" class="btn sm ghost">← 一覧</a>' +
+      (idx >= 0 ? "<span>" + (idx + 1) + " / " + lastList.length + "</span>" : "<span></span>") +
+      '<span class="pn">' + (prev ? '<a class="btn sm" href="#/word/' + encodeURIComponent(prev.id) + '" id="prev">‹ 前</a>' : "") +
+      (next ? '<a class="btn sm" href="#/word/' + encodeURIComponent(next.id) + '" id="next">次 ›</a>' : "") + "</span></div>" +
+      '<article class="card word">' +
+      '<div class="w-head"><h1 class="w-word">' + esc(e.w) + "</h1>" + speakBtn(e.w, true, "lg") + "</div>" +
+      '<div class="w-pron">' + (e.ipa ? '<span class="ipa">/' + esc(e.ipa) + "/</span>" : "") + (e.kana ? '<span class="kana">' + esc(e.kana) + "</span>" : "") + "</div>" +
+      '<div class="w-tags"><span class="tag pos">' + esc(Data.posLabel(e)) + "</span>" + stars(e.lv) +
+      Data.catLabels(e).map(function (l) { return '<span class="tag">' + esc(l) + "</span>"; }).join("") +
+      '<span class="tag st-' + st + '">' + STATUS_LABEL[st] + "</span></div>" +
+      '<p class="w-ja">' + esc(e.ja) + "</p>" +
+      (e.key ? '<p class="w-key"><b>英検2級ポイント</b>' + esc(e.key) + "</p>" : "") +
+      (e.pat ? '<p class="w-pat"><b>文法パターン</b><code>' + esc(e.pat) + "</code></p>" : "") +
+      sec("例文", '<ul class="exs">' + e.ex.map(function (x) {
+        return "<li><p class=\"en\">" + U.markEx(x[0]) + " " + speakBtn(x[0]) + '</p><p class="jp">' + esc(x[1]) + "</p></li>";
+      }).join("") + "</ul>") +
+      sec(Data.isIdiom(e) ? "似た表現との違い・覚え方" : "覚えるポイント・使い分け", e.tip ? "<p>" + esc(e.tip) + "</p>" : "") +
+      sec("注意点（目的語の位置など）", e.note ? "<p>" + esc(e.note) + "</p>" : "") +
+      sec("よく使われる組み合わせ", lines(e.col)) +
+      sec("類義語", chips(e.syn, true)) +
+      sec("反対語", chips(e.ant, true)) +
+      sec("関連語", chips(e.rel, true)) +
+      "</article>" +
+      '<section class="card stats"><h2>学習記録</h2><div class="kpis six">' +
+      [[p.n, "学習回数"], [p.c, "正解"], [p.x, "間違い"], [p.s, "連続正解"], [p.n ? U.pct(p.c, p.n) + "%" : "—", "正答率"], [U.fmtDate(p.last), "最終学習日"]].map(function (k) {
+        return '<div class="kpi"><b>' + k[0] + "</b><span>" + k[1] + "</span></div>";
+      }).join("") + "</div>" +
+      '<button class="btn" id="weakT">' + (p.weak ? "苦手から外す" : "苦手に登録する") + "</button></section>";
+
+    U.qs("#weakT").onclick = function () { Store.setWeak(id, !p.weak); viewWord(id); };
+    if (Store.settings.autoSpeak) Speech.say(e.w, true);
+    keyHandler = function (ev) {
+      if (ev.key === "ArrowLeft" && prev) location.hash = "#/word/" + encodeURIComponent(prev.id);
+      else if (ev.key === "ArrowRight" && next) location.hash = "#/word/" + encodeURIComponent(next.id);
+      else if (ev.key === " " || ev.key === "s") { ev.preventDefault(); Speech.say(e.w, true); }
+    };
+  }
+
+  /* ---------- テスト設定 ---------- */
+  var testOpt = { mode: "mc", cat: "all", status: "all", lv: 0, count: 20, order: "smart", dir: "e2j" };
+  function viewTest(params) {
+    if (params.mode && Quiz.MODES[params.mode]) testOpt.mode = params.mode;
+    if (params.cat) testOpt.cat = params.cat;
+    if (params.status) testOpt.status = params.status;
+    var modeKeys = ["mix", "e2j", "j2e", "mc", "fill", "prep"];
+    app.innerHTML =
+      '<section class="card"><h1>テスト</h1>' +
+      '<div class="modepick">' + modeKeys.map(function (k) {
+        var m = Quiz.MODES[k];
+        return '<label class="mp' + (k === testOpt.mode ? " on" : "") + '"><input type="radio" name="mode" value="' + k + '"' + (k === testOpt.mode ? " checked" : "") + "><b>" + m.label + "</b><small>" + m.desc + "</small></label>";
+      }).join("") + "</div>" +
+      '<div class="form">' +
+      '<label>出題範囲<select id="cat">' + catOptions(testOpt.cat) + "</select></label>" +
+      '<label>学習状態<select id="status"><option value="all">すべて</option><option value="new">未学習のみ</option><option value="weak">苦手のみ</option><option value="due">復習期限が来たもの</option><option value="learning">学習中</option><option value="master">定着済み（確認用）</option></select></label>' +
+      '<label>重要度<select id="lv"><option value="0">すべて</option><option value="3">★★★ 最重要</option><option value="2">★★ 重要</option><option value="1">★ 発展</option></select></label>' +
+      '<label>問題数<select id="count"><option>10</option><option>20</option><option>30</option><option>50</option><option>100</option></select></label>' +
+      '<label>出題順<select id="order"><option value="smart">おすすめ（苦手・期限切れ優先）</option><option value="random">ランダム</option></select></label>' +
+      '<label id="dirL">4択の向き<select id="dir"><option value="e2j">英語を見て意味を選ぶ</option><option value="j2e">意味を見て英語を選ぶ</option></select></label>' +
+      "</div>" +
+      '<p class="pool" id="pool"></p>' +
+      '<button class="btn primary big" id="go">スタート</button></section>';
+
+    U.qs("#status").value = testOpt.status;
+    U.qs("#lv").value = String(testOpt.lv);
+    U.qs("#count").value = String(testOpt.count);
+    U.qs("#order").value = testOpt.order;
+    U.qs("#dir").value = testOpt.dir;
+
+    function sync() {
+      testOpt.cat = U.qs("#cat").value;
+      testOpt.status = U.qs("#status").value;
+      testOpt.lv = +U.qs("#lv").value;
+      testOpt.count = +U.qs("#count").value;
+      testOpt.order = U.qs("#order").value;
+      testOpt.dir = U.qs("#dir").value;
+      U.qs("#dirL").style.display = testOpt.mode === "mc" ? "" : "none";
+      var n = Quiz.poolSize(testOpt);
+      U.qs("#pool").textContent = n ? "対象：" + n + "項目から " + Math.min(n, testOpt.count) + "問出題" : "この条件に当てはまる項目がありません。";
+      U.qs("#go").disabled = !n;
+    }
+    U.qsa("select", app).forEach(function (s) { s.onchange = sync; });
+    U.qs(".modepick").onchange = function (ev) {
+      testOpt.mode = ev.target.value;
+      U.qsa(".mp", this).forEach(function (l) { l.classList.toggle("on", l.querySelector("input").checked); });
+      sync();
+    };
+    U.qs("#go").onclick = function () { startSession(Object.assign({}, testOpt)); };
+    sync();
+  }
+
+  /* ---------- テスト実行 ---------- */
+  function startSession(opt) {
+    session = Quiz.buildSession(opt);
+    if (!session.qs.length) { toast("出題できる項目がありません。"); return; }
+    if (location.hash === "#/quiz") viewQuiz(); else location.hash = "#/quiz";
+  }
+
+  function viewQuiz() {
+    if (!session) { location.hash = "#/test"; return; }
+    if (session.i >= session.qs.length) return viewResult();
+    var slot = session.qs[session.i];
+    var e = Data.get(slot.id);
+    if (!slot.q) slot.q = Quiz.makeQuestion(e, slot.type, session.dir);
+    var q = slot.q;
+    var total = session.qs.length;
+    var okCount = session.results.filter(function (r) { return r.ok; }).length;
+
+    var head = '<div class="qhead"><button class="btn sm ghost" id="quit">終了</button>' +
+      '<div class="qprog"><span style="width:' + (session.i / total * 100) + '%"></span></div>' +
+      "<span>" + (session.i + 1) + "/" + total + ' <small class="ok">○' + okCount + "</small></span></div>" +
+      '<div class="qtype">' + Quiz.MODES[q.type].label + "</div>";
+
+    var body = "";
+    if (q.type === "e2j") body = qE2J(e);
+    else if (q.type === "j2e") body = qJ2E(e);
+    else if (q.type === "mc") body = qMC(e, q);
+    else if (q.type === "fill") body = qFill(e, q);
+    else if (q.type === "prep") body = qPrep(e, q);
+
+    app.innerHTML = head + '<section class="card quiz">' + body + '</section><div id="fb"></div>';
+    U.qs("#quit").onclick = function () {
+      var finish = function () {
+        session.qs = session.qs.slice(0, session.results.length);
+        session.i = session.results.length;
+        viewResult();
+      };
+      if (!session.results.length) finish();
+      else ask("テストを終了しますか？ここまでの結果は記録済みです。", "終了する", finish);
+    };
+    if (Store.settings.autoSpeak && (q.type === "e2j" || (q.type === "mc" && q.dir === "e2j"))) Speech.say(e.w, true);
+    bindQuestion(e, q);
+  }
+
+  function promptWord(e) {
+    return '<div class="qword">' + esc(e.w) + speakBtn(e.w, true) + "</div>" +
+      '<div class="qsub">' + (e.ipa ? "/" + esc(e.ipa) + "/ " : "") + '<span class="tag pos">' + esc(Data.posLabel(e)) + "</span></div>";
+  }
+  function promptJa(e) {
+    return '<div class="qja">' + esc(e.ja) + '</div><div class="qsub"><span class="tag pos">' + esc(Data.posLabel(e)) + "</span></div>";
+  }
+  function explain(e, ok, extra, usedEx) {
+    // 問題文で使った例文があれば、解説では別の例文を見せる
+    var ex = e.ex.filter(function (x) { return x !== usedEx; })[0];
+    return '<div class="card fb ' + (ok ? "good" : "bad") + '">' +
+      '<div class="fb-h">' + (ok ? "○ 正解" : "× 不正解") + "</div>" +
+      (extra || "") +
+      '<div class="fb-w"><a href="#/word/' + encodeURIComponent(e.id) + '" target="_self">' + esc(e.w) + "</a>" + speakBtn(e.w, true) +
+      (e.ipa ? ' <span class="ipa">/' + esc(e.ipa) + "/</span>" : "") + "</div>" +
+      '<div class="fb-ja">' + esc(e.ja) + "</div>" +
+      (e.pat ? '<div class="fb-pat"><code>' + esc(e.pat) + "</code></div>" : "") +
+      (ex ? '<p class="en">' + U.markEx(ex[0]) + '</p><p class="jp">' + esc(ex[1]) + "</p>" : "") +
+      (e.tip ? '<p class="fb-tip">' + esc(e.tip) + "</p>" : "") +
+      (!ok ? '<p class="fb-weak">苦手単語に登録しました。優先的に出題されます。</p>' : "") +
+      '<button class="btn primary big" id="next">次へ <small>Enter</small></button></div>';
+  }
+  function answer(e, ok, extraHtml) {
+    if (session.answered) return;
+    session.answered = true;
+    Store.record(e.id, ok);
+    session.results.push({ id: e.id, ok: ok, type: session.qs[session.i].type });
+    var fb = U.qs("#fb");
+    fb.innerHTML = explain(e, ok, extraHtml, session.qs[session.i].q.ex);
+    U.qs("#next").onclick = goNext;
+    U.qs("#next").focus({ preventScroll: true });
+    fb.scrollIntoView({ block: "nearest", behavior: "auto" });
+  }
+  function goNext() {
+    session.answered = false;
+    session.i++;
+    viewQuiz();
+    window.scrollTo(0, 0);
+  }
+
+  function qE2J(e) {
+    return promptWord(e) +
+      '<div id="reveal" class="reveal hidden"><p class="qja2">' + esc(e.ja) + "</p>" +
+      (e.ex[0] ? '<p class="en">' + U.markEx(e.ex[0][0]) + '</p><p class="jp">' + esc(e.ex[0][1]) + "</p>" : "") + "</div>" +
+      '<div class="qact" id="act1"><button class="btn primary big" id="show">意味を見る <small>Space</small></button></div>' +
+      '<div class="qact two hidden" id="act2"><button class="btn bad big" id="ng">× わからなかった <small>1</small></button><button class="btn good big" id="ok">○ わかった <small>2</small></button></div>';
+  }
+  function qJ2E(e) {
+    var hint = e.w.split(/\s+/).map(function (t) { return t.length <= 1 ? t : t[0] + "＿".repeat(Math.min(t.length - 1, 8)); }).join(" ");
+    return promptJa(e) +
+      (e.pat ? '<p class="hint">パターン：' + esc(e.pat.replace(new RegExp("\\b(" + e.w.split(/\s+/).map(function (t) { return t.replace(/[^a-z']/gi, ""); }).filter(Boolean).join("|") + ")\\b", "gi"), "＿")) + "</p>" : "") +
+      '<p class="hint">ヒント：' + esc(hint) + "（" + e.w.replace(/\s/g, "").length + "文字）</p>" +
+      '<form id="jf" class="jform" autocomplete="off"><input id="ans" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="英語で入力" enterkeyhint="done">' +
+      '<button class="btn primary" type="submit">判定</button></form>' +
+      '<button class="btn ghost sm" id="giveup">わからない</button>';
+  }
+  function qMC(e, q) {
+    var top = q.dir === "j2e" ? promptJa(e) : promptWord(e);
+    return top + '<div class="opts">' + q.options.map(function (id, i) {
+      var o = Data.get(id);
+      return '<button class="opt" data-id="' + esc(id) + '"><span class="on">' + (i + 1) + "</span>" + esc(q.dir === "j2e" ? o.w : o.ja) + "</button>";
+    }).join("") + "</div>";
+  }
+  function qFill(e, q) {
+    return '<p class="fill-en">' + U.blankEx(q.ex[0]) + "</p>" +
+      '<details class="hintbox"><summary>ヒント：和訳を見る</summary><p class="jp">' + esc(q.ex[1]) + "</p></details>" +
+      '<p class="hint">空欄に入る語句を選びましょう（選択肢は原形で表示）</p>' +
+      '<div class="opts">' + q.options.map(function (id, i) {
+        var o = Data.get(id);
+        return '<button class="opt" data-id="' + esc(id) + '"><span class="on">' + (i + 1) + "</span>" + esc(o.w) + "</button>";
+      }).join("") + "</div>";
+  }
+  function prepPattern(e, q) {
+    return e.w.split(/\s+/).map(function (t, i) { return i === q.slot ? '<span class="blank sm">？</span>' : esc(t); }).join(" ");
+  }
+  function prepExample(q) {
+    if (!q.ex) return "";
+    var done = false;
+    var parts = q.ex[0].split(/(\{[^}]*\})/);
+    for (var i = parts.length - 1; i >= 0 && !done; i--) {
+      if (parts[i][0] !== "{") continue;
+      var inner = parts[i].slice(1, -1).split(" ");
+      for (var j = inner.length - 1; j >= 0; j--) {
+        if (inner[j].toLowerCase() === q.answer) { inner[j] = "\u0000"; done = true; break; }
+      }
+      parts[i] = "{" + inner.join(" ") + "}";
+    }
+    return '<p class="en">' + U.markEx(parts.join("")).replace("\u0000", '<span class="blank sm">？</span>') + "</p>";
+  }
+  function qPrep(e, q) {
+    return '<div class="qja">' + esc(e.ja) + "</div>" +
+      '<div class="qword prep">' + prepPattern(e, q) + "</div>" +
+      prepExample(q) +
+      '<div class="opts four">' + q.options.map(function (p, i) {
+        return '<button class="opt" data-p="' + p + '"><span class="on">' + (i + 1) + "</span>" + p + "</button>";
+      }).join("") + "</div>";
+  }
+
+  function bindQuestion(e, q) {
+    session.answered = false;
+    if (q.type === "e2j") {
+      var reveal = function () {
+        U.qs("#reveal").classList.remove("hidden");
+        U.qs("#act1").classList.add("hidden");
+        U.qs("#act2").classList.remove("hidden");
+      };
+      var grade = function (ok) {
+        if (session.answered) return;
+        U.qs("#act2").classList.add("hidden");
+        answer(e, ok);
+      };
+      U.qs("#show").onclick = reveal;
+      U.qs("#ok").onclick = function () { grade(true); };
+      U.qs("#ng").onclick = function () { grade(false); };
+      keyHandler = function (ev) {
+        var revealed = !U.qs("#reveal").classList.contains("hidden");
+        if (session.answered) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); goNext(); } return; }
+        if (!revealed && (ev.key === " " || ev.key === "Enter")) { ev.preventDefault(); reveal(); }
+        else if (revealed && (ev.key === "1" || ev.key === "ArrowLeft")) grade(false);
+        else if (revealed && (ev.key === "2" || ev.key === "ArrowRight")) grade(true);
+      };
+    } else if (q.type === "j2e") {
+      var inp = U.qs("#ans");
+      setTimeout(function () { inp.focus(); }, 30);
+      var judge = function (given) {
+        var ok = given !== null && (U.normAnswer(given) === U.normAnswer(e.w) || (e.pat && U.normAnswer(given) === U.normAnswer(e.pat)));
+        inp.disabled = true;
+        U.qs("#giveup").disabled = true;
+        var extra = given !== null && given !== "" ? '<p class="yours">あなたの解答：<b>' + esc(given) + "</b></p>" : "";
+        answer(e, ok, extra);
+        if (!ok && given) {
+          var fix = document.createElement("button");
+          fix.className = "btn sm ghost"; fix.textContent = "表記ゆれなので正解にする";
+          fix.onclick = function () {
+            Store.record(e.id, true); // 誤判定の補正：正解を追加記録
+            session.results[session.results.length - 1].ok = true;
+            fix.replaceWith(Object.assign(document.createElement("p"), { className: "fb-weak", textContent: "正解として記録しました。" }));
+          };
+          U.qs(".fb .fb-h").after(fix);
+        }
+      };
+      U.qs("#jf").onsubmit = function (ev) { ev.preventDefault(); if (!session.answered && inp.value.trim()) judge(inp.value.trim()); };
+      U.qs("#giveup").onclick = function () { judge(null); };
+      keyHandler = function (ev) {
+        if (session.answered && ev.key === "Enter" && document.activeElement !== inp) { ev.preventDefault(); goNext(); }
+      };
+    } else {
+      var opts = U.qsa(".opt", app);
+      var choose = function (btn) {
+        if (session.answered) return;
+        var ok, correctBtn;
+        if (q.type === "prep") {
+          ok = btn.getAttribute("data-p") === q.answer;
+          correctBtn = opts.filter(function (b) { return b.getAttribute("data-p") === q.answer; })[0];
+        } else {
+          ok = btn.getAttribute("data-id") === e.id;
+          correctBtn = opts.filter(function (b) { return b.getAttribute("data-id") === e.id; })[0];
+        }
+        opts.forEach(function (b) { b.disabled = true; });
+        correctBtn.classList.add("correct");
+        if (!ok) btn.classList.add("wrong");
+        var extra = "";
+        if (q.type === "fill") extra = '<p class="en">' + U.markEx(q.ex[0]) + '</p><p class="jp">' + esc(q.ex[1]) + "</p>";
+        if (q.type === "mc" || q.type === "fill") {
+          // 選んだ誤答の意味も表示して、違いを確認できるようにする
+          if (!ok) {
+            var o = Data.get(btn.getAttribute("data-id"));
+            extra += '<p class="other">選んだ <b>' + esc(o.w) + "</b> は「" + esc(o.ja) + "」</p>";
+          }
+        }
+        answer(e, ok, extra);
+      };
+      opts.forEach(function (b) { b.onclick = function () { choose(b); }; });
+      keyHandler = function (ev) {
+        if (session.answered) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); goNext(); } return; }
+        var n = parseInt(ev.key, 10);
+        if (n >= 1 && n <= opts.length) choose(opts[n - 1]);
+      };
+    }
+  }
+
+  function viewResult() {
+    var r = session.results;
+    var ok = r.filter(function (x) { return x.ok; }).length;
+    var wrongIds = [];
+    r.forEach(function (x) { if (!x.ok && wrongIds.indexOf(x.id) < 0) wrongIds.push(x.id); });
+    app.innerHTML =
+      '<section class="card result"><h1>結果</h1>' +
+      '<div class="score"><b>' + ok + "</b> / " + r.length + "<span>正答率 " + U.pct(ok, r.length) + "%</span></div>" +
+      (wrongIds.length ? '<button class="btn primary big" id="again">間違えた ' + wrongIds.length + " 項目をもう一度</button>" : '<p class="perfect">全問正解！この調子で続けましょう。</p>') +
+      '<div class="ract"><a class="btn" href="#/test">テスト設定へ</a><button class="btn" id="same">同じ条件でもう一度</button><a class="btn ghost" href="#/">ホーム</a></div></section>' +
+      (r.length ? '<section class="card"><h2>今回の解答</h2><div class="rows">' + r.map(function (x) {
+        var e = Data.get(x.id);
+        return '<a class="row" href="#/word/' + encodeURIComponent(e.id) + '"><span class="mark ' + (x.ok ? "good" : "bad") + '">' + (x.ok ? "○" : "×") + '</span><span class="rw">' + esc(e.w) + '</span><span class="rj">' + esc(e.ja) + "</span></a>";
+      }).join("") + "</div></section>" : "");
+    var again = U.qs("#again");
+    var lastMode = session.mode, lastDir = session.dir, lastOpt = session.opt;
+    if (again) again.onclick = function () {
+      var m = lastMode === "fill" || lastMode === "prep" ? "mix" : lastMode;
+      startSession({ mode: m, dir: lastDir, ids: wrongIds, count: wrongIds.length, order: "random" });
+    };
+    U.qs("#same").onclick = function () { startSession(lastOpt); };
+    keyHandler = null;
+  }
+
+  /* ---------- 熟語集中 ---------- */
+  function viewIdioms() {
+    var all = Data.inCat("phr_all");
+    var c = counts(all);
+    var nPrep = all.filter(function (e) { return Quiz.canDo(e, "prep"); }).length;
+    var next = all.slice().sort(function (a, b) { return Store.weight(b.id) - Store.weight(a.id) || b.lv - a.lv; }).slice(0, 8);
+    var drills = [
+      ["mc", "意味を4択で", "phr_all", "all"],
+      ["prep", "前置詞・副詞を選ぶ", "phr_all", "all"],
+      ["fill", "例文穴埋め", "phr_all", "all"],
+      ["j2e", "意味 → 熟語を書く", "phr_all", "all"],
+      ["mix", "苦手な熟語だけ", "phr_all", "weak"],
+      ["e2j", "カードでざっと確認", "phr_all", "all"]
+    ];
+    app.innerHTML =
+      '<section class="card"><h1>熟語集中モード</h1>' +
+      '<p class="lead">英検2級は熟語の出題が多く、長文・リスニングでも意味を即答できることが重要です。前置詞・副詞まで正確に覚えましょう。</p>' +
+      progressBar(c) + legend(c) +
+      '<p class="sub">熟語・重要表現 ' + Data.inCat("idiom").length + " ／ 句動詞 " + Data.inCat("phrasal").length + " ／ 前置詞ドリル対象 " + nPrep + "</p>" +
+      '<div class="drills">' + drills.map(function (d) {
+        return '<button class="drill" data-m="' + d[0] + '" data-c="' + d[2] + '" data-s="' + d[3] + '"><b>' + d[1] + "</b><small>" + Quiz.MODES[d[0]].label + "</small></button>";
+      }).join("") + "</div>" +
+      '<div class="ract"><a class="btn sm" href="' + href("list", { cat: "phrasal" }) + '">句動詞の一覧</a><a class="btn sm" href="' + href("list", { cat: "idiom" }) + '">熟語・表現の一覧</a></div></section>' +
+      '<section class="card"><h2>次に覚えたい熟語</h2><div class="rows idl">' + next.map(function (e) {
+        return '<a class="row" href="#/word/' + encodeURIComponent(e.id) + '">' + statusDot(e.id) + '<span class="rw">' + esc(e.w) + '</span><span class="rj">' + esc(e.ja) + "</span>" +
+          (e.pat ? '<span class="rpat">' + esc(e.pat) + "</span>" : "") + "</a>";
+      }).join("") + "</div></section>";
+    U.qs(".drills").onclick = function (ev) {
+      var b = ev.target.closest(".drill"); if (!b) return;
+      var opt = { mode: b.getAttribute("data-m"), cat: b.getAttribute("data-c"), status: b.getAttribute("data-s"), count: 20, order: "smart", dir: "e2j" };
+      if (!Quiz.poolSize(opt)) { toast(opt.status === "weak" ? "苦手な熟語はまだありません。" : "出題できる熟語がありません。"); return; }
+      lastList = Data.inCat("phr_all");
+      startSession(opt);
+    };
+  }
+
+  /* ---------- 苦手・学習記録 ---------- */
+  var weakSort = "weak";
+  function viewWeak() {
+    var all = Data.items;
+    var studied = all.filter(function (e) { var p = Store.get(e.id); return p && p.n; });
+    var list;
+    if (weakSort === "weak") list = all.filter(function (e) { return Store.status(e.id) === "weak"; }).sort(function (a, b) { return Store.get(b.id).x - Store.get(a.id).x; });
+    else if (weakSort === "due") list = all.filter(function (e) { return Store.isDue(e.id); });
+    else if (weakSort === "low") list = studied.slice().sort(function (a, b) { var p = Store.get(a.id), q = Store.get(b.id); return p.c / p.n - q.c / q.n || q.n - p.n; });
+    else list = studied.slice().sort(function (a, b) { return Store.get(b.id).last - Store.get(a.id).last; });
+    lastList = list;
+    var tabs = [["weak", "苦手"], ["due", "復習期限"], ["low", "正答率が低い順"], ["recent", "最近学習"]];
+    app.innerHTML =
+      '<section class="card"><h1>苦手・学習記録</h1>' +
+      '<p class="lead">間違えた語は自動で「苦手」に登録され、テストで優先的に出題されます。' + Store.WEAK_CLEAR + "回連続で正解すると苦手から卒業します。</p>" +
+      '<div class="seg-ctl wide" id="ws">' + tabs.map(function (t) { return '<button data-s="' + t[0] + '"' + (t[0] === weakSort ? ' class="on"' : "") + ">" + t[1] + "</button>"; }).join("") + "</div>" +
+      (list.length ? '<div class="ract"><button class="btn primary" id="wmix">この' + Math.min(list.length, 30) + "項目を4択・穴埋めで復習</button><button class=\"btn\" id=\"wcard\">カードで復習</button></div>" : "") +
+      "</section>" +
+      '<section class="card">' + (list.length ? '<table class="rec"><thead><tr><th>単語・熟語</th><th>正解</th><th>間違い</th><th>連続</th><th>回数</th><th>正答率</th><th>最終</th></tr></thead><tbody>' +
+        list.slice(0, 300).map(function (e) {
+          var p = Store.get(e.id);
+          return '<tr><td><a href="#/word/' + encodeURIComponent(e.id) + '">' + statusDot(e.id) + "<b>" + esc(e.w) + "</b><small>" + esc(e.ja) + "</small></a></td>" +
+            '<td data-l="正解">' + p.c + '</td><td data-l="間違い" class="' + (p.x ? "bad" : "") + '">' + p.x + '</td><td data-l="連続">' + p.s + '</td><td data-l="回数">' + p.n +
+            '</td><td data-l="正答率">' + U.pct(p.c, p.n) + '%</td><td data-l="最終">' + U.fmtDate(p.last) + "</td></tr>";
+        }).join("") + "</tbody></table>" : '<p class="empty">' + (weakSort === "weak" ? "苦手な単語はありません。テストで間違えると自動で登録されます。" : "該当する記録はありません。") + "</p>") + "</section>";
+    U.qs("#ws").onclick = function (ev) { var b = ev.target.closest("[data-s]"); if (!b) return; weakSort = b.getAttribute("data-s"); viewWeak(); };
+    var ids = list.slice(0, 30).map(function (e) { return e.id; });
+    if (list.length) {
+      U.qs("#wmix").onclick = function () { startSession({ mode: "mix", ids: ids, count: ids.length, order: "random" }); };
+      U.qs("#wcard").onclick = function () { startSession({ mode: "e2j", ids: ids, count: ids.length, order: "random" }); };
+    }
+  }
+
+  /* ---------- 設定 ---------- */
+  function viewSettings() {
+    var s = Store.settings;
+    var src = (g.EIKEN.sources || []).map(function (x) { return "<li><code>" + esc(x.name) + "</code> " + x.count + "項目</li>"; }).join("");
+    app.innerHTML =
+      '<section class="card"><h1>設定</h1>' +
+      '<label class="sw"><input type="checkbox" id="auto"' + (s.autoSpeak ? " checked" : "") + "> 単語を表示したら自動で発音する</label>" +
+      '<label class="rng">発音の速さ <input type="range" id="rate" min="0.6" max="1.2" step="0.1" value="' + s.rate + '"><span id="rv">' + s.rate + "</span>" + speakBtn("The government decided to reduce plastic waste.") + "</label>" +
+      (Speech.available ? "" : '<p class="sub">このブラウザは音声合成に対応していません。</p>') + "</section>" +
+      '<section class="card"><h2>学習記録のバックアップ</h2><p class="sub">学習記録はこの端末のブラウザに自動保存されます。機種変更やブラウザのデータ削除に備えて、ときどき書き出してください。</p>' +
+      '<div class="ract"><button class="btn" id="exp">記録を書き出す</button><label class="btn">ファイルから読み込む<input type="file" id="imp" accept="application/json,.json" hidden></label><button class="btn bad" id="rst">記録をすべて消去</button></div>' +
+      '<div id="bk" class="backup" hidden><p class="sub">ダウンロードできない場合は、下の文字をコピーしてメモ帳などに保存してください。読み込むときは、ここに貼り付けて「貼り付けた記録を読み込む」を押します。</p>' +
+      '<textarea id="bkt" rows="5" spellcheck="false"></textarea><div class="ract"><button class="btn sm" id="bkc">コピー</button><button class="btn sm" id="bki">貼り付けた記録を読み込む</button></div></div>' +
+      '<button class="btn sm ghost" id="bko">文字で書き出す・貼り付けて読み込む</button></section>' +
+      '<section class="card"><h2>収録データ</h2><p>全 ' + Data.items.length + " 項目</p><ul class=\"src\">" + src + "</ul>" +
+      '<p class="sub">データの追加方法は <code>docs/DATA_FORMAT.md</code> を参照してください。</p></section>';
+    U.qs("#auto").onchange = function () { s.autoSpeak = this.checked; Store.saveSettings(); };
+    U.qs("#rate").oninput = function () { s.rate = +this.value; U.qs("#rv").textContent = this.value; Store.saveSettings(); };
+    var showBk = function () { U.qs("#bk").hidden = false; U.qs("#bko").hidden = true; };
+    U.qs("#bko").onclick = function () { showBk(); U.qs("#bkt").value = Store.exportJSON(); };
+    U.qs("#bkc").onclick = function () {
+      var t = U.qs("#bkt");
+      if (!t.value) t.value = Store.exportJSON();
+      try { navigator.clipboard.writeText(t.value).then(function () { toast("コピーしました"); }, function () { t.select(); toast("文字を選択しました。コピーしてください"); }); }
+      catch (e) { t.select(); }
+    };
+    U.qs("#bki").onclick = function () {
+      try { Store.importJSON(U.qs("#bkt").value); toast("学習記録を読み込みました"); location.hash = "#/"; }
+      catch (err) { toast("読み込めませんでした。記録の文字をすべて貼り付けてください"); }
+    };
+    U.qs("#exp").onclick = function () {
+      showBk(); U.qs("#bkt").value = Store.exportJSON();
+      var blob = new Blob([Store.exportJSON()], { type: "application/json" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "eiken2-progress-" + U.today() + ".json";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    };
+    U.qs("#imp").onchange = function () {
+      var f = this.files[0]; if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function () {
+        try { Store.importJSON(rd.result); toast("学習記録を読み込みました"); location.hash = "#/"; }
+        catch (err) { toast("読み込めませんでした：" + err.message); }
+      };
+      rd.readAsText(f);
+    };
+    U.qs("#rst").onclick = function () {
+      ask("学習記録をすべて消去します。元に戻せません。よろしいですか？", "すべて消去", function () { Store.reset(); toast("消去しました"); location.hash = "#/"; }, true);
+    };
+  }
+
+  /* ---------- ルーター ---------- */
+  var ROUTES = { home: viewHome, list: viewList, word: viewWord, test: viewTest, quiz: viewQuiz, idioms: viewIdioms, weak: viewWeak, options: viewSettings };
+  var TAB_OF = { home: "home", list: "list", word: "list", test: "test", quiz: "test", idioms: "idioms", weak: "weak", options: "options" };
+  function route() {
+    var r = parseHash();
+    var fn = ROUTES[r.name] || viewHome;
+    keyHandler = null;
+    if (r.name === "word") fn(r.arg); else fn(r.params);
+    U.qsa(".tabbar a").forEach(function (a) { a.classList.toggle("on", a.getAttribute("data-tab") === TAB_OF[r.name]); });
+    document.body.setAttribute("data-view", r.name);
+    if (r.name !== "quiz") window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+  document.addEventListener("keydown", function (ev) {
+    if (ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    var tag = (ev.target.tagName || "").toLowerCase();
+    if ((tag === "input" || tag === "select" || tag === "textarea") && ev.key !== "Enter") return;
+    if (tag === "button" && (ev.key === "Enter" || ev.key === " ")) return; // ボタン自身のクリックに任せる
+    if (keyHandler) keyHandler(ev);
+  });
+  /* 発音ボタン（全画面共通） */
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest(".speak");
+    if (!b) return;
+    ev.preventDefault(); ev.stopPropagation();
+    Speech.say(b.getAttribute("data-say"), !!b.getAttribute("data-head"));
+  });
+
+  if (!Data.items.length) {
+    app.innerHTML = '<p class="empty">単語データが読み込めませんでした。data フォルダを確認してください。</p>';
+  } else {
+    route();
+  }
+
+  /* オフライン対応（http/https で開いた場合のみ） */
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol) && !window.EIKEN_SINGLE_FILE) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+  }
+})(window);
+
+</script>
+</body>
+</html>

@@ -10,6 +10,30 @@
   var STATUS_LABEL = { new: "未学習", learning: "学習中", weak: "苦手", master: "定着" };
 
   /* ---------- 共通部品 ---------- */
+  /* お知らせ（alert の代わり） */
+  function toast(msg) {
+    var t = document.createElement("div");
+    t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 2600);
+  }
+  /* 確認ダイアログ（confirm の代わり。どの環境でも動く） */
+  function ask(msg, okLabel, onOk, danger) {
+    var w = document.createElement("div");
+    w.className = "modal";
+    w.innerHTML = '<div class="modal-box" role="dialog" aria-modal="true"><p>' + esc(msg) + '</p><div class="ract">' +
+      '<button class="btn" data-a="no">キャンセル</button><button class="btn ' + (danger ? "bad big1" : "primary") + '" data-a="ok">' + esc(okLabel) + "</button></div></div>";
+    document.body.appendChild(w);
+    var prevKeys = keyHandler;
+    keyHandler = function (ev) { if (ev.key === "Escape") close(); };
+    function close() { w.remove(); keyHandler = prevKeys; }
+    w.onclick = function (ev) {
+      var a = ev.target.getAttribute("data-a");
+      if (ev.target === w || a === "no") close();
+      else if (a === "ok") { close(); onOk(); }
+    };
+    w.querySelector('[data-a="ok"]').focus();
+  }
   function stars(lv) { return '<span class="stars" title="重要度">' + "★★★".slice(0, lv) + '<i>' + "★★★".slice(lv) + "</i></span>"; }
   function statusDot(id) {
     var s = Store.status(id);
@@ -307,7 +331,7 @@
   /* ---------- テスト実行 ---------- */
   function startSession(opt) {
     session = Quiz.buildSession(opt);
-    if (!session.qs.length) { alert("出題できる項目がありません。"); return; }
+    if (!session.qs.length) { toast("出題できる項目がありません。"); return; }
     if (location.hash === "#/quiz") viewQuiz(); else location.hash = "#/quiz";
   }
 
@@ -335,11 +359,13 @@
 
     app.innerHTML = head + '<section class="card quiz">' + body + '</section><div id="fb"></div>';
     U.qs("#quit").onclick = function () {
-      if (!session.results.length || confirm("テストを終了しますか？（ここまでの結果は記録済みです）")) {
+      var finish = function () {
         session.qs = session.qs.slice(0, session.results.length);
         session.i = session.results.length;
         viewResult();
-      }
+      };
+      if (!session.results.length) finish();
+      else ask("テストを終了しますか？ここまでの結果は記録済みです。", "終了する", finish);
     };
     if (Store.settings.autoSpeak && (q.type === "e2j" || (q.type === "mc" && q.dir === "e2j"))) Speech.say(e.w, true);
     bindQuestion(e, q);
@@ -580,7 +606,7 @@
     U.qs(".drills").onclick = function (ev) {
       var b = ev.target.closest(".drill"); if (!b) return;
       var opt = { mode: b.getAttribute("data-m"), cat: b.getAttribute("data-c"), status: b.getAttribute("data-s"), count: 20, order: "smart", dir: "e2j" };
-      if (!Quiz.poolSize(opt)) { alert(opt.status === "weak" ? "苦手な熟語はまだありません。" : "出題できる熟語がありません。"); return; }
+      if (!Quiz.poolSize(opt)) { toast(opt.status === "weak" ? "苦手な熟語はまだありません。" : "出題できる熟語がありません。"); return; }
       lastList = Data.inCat("phr_all");
       startSession(opt);
     };
@@ -629,12 +655,28 @@
       '<label class="rng">発音の速さ <input type="range" id="rate" min="0.6" max="1.2" step="0.1" value="' + s.rate + '"><span id="rv">' + s.rate + "</span>" + speakBtn("The government decided to reduce plastic waste.") + "</label>" +
       (Speech.available ? "" : '<p class="sub">このブラウザは音声合成に対応していません。</p>') + "</section>" +
       '<section class="card"><h2>学習記録のバックアップ</h2><p class="sub">学習記録はこの端末のブラウザに自動保存されます。機種変更やブラウザのデータ削除に備えて、ときどき書き出してください。</p>' +
-      '<div class="ract"><button class="btn" id="exp">記録を書き出す</button><label class="btn">記録を読み込む<input type="file" id="imp" accept="application/json,.json" hidden></label><button class="btn bad" id="rst">記録をすべて消去</button></div></section>' +
+      '<div class="ract"><button class="btn" id="exp">記録を書き出す</button><label class="btn">ファイルから読み込む<input type="file" id="imp" accept="application/json,.json" hidden></label><button class="btn bad" id="rst">記録をすべて消去</button></div>' +
+      '<div id="bk" class="backup" hidden><p class="sub">ダウンロードできない場合は、下の文字をコピーしてメモ帳などに保存してください。読み込むときは、ここに貼り付けて「貼り付けた記録を読み込む」を押します。</p>' +
+      '<textarea id="bkt" rows="5" spellcheck="false"></textarea><div class="ract"><button class="btn sm" id="bkc">コピー</button><button class="btn sm" id="bki">貼り付けた記録を読み込む</button></div></div>' +
+      '<button class="btn sm ghost" id="bko">文字で書き出す・貼り付けて読み込む</button></section>' +
       '<section class="card"><h2>収録データ</h2><p>全 ' + Data.items.length + " 項目</p><ul class=\"src\">" + src + "</ul>" +
       '<p class="sub">データの追加方法は <code>docs/DATA_FORMAT.md</code> を参照してください。</p></section>';
     U.qs("#auto").onchange = function () { s.autoSpeak = this.checked; Store.saveSettings(); };
     U.qs("#rate").oninput = function () { s.rate = +this.value; U.qs("#rv").textContent = this.value; Store.saveSettings(); };
+    var showBk = function () { U.qs("#bk").hidden = false; U.qs("#bko").hidden = true; };
+    U.qs("#bko").onclick = function () { showBk(); U.qs("#bkt").value = Store.exportJSON(); };
+    U.qs("#bkc").onclick = function () {
+      var t = U.qs("#bkt");
+      if (!t.value) t.value = Store.exportJSON();
+      try { navigator.clipboard.writeText(t.value).then(function () { toast("コピーしました"); }, function () { t.select(); toast("文字を選択しました。コピーしてください"); }); }
+      catch (e) { t.select(); }
+    };
+    U.qs("#bki").onclick = function () {
+      try { Store.importJSON(U.qs("#bkt").value); toast("学習記録を読み込みました"); location.hash = "#/"; }
+      catch (err) { toast("読み込めませんでした。記録の文字をすべて貼り付けてください"); }
+    };
     U.qs("#exp").onclick = function () {
+      showBk(); U.qs("#bkt").value = Store.exportJSON();
       var blob = new Blob([Store.exportJSON()], { type: "application/json" });
       var a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -646,19 +688,19 @@
       var f = this.files[0]; if (!f) return;
       var rd = new FileReader();
       rd.onload = function () {
-        try { Store.importJSON(rd.result); alert("学習記録を読み込みました。"); location.hash = "#/"; }
-        catch (err) { alert("読み込めませんでした：" + err.message); }
+        try { Store.importJSON(rd.result); toast("学習記録を読み込みました"); location.hash = "#/"; }
+        catch (err) { toast("読み込めませんでした：" + err.message); }
       };
       rd.readAsText(f);
     };
     U.qs("#rst").onclick = function () {
-      if (confirm("学習記録をすべて消去します。元に戻せません。よろしいですか？")) { Store.reset(); alert("消去しました。"); location.hash = "#/"; }
+      ask("学習記録をすべて消去します。元に戻せません。よろしいですか？", "すべて消去", function () { Store.reset(); toast("消去しました"); location.hash = "#/"; }, true);
     };
   }
 
   /* ---------- ルーター ---------- */
-  var ROUTES = { home: viewHome, list: viewList, word: viewWord, test: viewTest, quiz: viewQuiz, idioms: viewIdioms, weak: viewWeak, settings: viewSettings };
-  var TAB_OF = { home: "home", list: "list", word: "list", test: "test", quiz: "test", idioms: "idioms", weak: "weak", settings: "settings" };
+  var ROUTES = { home: viewHome, list: viewList, word: viewWord, test: viewTest, quiz: viewQuiz, idioms: viewIdioms, weak: viewWeak, options: viewSettings };
+  var TAB_OF = { home: "home", list: "list", word: "list", test: "test", quiz: "test", idioms: "idioms", weak: "weak", options: "options" };
   function route() {
     var r = parseHash();
     var fn = ROUTES[r.name] || viewHome;
@@ -691,7 +733,7 @@
   }
 
   /* オフライン対応（http/https で開いた場合のみ） */
-  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol) && !window.EIKEN_SINGLE_FILE) {
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
   }
 })(window);

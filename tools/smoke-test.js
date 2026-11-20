@@ -53,10 +53,11 @@ const shotDir = shotIdx > 0 ? process.argv[shotIdx + 1] : null;
         await page.click("#next");
       }
       await page.click("#quit");
+      await page.click('.modal [data-a="ok"]');
       await page.waitForSelector(".result");
     }
     await shot("result");
-    for (const r of ["#/weak", "#/idioms", "#/settings", "#/"]) {
+    for (const r of ["#/weak", "#/idioms", "#/options", "#/"]) {
       await page.goto(url + r); await page.waitForTimeout(150);
       await shot(r.replace(/[#/]/g, "") || "home2");
     }
