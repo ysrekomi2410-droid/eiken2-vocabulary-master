@@ -1,0 +1,12 @@
+{
+  "name": "eiken2-vocabulary-master",
+  "version": "1.0.0",
+  "private": true,
+  "description": "英検2級 完全攻略 Vocabulary & Idiom Master",
+  "scripts": {
+    "sync": "node tools/sync.js",
+    "validate": "node tools/validate.js",
+    "check": "node tools/sync.js && node tools/validate.js",
+    "start": "python3 -m http.server 8080"
+  }
+}

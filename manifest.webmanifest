@@ -1,0 +1,11 @@
+{
+  "name": "英検2級 Vocabulary & Idiom Master",
+  "short_name": "英検2級単語",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f5f7",
+  "theme_color": "#ffffff",
+  "lang": "ja",
+  "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
