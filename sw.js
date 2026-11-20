@@ -1,10 +1,11 @@
 /* オフライン対応：アプリ本体と単語データをキャッシュする */
-var CACHE = "eiken2-vocab-cc35ebe719";
+var CACHE = "eiken2-vocab-d208f8ea77";
 var ASSETS = [
   "./", "index.html", "css/style.css", "manifest.webmanifest", "icons/icon.svg",
   "js/util.js", "js/store.js", "js/data.js", "js/speech.js", "js/quiz.js", "js/app.js",
   "data/_registry.js",
   /* DATA:BEGIN */
+  "data/phrasal-01.js",
   "data/words-verbs-01.js",
   /* DATA:END */
 ];
