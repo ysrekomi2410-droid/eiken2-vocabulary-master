@@ -10,6 +10,8 @@
   var STATUS_LABEL = { new: "未学習", learning: "学習中", weak: "苦手", master: "定着" };
 
   /* ---------- 共通部品 ---------- */
+  var MODE_ICON = { list: "帳", e2j: "英", j2e: "日", mc: "4", fill: "空", prep: "前", mix: "★", idioms: "熟" };
+  function mIcon(k) { return '<span class="mi">' + MODE_ICON[k] + "</span>"; }
   /* お知らせ（alert の代わり） */
   function toast(msg) {
     var t = document.createElement("div");
@@ -133,7 +135,7 @@
       progressBar(c) + legend(c) +
       '<h3>直近7日間の解答数</h3>' + chart + "</section>" +
       '<section><h2 class="sec">学習モード</h2><div class="modes">' + modes.map(function (m) {
-        return '<a class="mode" href="' + m[4] + '"><span class="mn">' + m[1] + "</span><b>" + m[2] + "</b><small>" + m[3] + "</small></a>";
+        return '<a class="mode m-' + m[0] + '" href="' + m[4] + '">' + mIcon(m[0]) + '<span class="mt"><b>' + m[2] + "</b><small>" + m[3] + "</small></span></a>";
       }).join("") + "</div></section>" +
       '<section class="card"><h2>分野別の進捗 <small>定着数／全体</small></h2>' + catRows + "</section>";
 
@@ -287,7 +289,7 @@
       '<section class="card"><h1>テスト</h1>' +
       '<div class="modepick">' + modeKeys.map(function (k) {
         var m = Quiz.MODES[k];
-        return '<label class="mp' + (k === testOpt.mode ? " on" : "") + '"><input type="radio" name="mode" value="' + k + '"' + (k === testOpt.mode ? " checked" : "") + "><b>" + m.label + "</b><small>" + m.desc + "</small></label>";
+        return '<label class="mp m-' + k + (k === testOpt.mode ? " on" : "") + '"><input type="radio" name="mode" value="' + k + '"' + (k === testOpt.mode ? " checked" : "") + ">" + mIcon(k) + '<span class="mt"><b>' + m.label + "</b><small>" + m.desc + '</small></span><span class="ck" aria-hidden="true">✓</span></label>';
       }).join("") + "</div>" +
       '<div class="form">' +
       '<label>出題範囲<select id="cat">' + catOptions(testOpt.cat) + "</select></label>" +
@@ -313,6 +315,7 @@
       testOpt.count = +U.qs("#count").value;
       testOpt.order = U.qs("#order").value;
       testOpt.dir = U.qs("#dir").value;
+      U.qs("#go").className = "btn primary big go m-" + testOpt.mode;
       U.qs("#dirL").style.display = testOpt.mode === "mc" ? "" : "none";
       var n = Quiz.poolSize(testOpt);
       U.qs("#pool").textContent = n ? "対象：" + n + "項目から " + Math.min(n, testOpt.count) + "問出題" : "この条件に当てはまる項目がありません。";
@@ -348,7 +351,7 @@
     var head = '<div class="qhead"><button class="btn sm ghost" id="quit">終了</button>' +
       '<div class="qprog"><span style="width:' + (session.i / total * 100) + '%"></span></div>' +
       "<span>" + (session.i + 1) + "/" + total + ' <small class="ok">○' + okCount + "</small></span></div>" +
-      '<div class="qtype">' + Quiz.MODES[q.type].label + "</div>";
+      '<div class="qtype m-' + q.type + '">' + mIcon(q.type) + Quiz.MODES[q.type].label + "</div>";
 
     var body = "";
     if (q.type === "e2j") body = qE2J(e);
@@ -596,7 +599,7 @@
       progressBar(c) + legend(c) +
       '<p class="sub">熟語・重要表現 ' + Data.inCat("idiom").length + " ／ 句動詞 " + Data.inCat("phrasal").length + " ／ 前置詞ドリル対象 " + nPrep + "</p>" +
       '<div class="drills">' + drills.map(function (d) {
-        return '<button class="drill" data-m="' + d[0] + '" data-c="' + d[2] + '" data-s="' + d[3] + '"><b>' + d[1] + "</b><small>" + Quiz.MODES[d[0]].label + "</small></button>";
+        return '<button class="drill m-' + d[0] + '" data-m="' + d[0] + '" data-c="' + d[2] + '" data-s="' + d[3] + '">' + mIcon(d[0]) + '<span class="mt"><b>' + d[1] + "</b><small>" + Quiz.MODES[d[0]].label + "</small></span></button>";
       }).join("") + "</div>" +
       '<div class="ract"><a class="btn sm" href="' + href("list", { cat: "phrasal" }) + '">句動詞の一覧</a><a class="btn sm" href="' + href("list", { cat: "idiom" }) + '">熟語・表現の一覧</a></div></section>' +
       '<section class="card"><h2>次に覚えたい熟語</h2><div class="rows idl">' + next.map(function (e) {

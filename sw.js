@@ -1,5 +1,5 @@
 /* オフライン対応：アプリ本体と単語データをキャッシュする */
-var CACHE = "eiken2-vocab-60d5b315aa";
+var CACHE = "eiken2-vocab-a8c8bebf54";
 var ASSETS = [
   "./", "index.html", "css/style.css", "manifest.webmanifest", "icons/icon.svg",
   "js/util.js", "js/store.js", "js/data.js", "js/speech.js", "js/quiz.js", "js/app.js",
@@ -7,6 +7,9 @@ var ASSETS = [
   /* DATA:BEGIN */
   "data/idioms-01.js",
   "data/phrasal-01.js",
+  "data/words-adjectives-01.js",
+  "data/words-adverbs-01.js",
+  "data/words-nouns-01.js",
   "data/words-verbs-01.js",
   /* DATA:END */
 ];

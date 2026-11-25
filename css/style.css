@@ -28,6 +28,9 @@
   --on-accent: #ffffff;
   --accent-dark: var(--accent-dark);
   --shadow: var(--shadow);
+  /* 学習モードの色（モードごとに色を変えて見分けやすく） */
+  --m-list: #4a5568; --m-e2j: #2f5bd3; --m-j2e: #0d8a7e; --m-mc: #d9690b;
+  --m-fill: #2b8a3e; --m-prep: #c2255c; --m-mix: #7048e8; --m-idioms: #c2255c;
   --radius: 14px;
   --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
   --en: "Inter", "Segoe UI", "Helvetica Neue", Arial, var(--font);
@@ -42,6 +45,8 @@
     --learn: #6f95ee; --new: #3a404c; --soft2: #20252e; --hover: #222a3a; --focus: #5f7fd6;
     --bar-bg: #2a3350; --key-bg: #2e2a1c; --star: #f0b72f; --star-off: #3a404c;
     --bad-line: #6b3236; --good-line: #2a5a45; --head-bg: rgba(27,31,39,.92);
+    --m-list: #a0aec0; --m-e2j: #7d9df0; --m-j2e: #3cc4b4; --m-mc: #f59f4c;
+    --m-fill: #5fc47a; --m-prep: #f06595; --m-mix: #a48bf5; --m-idioms: #f06595;
     --on-accent: #0f1320; --accent-dark: #9bb4f5; --shadow: rgba(0,0,0,.4); color-scheme: dark;
   }
 }
@@ -52,6 +57,8 @@
   --learn: #6f95ee; --new: #3a404c; --soft2: #20252e; --hover: #222a3a; --focus: #5f7fd6;
   --bar-bg: #2a3350; --key-bg: #2e2a1c; --star: #f0b72f; --star-off: #3a404c;
   --bad-line: #6b3236; --good-line: #2a5a45; --head-bg: rgba(27,31,39,.92);
+  --m-list: #a0aec0; --m-e2j: #7d9df0; --m-j2e: #3cc4b4; --m-mc: #f59f4c;
+  --m-fill: #5fc47a; --m-prep: #f06595; --m-mix: #a48bf5; --m-idioms: #f06595;
   --on-accent: #0f1320; --accent-dark: #9bb4f5; --shadow: rgba(0,0,0,.4); color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -344,3 +351,36 @@ input:focus, select:focus { outline: 2px solid var(--focus); border-color: trans
 .btn.bad.big1 { background: var(--bad); color: var(--on-accent); border-color: var(--bad); }
 .backup textarea { width: 100%; font: .78rem/1.4 ui-monospace, Menlo, Consolas, monospace; border: 1px solid var(--line); border-radius: 10px; padding: 8px; background: var(--soft2); color: var(--ink); resize: vertical; }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* ---- 学習モードの色分け ---- */
+.m-list { --mc: var(--m-list); } .m-e2j { --mc: var(--m-e2j); } .m-j2e { --mc: var(--m-j2e); }
+.m-mc { --mc: var(--m-mc); } .m-fill { --mc: var(--m-fill); } .m-prep { --mc: var(--m-prep); }
+.m-mix { --mc: var(--m-mix); } .m-idioms { --mc: var(--m-idioms); }
+.mi {
+  flex: 0 0 34px; width: 34px; height: 34px; border-radius: 10px; background: var(--mc); color: var(--card);
+  display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: .95rem;
+}
+.mt { display: flex; flex-direction: column; min-width: 0; }
+.mode, .mp, .drill {
+  flex-direction: row; align-items: center; gap: 10px;
+  background: color-mix(in srgb, var(--mc) 9%, var(--card));
+  border: 1.5px solid color-mix(in srgb, var(--mc) 28%, var(--card));
+}
+.mode b, .mp b, .drill b { color: color-mix(in srgb, var(--mc) 85%, var(--ink)); }
+.mode:hover, .mp:hover, .drill:hover { border-color: var(--mc); background: color-mix(in srgb, var(--mc) 14%, var(--card)); }
+.mp { position: relative; padding-right: 30px; }
+.mp .ck { position: absolute; right: 8px; top: 8px; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--mc) 40%, var(--card)); color: transparent; font-size: .75rem; display: flex; align-items: center; justify-content: center; }
+.mp.on { border: 2.5px solid var(--mc); background: color-mix(in srgb, var(--mc) 18%, var(--card)); box-shadow: 0 2px 8px color-mix(in srgb, var(--mc) 25%, transparent); }
+.mp.on .ck { background: var(--mc); border-color: var(--mc); color: var(--card); }
+.mp:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.btn.go { background: var(--mc); border-color: var(--mc); color: var(--card); }
+.btn.go:hover { background: color-mix(in srgb, var(--mc) 85%, var(--ink)); }
+.qtype { display: flex; align-items: center; gap: 8px; color: var(--mc); font-weight: 600; font-size: .82rem; }
+.qtype .mi { flex-basis: 24px; width: 24px; height: 24px; border-radius: 7px; font-size: .75rem; }
+.qhead .qprog span { background: var(--accent); }
+@media (max-width: 599px) {
+  .modepick { grid-template-columns: 1fr; gap: 8px; }
+  .mp { padding: 10px 36px 10px 12px; }
+  .mp small { font-size: .76rem; }
+}
+.catrow { grid-template-columns: 10em 1fr 4em; }
